@@ -1,0 +1,29 @@
+.sidebar-wrapper {
+    width: 200px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #022088;
+    color: white;
+    padding-top: 20px;
+  }
+  
+  .sidebar-wrapper a {
+    text-decoration: none;
+    color: #A0AEC0;
+    padding: 10px;
+    margin: 5px 0;
+    transition: background-color 0.3s;
+  }
+  
+  .sidebar-wrapper a:hover {
+    background-color: white; 
+  }
+  .sidebar-wrapper NavLink{
+    font-weight: 700;
+    font-family: poppins;
+    
+  }

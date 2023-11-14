@@ -1,0 +1,38 @@
+.login-container {
+    background-color: #011e89;
+    background-image: url(https://cdn.animaapp.com/projects/655095d12540041bb7fc124b/releases/6553817a4281e83eb09235a4/img/mask-group.png);
+    background-size: cover;
+    background-position: center;
+    height: 100vh; 
+    display: flex;
+
+    justify-content: center;
+  align-items: center;
+    position: relative;
+  }
+  
+  .overlay {
+    margin: 0 auto;
+    display: flex;
+    background-color: white;
+    border-radius: 10px;
+    gap: 30px;
+    padding:  30px;
+  }
+  .overlay img{
+ width: 170px;
+ height: 210px;
+    
+  }
+  .overlay h2{
+    float: left;
+    font-weight: 700;
+    font-family: poppins;
+    line-height: 38.4px;
+    font-size: 28px;
+  }
+  .width300{
+    width: 330px; 
+   
+  }
+  

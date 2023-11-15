@@ -27,7 +27,7 @@ const AuthGuard = ({ component, user }) => {
     <React.Fragment >
      <div style={{ display: "flex" }}>
       <Sidebar />
-      <div style={{ marginLeft: "250px", overflowY: "auto", flex: 1 }}>
+      <div style={{ marginLeft: "220px", overflowY: "auto", flex: 1,padding:"20px 20px 0px" }}>
         {component}
       </div>
     </div>

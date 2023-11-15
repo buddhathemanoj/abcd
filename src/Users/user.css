@@ -1,0 +1,17 @@
+.user-details-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .user-details-table th {
+    background-color: #f2f2f2; /* Light gray color for the header */
+    border: 1px solid #dddddd; /* Light gray border color */
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .user-details-table td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+
+  }

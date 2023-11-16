@@ -15,8 +15,12 @@ const Login = () => {
         try {
             const user = await login({ email, password });
             dispatch({ type: 'LOGIN', payload: user });
-           navigate('/dashboard');
-            console.log('Login successful!', user);
+            console.log("user",user)
+            if (user.role === "admin" || user.role === "employee") {
+              navigate('/dashboard');
+          } else {
+              navigate('/user-dashboard');
+          }
         } catch(error) {
             setError(error.message);
             console.error('Login error:', error.message);

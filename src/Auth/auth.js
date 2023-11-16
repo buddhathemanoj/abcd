@@ -39,7 +39,8 @@ export const login = async ({ email, password }) => {
       throw new Error("Unable to retrieve permits count.");
     }
   };
-  export const signup = async ({ email, password, role = 'employee', fullname, company, sites, mobileno }) => {
+
+  export const signup = async ({ email, password, role , fullname, company, sites, mobileno }) => {
     const auth = getAuth(app);
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
@@ -50,7 +51,7 @@ export const login = async ({ email, password }) => {
       await setDoc(userDocRef, {
         uid: res.user.uid,
         email: res.user.email,
-        role,
+        role:role || null,
         fullname: fullname || null,
         company: company || null,
         sites: sites || null,

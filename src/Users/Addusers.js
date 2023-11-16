@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { signup } from "../Auth/auth";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { Modal, Button, Row, Col } from "react-bootstrap";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Form from 'react-bootstrap/Form';
 
 const Addusers = ({ user, state, show, handleClose }) => {
   const initialFormData = {
@@ -14,30 +15,36 @@ const Addusers = ({ user, state, show, handleClose }) => {
     company: "",
     sites: "",
     mobileno: "",
+    role: "", 
   };
 
+  const role = ["user", "employee", "manager"];
   const [formData, setFormData] = useState(initialFormData);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+
+    // Update formData
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [name]: value,
-    });
+    }));
   };
 
   const handleSignupClick = async () => {
     try {
+      console.log("FormData before signup:", formData);
+
       const newUser = await signup(formData);
-      console.log("New user created:", newUser);
       toast.success('Account created successfully!');
-      Navigate("/dashboard");
+      console.log("loggedin user", user);
+      handleClose();
     } catch (error) {
       console.error("Signup error:", error.message);
       toast.error('Error creating account. Please try again.');
     }
   };
-
   return (
     <div>
       <Modal show={show} onHide={handleClose} size="xl">
@@ -98,6 +105,22 @@ const Addusers = ({ user, state, show, handleClose }) => {
                 className="form-control"
               />
             </Col>
+            <Col>
+              <label>Sites:</label>
+
+              <Form.Select
+                aria-label="Default select example"
+                name='role'
+                value={formData.role}
+                onChange={handleInputChange}
+              >
+                <option value="user">User</option>
+                <option value="employee">Employee   </option>
+                <option value="manager">Manager </option>
+              </Form.Select>
+            </Col>
+
+
             <Col>
               <label>Mobile Number:</label>
               <input

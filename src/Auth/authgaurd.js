@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import UserSidebar from "../Components/UserSidebar";
 import Sidebar from "../Components/Sidebar";
-
 const AuthGuard = ({ component, user }) => {
   const [status, setStatus] = useState(false);
   const navigate = useNavigate();
@@ -10,12 +10,19 @@ const AuthGuard = ({ component, user }) => {
   useEffect(() => {
     const checkUser = () => {
       try {
-        if (user) {
+        if (user && user.role === "admin") {
           setStatus(true);
-        } else {
+          console.log("Checking user:", user);
+        } else if (user && user.role === "employee") {
+          setStatus(true);
+        }
+        else if (user && user.role === "user") {
+          setStatus(true);
+         } else {
           navigate(`/`);
         }
       } catch (error) {
+        console.error("Error checking user:", error);
         navigate(`/`);
       }
     };
@@ -24,13 +31,13 @@ const AuthGuard = ({ component, user }) => {
   }, [navigate, user]);
 
   return status ? (
-    <React.Fragment >
-     <div style={{ display: "flex" }}>
-      <Sidebar />
-      <div style={{ marginLeft: "220px", overflowY: "auto", flex: 1,padding:"20px 20px 0px" }}>
-        {component}
+    <React.Fragment>
+      <div style={{ display: "flex" }}>
+      {user.role === "admin" || user.role === "employee" ? <Sidebar /> : <UserSidebar />}
+        <div style={{ marginLeft: "220px", overflowY: "auto", flex: 1, padding: "20px 20px 0px" }}>
+          {component}
+        </div>
       </div>
-    </div>
     </React.Fragment>
   ) : (
     <React.Fragment></React.Fragment>

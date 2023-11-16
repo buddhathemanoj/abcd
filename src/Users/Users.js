@@ -4,14 +4,19 @@ import { getAllUsers } from "../Auth/auth";
 import UserDetailsTable from "./Userlisttable";
 import { Button } from "react-bootstrap";
 import Addusers from "./Addusers";
+
 const Users = ({ auth }) => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
-  const [showAddUserModal, setShowAddUserModal] = useState(false);  
+  const [showAddUserModal, setShowAddUserModal] = useState(false);
+
+ 
+
   useEffect(() => {
+    const Userrole = auth.user.role;
     const fetchUsers = async () => {
       try {
-        if (auth.user && auth.user.role === "admin") {
+        if (Userrole && Userrole === "admin") {
           console.log("Fetching all users...", auth.user);
           const allUsers = await getAllUsers();
           setUsers(allUsers);
@@ -26,30 +31,24 @@ const Users = ({ auth }) => {
 
     fetchUsers();
   }, [auth.user]);
+
   const handleShowAddUserModal = () => setShowAddUserModal(true);
   const handleCloseAddUserModal = () => setShowAddUserModal(false);
   return (
     <div>
       <h2>List Of Users</h2>
-      <div style={{float:'right',marginBottom:'10px'}}>
+      <div style={{ float: 'right', marginBottom: '10px' }}>
         <Button type="button" className="btn btn-primary" onClick={handleShowAddUserModal}>
           Create User
         </Button>
-      <Addusers show={showAddUserModal} handleClose={handleCloseAddUserModal} />
+        <Addusers show={showAddUserModal} handleClose={handleCloseAddUserModal}  />
       </div>
-      {error && <p>{error}</p>}
+
       {users.length > 0 && auth.user && auth.user.role === "admin" && (
         <UserDetailsTable users={users} />
       )}
 
-      {!error && users.length === 0 && auth.user && (
-        <div>
-          <h2>Your Profile</h2>
-          <p>Email: {auth.user.email}</p>
-          <p>Full Name: {auth.user.fullname}</p>
-         
-        </div>
-      )}
+
     </div>
   );
 };

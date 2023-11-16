@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import PermitList from "./PermitList";
 import AddPermit from "./AddPermit";
+import { connect } from "react-redux";
 
-const Permit = () => {
+const Permit = ({auth}) => {
 const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("listOfPermits");
     const [showAddPermit, setShowAddPermit] = useState(false);
@@ -54,4 +55,13 @@ const navigate = useNavigate();
         </>
     )
 }
-export default Permit;
+
+const mapStateToProps = (state) => {
+   
+    return {
+      auth: state.auth,
+    };
+  };
+  
+  
+export default connect(mapStateToProps)(Permit);

@@ -3,6 +3,7 @@ import { Button, Col, Row } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa";
+import './Permit.css'
 
 const AddPermit = () => {
     return (
@@ -35,7 +36,7 @@ const AddPermit = () => {
                     <Col lg={4}>
                         <input type="checkbox" /> <strong>GENERAL</strong>
                     </Col>
-                    <Col lg={8} className='d-flex justify-content-between w-max'>
+                    <Col lg={8} className='d-flex justify-content-between'>
                         <input type="date" />
                         <input type="date" />
                         <input type="date" />
@@ -50,35 +51,39 @@ const AddPermit = () => {
                         <option value="2">OTHER</option>
                         <option value="3">OTHER</option>
                     </Form.Select>
-                    <h6 style={{ marginLeft: "10px", fontSize:"12px" }}>Note that Start Date and End Date Max 5 Days</h6>
+                    <h6 style={{ marginLeft: "10px", fontSize: "12px" }}>Note that Start Date and End Date Max 5 Days</h6>
                 </div>
-                <span style={{color:"red", fontSize:"12px", marginTop:"0"}}>Required</span>
+                <span style={{ color: "red", fontSize: "12px", marginTop: "0" }}>Required</span>
 
                 <Row className='mt-4'>
                     <Col lg={2}>
                         <h6>Building<br></br>(Admin/Fab/Cup/Others)</h6>
-                        <input type="checkbox" /> ADMIN <br></br>
-                        <input type="checkbox" /> FAB 1A <br></br>
-                        <input type="checkbox" /> FAB 2A <br></br>
-                        <input type="checkbox" /> EXTERNAL <br></br>
-                        <input type="checkbox" /> CARPARK <br></br>
-                        <input type="checkbox" /> Others (Pls Specify)
+                        <div className='building-checkbox'>
+                            <input type="checkbox" /> ADMIN <br></br>
+                            <input type="checkbox" /> FAB 1A <br></br>
+                            <input type="checkbox" /> FAB 2A <br></br>
+                            <input type="checkbox" /> EXTERNAL <br></br>
+                            <input type="checkbox" /> CARPARK <br></br>
+                            <input type="checkbox" /> Others (Pls Specify)
+                        </div>
                     </Col>
                     <Col lg={4}>
-                        <input type="text" style={{ marginLeft: "1rem" }} className='w-100 h-50 border rounded' />
+                        <textarea style={{marginLeft:"1rem"}} className='w-100 h-50 border rounded'></textarea>
                     </Col>
                     <Col lg={2}>
                         <h6>Level</h6>
-                        <input type="checkbox" /> BASEMENT <br></br>
-                        <input type="checkbox" /> L1 <br></br>
-                        <input type="checkbox" /> L2 <br></br>
-                        <input type="checkbox" /> L3 <br></br>
-                        <input type="checkbox" /> L4 <br></br>
-                        <input type="checkbox" /> L5 <br></br>
-                        <input type="checkbox" /> ROOF
+                        <div className='level-checkbox'>
+                            <input type="checkbox" /> BASEMENT <br></br>
+                            <input type="checkbox" /> L1 <br></br>
+                            <input type="checkbox" /> L2 <br></br>
+                            <input type="checkbox" /> L3 <br></br>
+                            <input type="checkbox" /> L4 <br></br>
+                            <input type="checkbox" /> L5 <br></br>
+                            <input type="checkbox" /> ROOF
+                        </div>
                     </Col>
                     <Col lg={4}>
-                        <input type="text" className='w-100 h-50 border rounded' />
+                        <textarea placeholder='Others (Pls Specify)' className='w-100 h-50 border rounded' ></textarea>
                     </Col>
                 </Row>
                 <div className='mt-4 text-end'>

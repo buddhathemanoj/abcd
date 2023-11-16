@@ -15,3 +15,21 @@
     padding: 8px;
 
   }
+
+  .add-user1{
+    border: 3px solid #dddddd;
+    padding: 2px;
+    border-radius:5px;
+    width: 60%;
+    margin-left: 3%;
+  }
+
+  .add-user2{
+    border: 3px solid #dddddd;
+    padding: 2px;
+    border-radius:5px;
+    width: 60%;
+    margin-left: 3%;
+  }
+
+  

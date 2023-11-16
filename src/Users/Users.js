@@ -30,6 +30,7 @@ const Users = ({ auth }) => {
   const handleCloseAddUserModal = () => setShowAddUserModal(false);
   return (
     <div>
+      <h2>List Of Users</h2>
       <div style={{float:'right',marginBottom:'10px'}}>
         <Button type="button" className="btn btn-primary" onClick={handleShowAddUserModal}>
           Create User

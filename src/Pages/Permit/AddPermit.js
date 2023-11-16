@@ -7,7 +7,6 @@ import Form from 'react-bootstrap/Form';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa";
 import { toast, ToastContainer } from 'react-toastify';
-import './Permit.css'
 import { format } from 'date-fns';
 import { getTotalPermits } from '../../Auth/auth';
 const AddPermit = ({ auth }) => {
@@ -21,8 +20,8 @@ const AddPermit = ({ auth }) => {
     const [isGeneralChecked, setIsGeneralChecked] = useState(false);
     const [buildingNotes, setBuildingNotes] = useState('');
     const [levelNotes, setLevelNotes] = useState('');
-    const buildingOptions = ['ADMIN', 'FAB 1A', 'FAB 2A', 'EXTERNAL', 'CARPARK'];
-    const levelOptions = ['BASEMENT', 'L1', 'L2', 'L3', 'L4', 'L5', 'ROOF'];
+    const buildingOptions = [' ADMIN', ' FAB 1A', ' FAB 2A', ' EXTERNAL', ' CARPARK'];
+    const levelOptions = [' BASEMENT', ' L1', ' L2', ' L3', ' L4', ' L5', ' ROOF'];
     const [selectedLevels, setSelectedLevels] = useState([]);
     const [selectedBuildings, setSelectedBuildings] = useState([]);
 
@@ -238,7 +237,7 @@ const AddPermit = ({ auth }) => {
                                 type='checkbox'
                                 onChange={() => handleBuildingCheckboxChange('Others')}
                             />
-                            Others (Pls Specify)
+                            {' '}Others (Pls Specify)
                         </div>
                     </Col>
                     <Col lg={4}>

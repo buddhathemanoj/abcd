@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import PermitList from "./PermitList";
 import AddPermit from "./AddPermit";
 import { connect } from "react-redux";
+import './Permit.css'
 
 const Permit = ({auth}) => {
 const navigate = useNavigate();

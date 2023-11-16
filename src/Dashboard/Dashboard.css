@@ -1,0 +1,122 @@
+.dashboard-main-container {
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+.welcome-heading {
+    margin: 0px;
+    margin-bottom: 20px;
+}
+
+.dashboard-list-container {
+    list-style-type: none;
+    display: flex;
+    gap: 10px;
+    padding-left: 0px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+}
+
+.dashboard-list-item-container {
+    background-color: #F3F3F3;
+    width: 300px;
+    padding: 10px;
+    height: 170px;
+    border-radius: 7px;
+    
+}
+.vector-img {
+    width: 60px;
+}
+.vector-img-container {
+    background-color: #095CEA;
+    border-radius: 50%;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+}
+.vector-img-container2 {
+    background-color: #DF1509;
+    border-radius: 50%;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+}
+.vector-img-container3 {
+    background-color: #099115;
+    border-radius: 50%;
+    border-radius: 50%;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+}
+.vector-img-container4 {
+    background-color: #095CEA;
+    border-radius: 50%;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+}
+.image-active-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.view-btn {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: #095CEA;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.view-btn-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding-right: 6px;
+}
+
+.total-desc {
+    color: #B9B9B9;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.general-desc {
+    color: #022088;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.work-list-container {
+    list-style-type: none;
+    padding-left: 0px;
+}
+.work-list-item-container {
+    background-color: #F3F3F3;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+}
+.drop-btn {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    background-color: transparent;
+}

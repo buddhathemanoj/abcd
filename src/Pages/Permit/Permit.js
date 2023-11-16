@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { Breadcrumb, Col, Row } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import PermitList from "./PermitList";
 import AddPermit from "./AddPermit";
 
 const Permit = () => {
-
+const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("listOfPermits");
     const [showAddPermit, setShowAddPermit] = useState(false);
+
+  
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
@@ -18,6 +21,7 @@ const Permit = () => {
     const handleCreateClick = () => {
         setShowAddPermit(true);
         setActiveTab("listOfPermits");
+        navigate("/all-permits-create");
     };
 
     return (
@@ -32,20 +36,21 @@ const Permit = () => {
                         <Button style={{ marginRight: "2rem" }} variant="primary" onClick={handleCreateClick}>Create</Button>
                         <Form.Control type="text" placeholder="Search" />
                     </Col>
+                    <PermitList />
                 </Row>
             )}
-            {!showAddPermit && activeTab === "listOfPermits" && (
+            {/* {!showAddPermit && activeTab === "listOfPermits" && (
                 <>
                     <Breadcrumb style={{ marginTop: "1rem" }}>
                         <Breadcrumb.Item active>All Permits</Breadcrumb.Item>
                         <Breadcrumb.Item active>List of Permits</Breadcrumb.Item>
                     </Breadcrumb>
                     {activeTab === "listOfPermits" && (
-                        <PermitList />
+                        
                     )}
                 </>
             )}
-            {showAddPermit && <AddPermit />}
+            {showAddPermit && <AddPermit />} */}
         </>
     )
 }

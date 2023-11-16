@@ -6,6 +6,7 @@ import Dashboard from './Dashboard/Dashboard';
 import Users from './Users/Users';
 import Permit from './Pages/Permit/Permit';
 import Account from './Pages/Accounts/Account';
+import AddPermit from './Pages/Permit/AddPermit';
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
           <Route path="/dashboard" element={<AuthGuard component={<Dashboard />} />} />
           <Route path="/users" element={<AuthGuard component={<Users />} />} />
           <Route path="/all-permits" element={<AuthGuard component={<Permit />} />} />
+          <Route path="/all-permits-create" element={<AuthGuard component={<AddPermit />} />} />
+
           <Route path="/account" element={<AuthGuard component={<Account />} />} />
         </Routes>
       </Router>

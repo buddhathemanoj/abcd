@@ -27,7 +27,7 @@ const AddPermit = () => {
                     </Form.Select>
                 </Col>
             </Row>
-            <p className='mt-3 mb-3'><Link to="#" style={{ textDecoration: "none" }}><FaArrowLeft /> Back to view all permit</Link></p>
+            <p className='mt-3 mb-3'><Link to="/all-permits" style={{ textDecoration: "none" }}><FaArrowLeft /> Back to view all permit</Link></p>
 
             <div className='p-4 shadow'>
                 <h5>INFORMATION</h5><hr></hr>

@@ -9,6 +9,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import { BsThreeDots } from "react-icons/bs";
 import { updatePermitStatus } from '../../Auth/auth';
+import Popup from 'reactjs-popup';
 
 const PermitList = ({ permits, auth }) => {
 
@@ -16,6 +17,7 @@ const PermitList = ({ permits, auth }) => {
   console.log("userId", userId);
   const [userPermits, setUserPermits] = useState([]);
   const [showActions, setShowActions] = useState(null);
+  
   useEffect(() => {
     const fetchPermits = async () => {
       try {
@@ -101,15 +103,16 @@ const PermitList = ({ permits, auth }) => {
                     placement="top"
                     overlay={<Tooltip id={`ellipsis-tooltip-${index}`}>Show Actions</Tooltip>}
                   >
-                    <div
+
+                    <Popup 
+                    trigger={<div
                       style={{ cursor: 'pointer', fontSize: '20px' }}
                       onClick={() => setShowActions(showActions === index ? null : index)}
                     >
                       <BsThreeDots />
-                    </div>
-                  </OverlayTrigger>
-
-                  {showActions === index && (
+                    </div>}
+                    position={"top left"}
+                    >
                     <div
                       style={{
                         position: 'absolute',
@@ -133,7 +136,11 @@ const PermitList = ({ permits, auth }) => {
                       </Button>
 
                     </div>
-                  )}
+                  
+                    </Popup>
+                    
+                  </OverlayTrigger>
+
                 </div>
               </td>
             </tr>
@@ -154,3 +161,46 @@ const mapStateToProps = (state) => {
 
 
 export default connect(mapStateToProps)(PermitList);
+
+
+
+
+// <div style={{ position: 'relative' }}>
+// <OverlayTrigger
+//   placement="top"
+//   overlay={<Tooltip id={`ellipsis-tooltip-${index}`}>Show Actions</Tooltip>}
+// >
+//   <div
+//     style={{ cursor: 'pointer', fontSize: '20px' }}
+//     onClick={() => setShowActions(showActions === index ? null : index)}
+//   >
+//     <BsThreeDots />
+//   </div>
+// </OverlayTrigger>
+
+// {showActions === index && (
+//   <div
+//     style={{
+//       position: 'absolute',
+//       top: "0%",
+//       left: '10%',
+//       transform: 'translateX(-110%)',
+//       zIndex: 999,
+//       backgroundColor: 'white',
+//       boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+//       padding: '10px',
+//       display: 'flex',
+//       flexDirection: 'row',
+//       gap: '5px',
+//     }}
+//   >
+//     <Button variant="success" onClick={() => handleActionClick('approve', permit.id)}>
+//       Approve
+//     </Button>
+//     <Button variant="danger" onClick={() => handleActionClick('cancel', permit.id)}>
+//       Cancel
+//     </Button>
+
+//   </div>
+// )}
+// </div>

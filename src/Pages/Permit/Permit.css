@@ -1,3 +1,7 @@
+.building-checkbox {
+    margin-right: 20px;
+}
+
 .building-checkbox input {
     margin-bottom: 15px;
 }
@@ -9,6 +13,40 @@
 .user-details-table {
     font-size: small;
 }
+
+
+hr {
+    color: gray;
+}
+
+.file-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Style for the button */
+.file-btn {
+    padding: 10px 5px;
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Style for the file input */
+.file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+
 .add-permit-input {
     padding: 9px;
     width: 200px;
@@ -28,4 +66,5 @@
 }
 .input-search {
     background-color: #F7F7F7;
+
 }

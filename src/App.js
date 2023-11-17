@@ -16,6 +16,8 @@ import Templates from './Pages/AllTemplates/Templates';
 import FormsDownlod from './Pages/FormsDownload/FormsDownlod';
 import FeedbackForm from './Pages/FeedbackForm/FeedbackForm';
 import MyPermits from './Pages/User/myPermits';
+import MyChildPermit from './Pages/User/myChildPermit';
+import AllTemplates from './Pages/User/allTemplates';
 
 
 function App() {
@@ -34,7 +36,8 @@ function App() {
           <Route path="/user-dashboard" element={<AuthGuard component={<Userashboard />} />} />
 
           <Route path="/all-templates" element={<AuthGuard component={<Templates />} />} />
-
+          <Route path="/my-child-permit" element={<AuthGuard component={<MyChildPermit />} />} />
+          <Route path="/all-template" element={<AuthGuard component={<AllTemplates />} />} />
           <Route path="/account" element={<AuthGuard component={<Account />} />} />
           <Route path="/forms-download" element={<AuthGuard component={<FormsDownlod />} />} />
           <Route path="/feedback-form" element={<AuthGuard component={<FeedbackForm />} />} />

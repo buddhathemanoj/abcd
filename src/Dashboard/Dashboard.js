@@ -1,15 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
+import Cookies from "js-cookie";
 import "./Dashboard.css"
 import vector from "../Asset/noto_hourglass-with-flowing-sand.png"
 import { RiArrowDropDownLine } from "react-icons/ri";
 
 const workArr = [
-    "General Permit To Work(3)","A1 - Hot Works(5)","A2 - Confied Space(7)","A3 - Lifting Space(0)","A4 - Work at Height(3)","Admin login successful"
+    "General Permit To Work(3)", "A1 - Hot Works(5)", "A2 - Confied Space(7)", "A3 - Lifting Space(0)", "A4 - Work at Height(3)", "Admin login successful"
 ]
+
 
 const Dashboard = (state) => {
 
+    const token = Cookies.get("accessToken")
     return (
         <div className="dashboard-main-container">
             <h1 className="welcome-heading">Welcome To JCET,</h1>
@@ -22,7 +25,7 @@ const Dashboard = (state) => {
                         <div>
                             <p className="total-desc">Total Active Permits</p>
                             <p className="general-desc">General Permit To Work</p>
-                            <h1 style={{textAlign:"center",marginTop:"5px",fontSize:"55px",color:"#022088",marginBottom:"0px"}}>3</h1>
+                            <h1 style={{ textAlign: "center", marginTop: "5px", fontSize: "55px", color: "#022088", marginBottom: "0px" }}>3</h1>
                         </div>
                     </div>
                     <div className="view-btn-container">
@@ -37,7 +40,7 @@ const Dashboard = (state) => {
                         <div>
                             <p className="total-desc">Total Active Permits</p>
                             <p className="general-desc">Hot works</p>
-                            <h1 style={{textAlign:"center",marginTop:"5px",fontSize:"55px",color:"#022088",marginBottom:"0px"}}>5</h1>
+                            <h1 style={{ textAlign: "center", marginTop: "5px", fontSize: "55px", color: "#022088", marginBottom: "0px" }}>5</h1>
                         </div>
                     </div>
                     <div className="view-btn-container">
@@ -52,7 +55,7 @@ const Dashboard = (state) => {
                         <div>
                             <p className="total-desc">Total Active Permits</p>
                             <p className="general-desc">Lifting Space</p>
-                            <h1 style={{textAlign:"center",marginTop:"5px",fontSize:"55px",color:"#022088",marginBottom:"0px"}}>7</h1>
+                            <h1 style={{ textAlign: "center", marginTop: "5px", fontSize: "55px", color: "#022088", marginBottom: "0px" }}>7</h1>
                         </div>
                     </div>
                     <div className="view-btn-container">
@@ -67,7 +70,7 @@ const Dashboard = (state) => {
                         <div>
                             <p className="total-desc">Total Active Permits</p>
                             <p className="general-desc">Work at height</p>
-                            <h1 style={{textAlign:"center",marginTop:"5px",fontSize:"55px",color:"#022088",marginBottom:"0px"}}>3</h1>
+                            <h1 style={{ textAlign: "center", marginTop: "5px", fontSize: "55px", color: "#022088", marginBottom: "0px" }}>3</h1>
                         </div>
                     </div>
                     <div className="view-btn-container">
@@ -77,7 +80,7 @@ const Dashboard = (state) => {
             </ul>
             <ul className="work-list-container">
                 {workArr.map((eachWork) => <li className="work-list-item-container">
-                    <p style={{fontSize:"20px",color:"#000000",margin:"0px"}}>{eachWork}</p>
+                    <p style={{ fontSize: "20px", color: "#000000", margin: "0px" }}>{eachWork}</p>
                     <button type="button" className="drop-btn"><RiArrowDropDownLine /></button>
                 </li>)}
             </ul>

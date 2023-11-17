@@ -9,10 +9,9 @@ import { FaArrowLeft } from "react-icons/fa";
 import { toast, ToastContainer } from 'react-toastify';
 import { format } from 'date-fns';
 import { getTotalPermits } from '../../Auth/auth';
-import "./Permit.css"
 
 
-const AddPermit = ({ auth }) => {
+const UserAddPermit = ({ auth }) => {
     const [permitType, setPermitType] = useState('');
     const [site, setSite] = useState('');
     const [site2, setSite2] = useState('');
@@ -69,72 +68,73 @@ const AddPermit = ({ auth }) => {
         setIsGeneralChecked(e.target.checked);
     };
 
-
-    const req = site2.length === 0
-
-
+   
+    
     const handleSubmit = async () => {
         const permitData = {
-            permitType,
-            site,
-            startDate,
-            startTime,
-            endDate,
-            endTime,
-            isGeneralChecked,
-            buildingNotes,
-            levelNotes,
-            selectedLevels,
-            selectedBuildings,
-            site2,
+          permitType,
+          site,
+          startDate,
+          startTime,
+          endDate,
+          endTime,
+          isGeneralChecked,
+          buildingNotes,
+          levelNotes,
+          selectedLevels,
+          selectedBuildings,
+          site2,
         };
-
+      
         if (
-            permitType !== '' &&
-            site !== '' &&
-            startDate !== '' &&
-            endDate !== '' &&
-            selectedBuildings.length > 0 &&
-            selectedLevels.length > 0
+          permitType !== '' &&
+          site !== '' &&
+          startDate !== '' &&
+          endDate !== '' &&
+          selectedBuildings.length > 0 &&
+          selectedLevels.length > 0
         ) {
-            try {
-                const userId = auth.user.uid;
-
-                const today = new Date();
-                const day = today.getDate();
-                const month = today.getMonth() + 1;
-                const year = today.getFullYear().toString().slice(-2);
-
-                const totalPermits = await getTotalPermits(userId);
-
-                const counterValue = totalPermits + 1;
-
-                const paddedCounter = counterValue.toString().padStart(3, '0');
-                const permitNumber = `GP${day}${month}${year}${paddedCounter}`;
-
-                const createdAt = format(today, 'dd-MM-yyyy');
-                const status = 'pending';
-
-                const extendedPermitData = {
-                    userId,
-                    permitNumber,
-                    status,
-                    createdAt,
-                    ...permitData,
-                };
-
-                console.log("Submitting permit data:", extendedPermitData);
-                const permitId = await storePermit(userId, extendedPermitData);
-                toast.success(`Permit data submitted successfully with ID: ${permitId}`);
-            } catch (error) {
-                console.error("Error submitting permit data:", error.message);
-                toast.error("Error submitting permit data. Please try again.");
-            }
+          try {
+            const userId = auth.user.uid;
+      
+            const today = new Date();
+            const day = today.getDate();
+            const month = today.getMonth() + 1;
+            const year = today.getFullYear().toString().slice(-2);
+      
+            const totalPermits = await getTotalPermits(userId);
+      
+            const counterValue = totalPermits + 1;
+      
+            const paddedCounter = counterValue.toString().padStart(3, '0');
+            const permitNumber = `GP${day}${month}${year}${paddedCounter}`;
+      
+            const createdAt = format(today, 'dd-MM-yyyy');
+            const status = 'pending';
+      
+            const extendedPermitData = {
+              userId,
+              permitNumber,
+              status,
+              createdAt,
+              ...permitData,
+            };
+      
+            console.log("Submitting permit data:", extendedPermitData);
+            const permitId = await storePermit(userId, extendedPermitData);
+            toast.success(`Permit data submitted successfully with ID: ${permitId}`);
+          } catch (error) {
+            console.error("Error submitting permit data:", error.message);
+            toast.error("Error submitting permit data. Please try again.");
+          }
         } else {
-            toast.error('Please fill in all required fields.');
+          toast.error('Please fill in all required fields.');
         }
-    };
+      };
 
+      const req = site2.length === 0
+      console.log(req);
+    
     return (
         <>
             <Row>
@@ -166,10 +166,10 @@ const AddPermit = ({ auth }) => {
                     </Form.Select>
                 </Col>
             </Row>
-            <p className='mt-3 mb-3'><Link to="/all-permits" style={{ textDecoration: "none" }}><FaArrowLeft /> Back to view all permit</Link></p>
+            <p className='mt-3 mb-3'><Link to="/my-permits" style={{ textDecoration: "none" }}><FaArrowLeft /> Back to view all permit</Link></p>
 
             <div className='p-4 shadow'>
-                <h6 style={{ color: "#0D3E78" }}>INFORMATION</h6><hr></hr>
+                <h5>INFORMATION</h5><hr></hr>
                 <Row>
                     <Col lg={4}>
                         <input
@@ -182,9 +182,9 @@ const AddPermit = ({ auth }) => {
                         <input
                             type='date'
                             name='startDate'
+                            className='add-permit-input'
                             value={startDate}
                             onChange={handleDateChange}
-                            className='add-permit-input'
                             placeholder='Start Date'
                         />
                         <input
@@ -198,17 +198,17 @@ const AddPermit = ({ auth }) => {
                         <input
                             type='date'
                             name='endDate'
+                            className='add-permit-input'
                             value={endDate}
                             onChange={handleDateChange}
-                            className='add-permit-input'
                             placeholder='End Date'
                         />
                         <input
                             type='time'
                             name='endTime'
                             value={endTime}
-                            onChange={handleDateChange}
                             className='add-permit-input'
+                            onChange={handleDateChange}
                             placeholder='End Time'
                         />
                     </Col>
@@ -222,12 +222,12 @@ const AddPermit = ({ auth }) => {
                     </Form.Select>
                     <h6 style={{ marginLeft: "10px", fontSize: "12px" }}>Note that Start Date and End Date Max 5 Days</h6>
                 </div>
-                {req && <span style={{ color: "red", fontSize: "12px", marginTop: "0" }}>Required</span>}
+               {req && <span style={{ color: "red", fontSize: "12px", marginTop: "0" }}>Required</span>} 
 
                 <Row className='mt-4'>
-                    <Col lg={3}>
-                        <div className='building-checkbox mr-3'>
-                            <h6>Building<br></br>(Admin/Fab/Cup/Others)</h6>
+                    <Col lg={2}>
+                        <h6 style={{marginRight:"20px"}}>Building<br></br>(Admin/Fab/Cup/Others)</h6>
+                        <div className='building-checkbox'>
                             {buildingOptions.map((building) => (
                                 <div key={building}>
                                     <input
@@ -245,13 +245,8 @@ const AddPermit = ({ auth }) => {
                             {' '}Others (Pls Specify)
                         </div>
                     </Col>
-
-                    <Col lg={3}>
-                        <textarea value={buildingNotes} onChange={(e) => setBuildingNotes(e.target.value)} className='w-100 h-50 border rounded'></textarea>
-
                     <Col lg={4}>
                         <textarea style={{ marginLeft: "1rem",outline:"none",padding:"6px",backgroundColor:"#ccc5" }} value={buildingNotes} onChange={(e) => setBuildingNotes(e.target.value)} className='w-100 h-50 border rounded'></textarea>
-
                     </Col>
                     <Col lg={2}>
                         <h6>Level</h6>
@@ -269,64 +264,7 @@ const AddPermit = ({ auth }) => {
                         </div>
                     </Col>
                     <Col lg={4}>
-                        <textarea placeholder='Others (Pls Specify)' value={levelNotes} onChange={(e) => setLevelNotes(e.target.value)} className='w-100 h-50 border rounded' style={{outline:"none",padding:"6px",backgroundColor:"#ccc5"}} ></textarea>
-                    </Col>
-                </Row>
-            </div>
-
-            <div className='p-4 shadow mt-3'>
-                <h6 style={{ color:"#0D3E78"}}>WORK DESCRIPTION (ATTACH DRAWING / SKETCH / DESCRIBE IN DETAILS etc...)</h6><hr></hr>
-                <textarea
-                    placeholder='Work Description (Attach Drawing / Sketch / Describe in Details here)'
-                    className='w-100 border rounded'
-                    style={{minHeight:"5rem"}}
-                ></textarea>
-                <Row className='mt-5' style={{fontSize:"small"}}>
-                    <Col>
-                        <div className="file-container">
-                            <button className="file-btn">MAP</button>
-                            <input type="file" className="file-input" />
-                        </div>   
-                    </Col>
-                    <Col>
-                        <div className="file-container">
-                            <button className="file-btn"><i class="bi bi-upload"></i>Upload Drawing / Sketches</button>
-                            <input type="file" className="file-input" />
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="file-container">
-                            <button className="file-btn"><i class="bi bi-upload"></i>Upload Risk Assessment</button>
-                            <input type="file" className="file-input" />
-                        </div>
-                    </Col>
-                </Row>
-                <Row className='mt-5' style={{ fontSize: "small" }}>
-                    <Col>
-                        <div className="file-container">
-                            <button className="file-btn"><i class="bi bi-upload"></i>Upload SOP/MOS/PTP</button>
-                            <input type="file" className="file-input" />
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="file-container">
-                            <button className="file-btn"><i class="bi bi-upload"></i>Upload ReEntry Form</button>
-                            <input type="file" className="file-input" />
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="file-container">
-                            <button className="file-btn"><i class="bi bi-upload"></i>Others Upload (Pls Specify)</button>
-                            <input type="file" className="file-input" />
-                        </div>
-                    </Col>
-                </Row>
-                <Row className='mt-5' style={{ fontSize: ".7rem" }}>
-                    <Col lg={4}>
-                        <div className="file-container">
-                            <button className="file-btn"><i class="bi bi-upload"></i>Worker Competency Certification (i.e. SMO, SDO, WAH, CS)</button>
-                            <input type="file" className="file-input" />
-                        </div>     
+                        <textarea style={{padding:"6px", outline:"none",backgroundColor:"#ccc5"}} placeholder='Others (Pls Specify)' value={levelNotes} onChange={(e) => setLevelNotes(e.target.value)} className='w-100 h-50 border rounded' ></textarea>
                     </Col>
                 </Row>
                 <div className='mt-4 text-end'>
@@ -339,11 +277,11 @@ const AddPermit = ({ auth }) => {
 }
 
 const mapStateToProps = (state) => {
-
+   
     return {
-        auth: state.auth,
+      auth: state.auth,
     };
-};
-
-
-export default connect(mapStateToProps)(AddPermit);
+  };
+  
+  
+export default connect(mapStateToProps)(UserAddPermit);

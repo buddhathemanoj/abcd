@@ -95,24 +95,20 @@ const AddPermit = ({ auth }) => {
           try {
             const userId = auth.user.uid;
       
-            // Generate Permit Number logic
             const today = new Date();
             const day = today.getDate();
             const month = today.getMonth() + 1;
             const year = today.getFullYear().toString().slice(-2);
       
-            // Get the total permits count
             const totalPermits = await getTotalPermits(userId);
       
-            // Increment the counter value
             const counterValue = totalPermits + 1;
       
             const paddedCounter = counterValue.toString().padStart(3, '0');
             const permitNumber = `GP${day}${month}${year}${paddedCounter}`;
       
-            // Set additional fields
             const createdAt = format(today, 'dd-MM-yyyy');
-            const status = 'inactive';
+            const status = 'pending';
       
             const extendedPermitData = {
               userId,

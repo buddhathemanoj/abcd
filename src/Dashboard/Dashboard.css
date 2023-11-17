@@ -120,3 +120,8 @@
     font-size: 20px;
     background-color: transparent;
 }
+
+.custom-toast {
+    width: 100%; 
+    white-space: nowrap; 
+  }

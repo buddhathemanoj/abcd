@@ -40,6 +40,9 @@ const Login = () => {
           <div className="mb-3 width300"> 
             <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
+          <div>
+          <span color='blue'>Forget password?</span>
+          </div>
           <button className="btn btn-primary btn-lg btn-block width300" onClick={handleLoginClick}>
             Login
           </button>

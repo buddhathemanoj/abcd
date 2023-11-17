@@ -248,7 +248,7 @@ const AddPermit = ({ auth }) => {
 
                     <Col lg={3}>
                         <textarea value={buildingNotes} onChange={(e) => setBuildingNotes(e.target.value)} className='w-100 h-50 border rounded'></textarea>
-
+</Col>
                     <Col lg={4}>
                         <textarea style={{ marginLeft: "1rem",outline:"none",padding:"6px",backgroundColor:"#ccc5" }} value={buildingNotes} onChange={(e) => setBuildingNotes(e.target.value)} className='w-100 h-50 border rounded'></textarea>
 

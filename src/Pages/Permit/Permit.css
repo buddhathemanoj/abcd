@@ -37,7 +37,7 @@ hr {
     width: 100%;
 }
 
-/* Style for the file input */
+
 .file-input {
     position: absolute;
     top: 0;
@@ -46,7 +46,7 @@ hr {
     cursor: pointer;
     height: 100%;
     width: 100%;
-
+}
 .add-permit-input {
     padding: 9px;
     width: 200px;

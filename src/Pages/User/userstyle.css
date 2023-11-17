@@ -1,0 +1,60 @@
+.mypermits-container {
+
+}
+.list-permits-top-container {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 30px;
+
+}
+.permits-btn{
+  background-color: #3876E3;
+  border-radius: 8px;
+  padding: 10px;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-weight: bold;
+  width: 180px;
+}
+.search-input {
+    padding: 10px;
+    background-color: #F7F7F7;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    margin-left: 15px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    width: 207px;
+}
+
+/* Table.module.css */
+.customTable {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .customTable th,
+  .customTable td {
+    padding: 8px;
+    background-color: #f0f0f0; /* Set background color for cells */
+    border: none; /* Remove borders */
+  }
+  
+  .customTable th {
+    font-weight: bold;
+    background-color: #f0f0f0; /* Set background color for header cells */
+  }
+
+  .customTable tr {
+    padding: 5px;
+  }
+  
+  .customTable tbody tr:nth-child(even) {
+    background-color: #f0f0f0; /* Set background color for even rows */
+  }
+  
+  .customTable tbody tr:hover {
+    background-color: #e0e0e0; /* Set background color for hovered rows */
+  }
+  

@@ -15,6 +15,7 @@ import Userashboard from './Dashboard/UserDashboard';
 import Templates from './Pages/AllTemplates/Templates';
 import FormsDownlod from './Pages/FormsDownload/FormsDownlod';
 import FeedbackForm from './Pages/FeedbackForm/FeedbackForm';
+import MyPermits from './Pages/User/myPermits';
 
 
 function App() {
@@ -29,7 +30,7 @@ function App() {
           <Route path="/users" element={<AuthGuard component={<Users />} />} />
           <Route path="/all-permits" element={<AuthGuard component={<Permit />} />} />
           <Route path="/all-permits-create" element={<AuthGuard component={<AddPermit />} />} />
-
+          <Route path="//my-permits" element={<AuthGuard component={<MyPermits />} />} />
           <Route path="/user-dashboard" element={<AuthGuard component={<Userashboard />} />} />
 
           <Route path="/all-templates" element={<AuthGuard component={<Templates />} />} />

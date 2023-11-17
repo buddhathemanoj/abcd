@@ -164,7 +164,7 @@ const AddPermit = ({ auth }) => {
             <p className='mt-3 mb-3'><Link to="/all-permits" style={{ textDecoration: "none" }}><FaArrowLeft /> Back to view all permit</Link></p>
 
             <div className='p-4 shadow'>
-                <h5>INFORMATION</h5><hr></hr>
+                <h6 style={{ color: "#0D3E78" }}>INFORMATION</h6><hr></hr>
                 <Row>
                     <Col lg={4}>
                         <input
@@ -216,9 +216,9 @@ const AddPermit = ({ auth }) => {
                 <span style={{ color: "red", fontSize: "12px", marginTop: "0" }}>Required</span>
 
                 <Row className='mt-4'>
-                    <Col lg={2}>
-                        <h6>Building<br></br>(Admin/Fab/Cup/Others)</h6>
-                        <div className='building-checkbox'>
+                    <Col lg={3}>
+                        <div className='building-checkbox mr-3'>
+                            <h6>Building<br></br>(Admin/Fab/Cup/Others)</h6>
                             {buildingOptions.map((building) => (
                                 <div key={building}>
                                     <input
@@ -236,8 +236,8 @@ const AddPermit = ({ auth }) => {
                             {' '}Others (Pls Specify)
                         </div>
                     </Col>
-                    <Col lg={4}>
-                        <textarea style={{ marginLeft: "1rem" }} value={buildingNotes} onChange={(e) => setBuildingNotes(e.target.value)} className='w-100 h-50 border rounded'></textarea>
+                    <Col lg={3}>
+                        <textarea value={buildingNotes} onChange={(e) => setBuildingNotes(e.target.value)} className='w-100 h-50 border rounded'></textarea>
                     </Col>
                     <Col lg={2}>
                         <h6>Level</h6>
@@ -256,6 +256,63 @@ const AddPermit = ({ auth }) => {
                     </Col>
                     <Col lg={4}>
                         <textarea placeholder='Others (Pls Specify)' value={levelNotes} onChange={(e) => setLevelNotes(e.target.value)} className='w-100 h-50 border rounded' ></textarea>
+                    </Col>
+                </Row>
+            </div>
+
+            <div className='p-4 shadow mt-3'>
+                <h6 style={{ color:"#0D3E78"}}>WORK DESCRIPTION (ATTACH DRAWING / SKETCH / DESCRIBE IN DETAILS etc...)</h6><hr></hr>
+                <textarea
+                    placeholder='Work Description (Attach Drawing / Sketch / Describe in Details here)'
+                    className='w-100 border rounded'
+                    style={{minHeight:"5rem"}}
+                ></textarea>
+                <Row className='mt-5' style={{fontSize:"small"}}>
+                    <Col>
+                        <div className="file-container">
+                            <button className="file-btn">MAP</button>
+                            <input type="file" className="file-input" />
+                        </div>   
+                    </Col>
+                    <Col>
+                        <div className="file-container">
+                            <button className="file-btn"><i class="bi bi-upload"></i>Upload Drawing / Sketches</button>
+                            <input type="file" className="file-input" />
+                        </div>
+                    </Col>
+                    <Col>
+                        <div className="file-container">
+                            <button className="file-btn"><i class="bi bi-upload"></i>Upload Risk Assessment</button>
+                            <input type="file" className="file-input" />
+                        </div>
+                    </Col>
+                </Row>
+                <Row className='mt-5' style={{ fontSize: "small" }}>
+                    <Col>
+                        <div className="file-container">
+                            <button className="file-btn"><i class="bi bi-upload"></i>Upload SOP/MOS/PTP</button>
+                            <input type="file" className="file-input" />
+                        </div>
+                    </Col>
+                    <Col>
+                        <div className="file-container">
+                            <button className="file-btn"><i class="bi bi-upload"></i>Upload ReEntry Form</button>
+                            <input type="file" className="file-input" />
+                        </div>
+                    </Col>
+                    <Col>
+                        <div className="file-container">
+                            <button className="file-btn"><i class="bi bi-upload"></i>Others Upload (Pls Specify)</button>
+                            <input type="file" className="file-input" />
+                        </div>
+                    </Col>
+                </Row>
+                <Row className='mt-5' style={{ fontSize: ".7rem" }}>
+                    <Col lg={4}>
+                        <div className="file-container">
+                            <button className="file-btn"><i class="bi bi-upload"></i>Worker Competency Certification (i.e. SMO, SDO, WAH, CS)</button>
+                            <input type="file" className="file-input" />
+                        </div>     
                     </Col>
                 </Row>
                 <div className='mt-4 text-end'>

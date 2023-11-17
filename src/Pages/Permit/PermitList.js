@@ -22,7 +22,7 @@ const PermitList = ({ permits, auth }) => {
         const permitsData = await getPermitsByUserId(userId);
         setUserPermits(permitsData);
         console.log("permitsData", permitsData)
-        
+
       } catch (error) {
         console.error('Error fetching permits:', error.message);
       }
@@ -35,12 +35,12 @@ const PermitList = ({ permits, auth }) => {
     try {
       // Find the permit with the matching ID
       const permit = userPermits.find((p) => p.id === permitId);
-  
+
       if (!permit) {
         console.error(`Permit with ID ${permitId} not found.`);
         return;
       }
-  
+
       // Pass userId, permitId, and new status to updatePermitStatus
       const { userId, id: permitDocumentId } = permit;
       if (action === 'approve') {
@@ -52,8 +52,8 @@ const PermitList = ({ permits, auth }) => {
       console.error('Error handling action:', error.message);
     }
   };
-  
-  
+
+
   return (
     <>
       <table className="user-details-table mt-3">
@@ -90,10 +90,10 @@ const PermitList = ({ permits, auth }) => {
               <td>{permit.startDate}</td>
               <td>{permit.endDate}</td>
               <td>
-  <span style={{padding:'8px',fontSize:'14px'}} className={`badge ${permit.status === 'active' ? 'bg-success' : 'bg-danger'}`}>
-    {permit.status}
-  </span>
-</td>
+                <span style={{ padding: '8px', fontSize: '14px' }} className={`badge ${permit.status === 'active' ? 'bg-success' : 'bg-danger'}`}>
+                  {permit.status}
+                </span>
+              </td>
 
               <td>
                 <div style={{ position: 'relative' }}>

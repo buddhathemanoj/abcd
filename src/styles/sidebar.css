@@ -9,18 +9,26 @@
     background-color: #022088;
     color: white;
     padding-top: 20px;
+    padding-left: 4px;
+    padding-right: 4px;
   }
   
   .sidebar-wrapper a {
     text-decoration: none;
     color: #A0AEC0;
     padding: 10px;
+    font-weight: bold;
+    border-radius: 10px;
     margin: 5px 0;
     transition: background-color 0.3s;
   }
-  
+  .active-tap {
+    background-color: #fff;
+    color: #022088 !important;
+  }
   .sidebar-wrapper a:hover {
     background-color: white; 
+    color: #022088;
   }
   .sidebar-wrapper NavLink{
     font-weight: 700;

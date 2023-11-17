@@ -26,7 +26,7 @@ const UserSidebar = () => {
       <NavLink to="/user-dashboard"> <FontAwesomeIcon style={{marginRight:'5px'}} icon={faHome} />Dashboard</NavLink>
       <NavLink to="/my-permits"><FaWpforms style={{marginRight:'5px'}} />My Permits</NavLink>
       <NavLink to="/my-child-templates"><FaWpforms style={{marginRight:'5px'}} />My Child Permits</NavLink>
-      <NavLink to="/my-templates"><CgTemplate style={{marginRight:'5px'}} />All Templates</NavLink>
+      <NavLink to="/all-templates"><CgTemplate style={{marginRight:'5px'}} />All Templates</NavLink>
       <NavLink to="/account"><MdOutlineManageAccounts style={{marginRight:'5px'}} />Account</NavLink>
       <NavLink to="/forms-download"><CiSaveDown2  style={{marginRight:'5px'}}/>Forms Download</NavLink>
       <NavLink to="/feedback-form"><MdFeedback style={{marginRight:'5px'}} />Feedback Form</NavLink>

@@ -1,6 +1,6 @@
 import { getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { app } from "../firebase";
-import { doc, setDoc ,getDoc,collection ,getDocs,query, where ,addDoc } from "firebase/firestore";
+import { doc, setDoc ,getDoc,collection ,getDocs,query, where ,addDoc,updateDoc  } from "firebase/firestore";
 import { db } from "../firebase";
 import { format } from 'date-fns';
 
@@ -28,17 +28,7 @@ export const login = async ({ email, password }) => {
     }
   };
   
-  const getPermitsCount = async (db) => {
-    try {
-      const permitsCollection = collection(db, "permits");
-      const permitsSnapshot = await getDocs(permitsCollection);
-  
-      return permitsSnapshot.size; // Returns the total number of permits
-    } catch (error) {
-      console.error("Error getting permits count:", error.message);
-      throw new Error("Unable to retrieve permits count.");
-    }
-  };
+
 
   export const signup = async ({ email, password, role , fullname, company, sites, mobileno }) => {
     const auth = getAuth(app);
@@ -56,7 +46,6 @@ export const login = async ({ email, password }) => {
         company: company || null,
         sites: sites || null,
         mobileno: mobileno || null,
-        // Add other user information as needed
       });
   
       return { ...res.user, role, fullname, company, sites, mobileno };
@@ -64,6 +53,7 @@ export const login = async ({ email, password }) => {
       throw new Error(error.message);
     }
   };
+  
   export const getAllUsers = async () => {
     try {
       const usersCollection = collection(db, "users");
@@ -146,4 +136,27 @@ export const getPermitsByUserId = async (userId) => {
     throw new Error("Unable to retrieve permits.");
   }
 };
+
+export const updatePermitStatus = async (userId, permitId, newStatus) => {
+  try {
+    const permitsCollection = collection(db, "permits");
+    const userDocRef = doc(permitsCollection, userId);
+    const permitsSubcollection = collection(userDocRef, "data");
+
+    const permitDocRef = doc(permitsSubcollection, permitId);
+
+    const permitDoc = await getDoc(permitDocRef);
+    if (!permitDoc.exists()) {
+      throw new Error(`Document with ID ${permitId} does not exist.`);
+    }
+
+    await updateDoc(permitDocRef, { status: newStatus });
+
+    console.log(`Permit status updated successfully: ${permitId} is now ${newStatus}`);
+  } catch (error) {
+    console.error("Error updating permit status:", error.message);
+    throw new Error("Unable to update permit status.");
+  }
+};
+
 

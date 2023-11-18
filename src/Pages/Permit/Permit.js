@@ -41,18 +41,7 @@ const navigate = useNavigate();
                     <PermitList />
                 </Row>
             )}
-            {/* {!showAddPermit && activeTab === "listOfPermits" && (
-                <>
-                    <Breadcrumb style={{ marginTop: "1rem" }}>
-                        <Breadcrumb.Item active>All Permits</Breadcrumb.Item>
-                        <Breadcrumb.Item active>List of Permits</Breadcrumb.Item>
-                    </Breadcrumb>
-                    {activeTab === "listOfPermits" && (
-                        
-                    )}
-                </>
-            )}
-            {showAddPermit && <AddPermit />} */}
+          
         </>
     )
 }

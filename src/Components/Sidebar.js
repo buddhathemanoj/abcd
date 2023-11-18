@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FaWpforms } from "react-icons/fa6";
 import { CiSaveDown2 } from "react-icons/ci";
@@ -21,16 +21,16 @@ const navigate = useNavigate();
   const [isClick, Setclick] = useState(1)
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+ const location = useLocation()
 
   const clickToSet = (index) => {
     Setclick(index)
   }
   const handleLogout = async () => {
     try {
+      localStorage.removeItem('user');
       await signOutUser(); 
       handleClose();
-      localStorage.removeItem('user');
       navigate("/")
 
     } catch (error) {
@@ -38,20 +38,25 @@ const navigate = useNavigate();
     }
   };
 
+  const isActive = (path) => {
+    return location.pathname === path ? { backgroundColor: '#FFFFFF', color: '#022088' } : null;
+  };
+
+
   return (
     <div className="sidebar-wrapper">
       <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
       <img src={logo} alt="logo" width={100} />
-      </div>
-      <NavLink to="/dashboard" className={isClick === 1 ? "active-tap" : ""} onClick={() => clickToSet(1)}> <FontAwesomeIcon style={{ marginRight: '5px' }} icon={faHome} />Dashboard</NavLink>
-      <NavLink to="/sites" className={`${isClick === 2 ? "active-tap" : ""}`} onClick={() => clickToSet(2)}><FontAwesomeIcon style={{ marginRight: '5px' }} icon={faSitemap} />Sites</NavLink>
-      <NavLink to="/maps" className={`${isClick === 3 ? "active-tap" : ""}`} onClick={() => clickToSet(3)}><FontAwesomeIcon style={{ marginRight: '5px' }} icon={faMap} />Maps</NavLink>
-      <NavLink to="/users" className={`${isClick === 4 ? "active-tap" : ""}`} onClick={() => clickToSet(4)}><FontAwesomeIcon style={{ marginRight: '5px' }} icon={faUser} />Users</NavLink>
-      <NavLink to="/all-permits" className={`${isClick === 5 ? "active-tap" : ""}`} onClick={() => clickToSet(5)}><FaWpforms style={{ marginRight: '5px' }} />All Permits</NavLink>
-      <NavLink to="/all-templates" className={`${isClick === 6 ? "active-tap" : ""}`} onClick={() => clickToSet(6)}><CgTemplate style={{ marginRight: '5px' }} />All Templates</NavLink>
-      <NavLink to="/account" className={`${isClick === 7 ? "active-tap" : ""}`} onClick={() => clickToSet(7)}><MdOutlineManageAccounts style={{ marginRight: '5px' }} />Account</NavLink>
-      <NavLink to="/forms-download" className={`${isClick === 8 ? "active-tap" : ""}`} onClick={() => clickToSet(8)}><CiSaveDown2 style={{ marginRight: '5px' }} />Forms Download</NavLink>
-      <NavLink to="/feedback-form" className={`${isClick === 9 ? "active-tap" : ""}`} onClick={() => clickToSet(9)}><MdFeedback style={{ marginRight: '5px' }} />Feedback Form</NavLink>
+      </div> 
+      <NavLink to="/dashboard" style={isActive('/dashboard')}> <FontAwesomeIcon style={{ marginRight: '5px' }} icon={faHome} />Dashboard</NavLink>
+      <NavLink to="/sites" style={isActive('/sites')} ><FontAwesomeIcon style={{ marginRight: '5px' }} icon={faSitemap} />Sites</NavLink>
+      <NavLink to="/maps" style={isActive('/maps')}><FontAwesomeIcon style={{ marginRight: '5px' }} icon={faMap} />Maps</NavLink>
+      <NavLink to="/users" style={isActive('/users')}><FontAwesomeIcon style={{ marginRight: '5px' }} icon={faUser} />Users</NavLink>
+      <NavLink to="/all-permits" style={isActive('/all-permits')}><FaWpforms style={{ marginRight: '5px' }} />All Permits</NavLink>
+      <NavLink to="/all-templates" style={isActive('/all-templates')}><CgTemplate style={{ marginRight: '5px' }} />All Templates</NavLink>
+      <NavLink to="/account" style={isActive('/account')}><MdOutlineManageAccounts style={{ marginRight: '5px' }} />Account</NavLink>
+      <NavLink to="/forms-download" style={isActive('/forms-download')}><CiSaveDown2 style={{ marginRight: '5px' }} />Forms Download</NavLink>
+      <NavLink to="/feedback-form" style={isActive('/feedback-form')}><MdFeedback style={{ marginRight: '5px' }} />Feedback Form</NavLink>
       <NavLink onClick={handleShow}><CiLogout style={{ marginRight: '5px' }} />Logout</NavLink>
 
       <Modal show={show} onHide={handleClose}>

@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
+
 .building-checkbox {
     margin-right: 20px;
 }
@@ -35,8 +37,15 @@ hr {
     cursor: pointer;
     width: 100%;
 }
+.file-btn1 {
+    padding: 10px 5px;
+    background-color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
 
-
+/* Style for the file input */
 .file-input {
     position: absolute;
     top: 0;
@@ -49,6 +58,7 @@ hr {
 .add-permit-input {
     padding: 9px;
     width: 200px;
+    height: 46px;
     border: 1.5px solid #D9D9D9;
     color: #acacac;
     margin-right: 10px;
@@ -66,4 +76,61 @@ hr {
 .input-search {
     background-color: #F7F7F7;
 
+}
+.site{
+    width: 403px;
+    height: 46px;
+
+}
+.building-textArea{
+    width: 410px;
+    height: 102px;
+    border: 1px solid #DADADA;
+    border-radius: 5px;
+    background-color: #FAFAFA;
+    margin-left: -100px;
+}
+/* .secTion{
+    width: 180px;
+    height: 46px;
+    border: 1px solid #DADADA;
+    border-radius: 5px;
+    /* justify-content: center;
+    align-items: center;
+    display: flex;
+    text-overflow: hidden; */
+ 
+/* .secTion p{
+    font-size: 14px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-left: 11px;
+    margin-top: 11px;
+    color: #1d1a17;
+    font-weight: 400;
+
+
+} */
+.secTion input{
+    width: 180px;
+    height: 46px;
+    border: 1px solid #DADADA;
+    border-radius: 5px;
+   
+}
+input[type="text"]::placeholder{
+    /* overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; */
+    font-size: 14px;
+    color: #1d1a17;
+    font-weight: 400;
+    text-indent:9px;
+}
+.btn-child-permit{
+    margin-top: 30px;
+    border: dotted;
+
+    
 }

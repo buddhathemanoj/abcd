@@ -1,32 +1,41 @@
-import React, { useState, useEffect } from 'react'
-import { connect } from "react-redux";
-import { getPermitsByUserId } from '../../Auth/auth';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Tooltip from 'react-bootstrap/Tooltip';
-import Dropdown from 'react-bootstrap/Dropdown';
-import Button from 'react-bootstrap/Button';
-import { BsThreeDots } from "react-icons/bs";
+
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { getAllPermitsCreatedByAllUsers } from '../../Auth/auth';
+import { AiFillFilter } from "react-icons/ai";
+import { BsThreeDots } from 'react-icons/bs';
 import { updatePermitStatus } from '../../Auth/auth';
-import Popup from 'reactjs-popup';
+import { Button, Dropdown } from 'react-bootstrap';
+import { useNavigate } from 'react-router';
+import { IoIosSearch } from "react-icons/io";
+import styled from 'styled-components';
 
-const PermitList = ({ permits, auth }) => {
+const PermitList = ({ auth }) => {
+  const CustomDropdownToggle = styled(Dropdown.Toggle)`
+    &::after {
+      display: none;
+    }
+  `;
   const storedUser = JSON.parse(localStorage.getItem('user'));
-
   const userId = storedUser.uid;
-  console.log("userId", userId);
-  console.log("permits", storedUser);
+
   const [userPermits, setUserPermits] = useState([]);
-  const [showActions, setShowActions] = useState(null);
-  
+  const [isLoader, setLoader] = useState(true);
+  const [selectedPermit, setSelectedPermit] = useState(null);
+  const navigate = useNavigate();
+
+  const handleViewNavigate = (permit) => {
+    setSelectedPermit(permit);
+    navigate('/view-permit', { state: { permit } });
+  };
+
   useEffect(() => {
     const fetchPermits = async () => {
       try {
-        const permitsData = await getPermitsByUserId(userId);
+        const permitsData = await getAllPermitsCreatedByAllUsers();
         setUserPermits(permitsData);
-        console.log("permitsData", permitsData)
-
+        setLoader(false);
       } catch (error) {
         console.error('Error fetching permits:', error.message);
       }
@@ -44,163 +53,94 @@ const PermitList = ({ permits, auth }) => {
         return;
       }
 
-      const { userId, id: permitDocumentId } = permit;
+      const { id: permitDocumentId } = permit;
+
       if (action === 'approve') {
-        await updatePermitStatus(userId, permitDocumentId, 'active');
+        await updatePermitStatus(permitDocumentId, 'active');
       } else if (action === 'cancel') {
-        await updatePermitStatus(userId, permitDocumentId, 'canceled');
+        await updatePermitStatus(permitDocumentId, 'canceled');
       }
     } catch (error) {
       console.error('Error handling action:', error.message);
     }
   };
 
-
   return (
     <>
-      <table className="user-details-table mt-3">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Permit Number</th>
-            <th>Permit Code</th>
-            <th>Permit Type</th>
-            <th>Discipline</th>
-            <th>Host/System Owner</th>
-            <th>Work Description</th>
-            <th>Applier Site</th>
-            <th>Date Applied</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-
-          {userPermits.map((permit, index) => (
-            <tr key={permit.id}>
-              <td>{index + 1}</td>
-              <td>{permit.permitNumber}</td>
-              <td>A</td>
-              <td>General</td>
-              <td>Welding</td>
-              <td>John Doe</td>
-              <td>Welding</td>
-              <td>{permit.site}</td>
-              <td>{permit.createdAt}</td>
-              <td>{permit.startDate}</td>
-              <td>{permit.endDate}</td>
-              <td>
-                <span style={{ padding: '8px', fontSize: '14px' }} className={`badge ${permit.status === 'active' ? 'bg-success' : 'bg-danger'}`}>
-                  {permit.status}
-                </span>
-              </td>
-
-              <td>
-                <div style={{ position: 'relative' }}>
-                  <OverlayTrigger
-                    placement="top"
-                    overlay={<Tooltip id={`ellipsis-tooltip-${index}`}>Show Actions</Tooltip>}
-                  >
-
-                    <Popup 
-                    trigger={<div
-                      style={{ cursor: 'pointer', fontSize: '20px' }}
-                      onClick={() => setShowActions(showActions === index ? null : index)}
-                    >
-                      <BsThreeDots />
-                    </div>}
-                    position={"top left"}
-                    >
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: "0%",
-                        left: '10%',
-                        transform: 'translateX(-110%)',
-                        zIndex: 999,
-                        backgroundColor: 'white',
-                        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-                        padding: '10px',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        gap: '5px',
-                      }}
-                    >
-                      <Button variant="success" onClick={() => handleActionClick('approve', permit.id)}>
-                        Approve
-                      </Button>
-                      <Button variant="danger" onClick={() => handleActionClick('cancel', permit.id)}>
-                        Cancel
-                      </Button>
-
-                    </div>
-                  
-                    </Popup>
-                    
-                  </OverlayTrigger>
-
-                </div>
-              </td>
+      {isLoader ? (
+        <div className="loader-container">Loading...</div>
+      ) : (
+        <div style={{ width: '100%', overflow: 'auto' }}>
+          <table className="user-details-table mt-3" style={{ width: '1600px' }}>
+           
+            <thead>
+            <tr>
+              <th>#</th>
+              <th style={{ display: "flex", alignItems: "center" }}>Permit Number <button type='button' className='permit-search-btn'><IoIosSearch /></button></th>
+              <th> <div style={{ display: "flex", alignItems: "center",gap:"6px" }}> Permit Code  <button type='button' className='permit-search-btn'><IoIosSearch /></button></div></th>
+              <th> <div style={{ display: "flex", alignItems: "center" }}>Permit Type   <button type='button' className='permit-search-btn'><IoIosSearch /></button></div></th>
+              <th> <div style={{ display: "flex", alignItems: "center" }}>Discipline <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
+              <th> <div style={{ display: "flex", alignItems: "center" }}>Host/System Owner  <button type='button' className='permit-search-btn'><IoIosSearch /></button></div></th>
+              <th> <div style={{ display: "flex", alignItems: "center" }}>Work Description  </div></th>
+              <th> <div style={{ display: "flex", alignItems: "center" }}>Applier Site  <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
+              <th> <div style={{ display: "flex", alignItems: "center" }}>Date Applied  <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
+              <th> <div style={{ display: "flex", alignItems: "center" }}>Start Date  <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
+              <th> <div style={{ display: "flex", alignItems: "center" }}>End Date  <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
+              <th> <div style={{ display: "flex", alignItems: "center" }}>Status  <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
+              <th>Action </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              {userPermits.map((permit, index) => (
+                <tr key={permit.id}>
+                 <td>{index + 1}</td>
+                <td>{permit.permitNumber}</td>
+                <td>A</td>
+                <td>General</td>
+                <td>Welding</td>
+                <td>John Doe</td>
+                <td>Welding</td>
+                <td>{permit.site}</td>
+                <td>{permit.createdAt}</td>
+                <td>{permit.startDate}</td>
+                <td>{permit.endDate}</td>
+                <td>
+                  <span style={{ padding: '8px', fontSize: '14px' }} className={`badge ${permit.status === 'active' ? 'success' : 'canceled'}`}>
+                    {permit.status}
+                  </span>
+                </td>
+                  <td>
+                    <Dropdown>
+                    <CustomDropdownToggle  variant="seconary" id={`dropdownActions-${index}`}><BsThreeDots /></CustomDropdownToggle>
+                  
+                      <Dropdown.Menu>
+                        <Dropdown.Item as="button" onClick={() => handleActionClick('approve', permit.id)}>
+                          Approve
+                        </Dropdown.Item>
+                        <Dropdown.Item as="button" onClick={() => handleActionClick('cancel', permit.id)}>
+                          Cancel
+                        </Dropdown.Item>
+                        <Dropdown.Item as="button" onClick={() => handleViewNavigate(permit)}>
+                          View
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </>
-  )
-}
-
+  );
+};
 
 const mapStateToProps = (state) => {
-  console.log("state..................", state)
+  console.log('state..................', state);
   return {
     auth: state.auth,
   };
 };
 
-
 export default connect(mapStateToProps)(PermitList);
-
-
-
-
-// <div style={{ position: 'relative' }}>
-// <OverlayTrigger
-//   placement="top"
-//   overlay={<Tooltip id={`ellipsis-tooltip-${index}`}>Show Actions</Tooltip>}
-// >
-//   <div
-//     style={{ cursor: 'pointer', fontSize: '20px' }}
-//     onClick={() => setShowActions(showActions === index ? null : index)}
-//   >
-//     <BsThreeDots />
-//   </div>
-// </OverlayTrigger>
-
-// {showActions === index && (
-//   <div
-//     style={{
-//       position: 'absolute',
-//       top: "0%",
-//       left: '10%',
-//       transform: 'translateX(-110%)',
-//       zIndex: 999,
-//       backgroundColor: 'white',
-//       boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-//       padding: '10px',
-//       display: 'flex',
-//       flexDirection: 'row',
-//       gap: '5px',
-//     }}
-//   >
-//     <Button variant="success" onClick={() => handleActionClick('approve', permit.id)}>
-//       Approve
-//     </Button>
-//     <Button variant="danger" onClick={() => handleActionClick('cancel', permit.id)}>
-//       Cancel
-//     </Button>
-
-//   </div>
-// )}
-// </div>

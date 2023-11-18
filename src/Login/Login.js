@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../Auth/auth';
 import Cookies from 'js-cookie';
 import './Login.css'
@@ -59,7 +59,12 @@ const Login = () => {
             <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
           <div>
+
+            <Link to='/forget-password' style={{color:'blue'}}>Forget password?</Link>
+          
+
             <span color='blue'>Forget password?</span>
+
           </div>
           <button className="btn btn-primary btn-lg btn-block width300" onClick={handleLoginClick}>
             Login

@@ -106,7 +106,7 @@ const Addusers = ({ user, state, show, handleClose }) => {
               />
             </Col>
             <Col>
-              <label>Sites:</label>
+              <label>Role:</label>
 
               <Form.Select
                 aria-label="Default select example"

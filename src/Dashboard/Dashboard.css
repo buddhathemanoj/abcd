@@ -19,9 +19,11 @@
 
 .dashboard-list-item-container {
     background-color: #F3F3F3;
-    width: 300px;
+    max-width: 350px;
+    width: 24%;
     padding: 10px;
-    height: 170px;
+    box-sizing: border-box;
+    height: 160px;
     border-radius: 7px;
     
 }
@@ -31,39 +33,39 @@
 .vector-img-container {
     background-color: #095CEA;
     border-radius: 50%;
-    height: 90px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 90px;
+    width: 80px;
 }
 .vector-img-container2 {
     background-color: #DF1509;
     border-radius: 50%;
-    height: 90px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 90px;
+    width: 80px;
 }
 .vector-img-container3 {
     background-color: #099115;
     border-radius: 50%;
     border-radius: 50%;
-    height: 90px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 90px;
+    width: 80px;
 }
 .vector-img-container4 {
     background-color: #095CEA;
     border-radius: 50%;
-    height: 90px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 90px;
+    width: 80px;
 }
 .image-active-container {
     display: flex;
@@ -90,12 +92,14 @@
 .total-desc {
     color: #B9B9B9;
     margin-bottom: 5px;
-    font-size: 13px;
+    font-size: 12px;
+    box-sizing: border-box;
 }
+
 
 .general-desc {
     color: #022088;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 500;
     margin-top: 5px;
     margin-bottom: 5px;

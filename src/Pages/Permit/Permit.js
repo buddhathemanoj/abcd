@@ -35,8 +35,8 @@ const navigate = useNavigate();
                         <h4 onClick={() => handleTabClick("childPermit")} style={{ cursor: "pointer", color: activeTab === "childPermit" ? "blue" : "black" }}>Child Permit</h4>
                     </Col>
                     <Col lg={4} className="d-flex">
-                        <Button style={{ marginRight: "2rem" }} variant="primary" onClick={handleCreateClick}>Create</Button>
-                        <Form.Control type="text" placeholder="Search" />
+                        <Button style={{ marginRight: "1rem" }} variant="primary" className="permits-btn" onClick={handleCreateClick}>Create</Button>
+                        <Form.Control type="text" placeholder="Search" className="input-search"/>
                     </Col>
                     <PermitList />
                 </Row>

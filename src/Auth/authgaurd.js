@@ -3,37 +3,40 @@ import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import UserSidebar from "../Components/UserSidebar";
 import Sidebar from "../Components/Sidebar";
-const AuthGuard = ({ component, user }) => {
+
+const AuthGuard = ({ component }) => {
   const [status, setStatus] = useState(false);
   const navigate = useNavigate();
+  const storedUser = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
     const checkUser = () => {
       try {
-        if (user && user.role === "admin") {
+        if (storedUser && storedUser.role && (storedUser.role === "admin" || storedUser.role === "employee"||storedUser.role === "user" )) {
           setStatus(true);
-          console.log("Checking user:", user);
-        } else if (user && user.role === "employee") {
-          setStatus(true);
-        }
-        else if (user && user.role === "user") {
-          setStatus(true);
-         } else {
+          console.log("stored user.role:", storedUser.role);
+        } else {
+          setStatus(false);
           navigate(`/`);
         }
       } catch (error) {
         console.error("Error checking user:", error);
+        setStatus(false);
         navigate(`/`);
       }
     };
 
     checkUser();
-  }, [navigate, user]);
+  }, [navigate, storedUser]);
 
   return status ? (
     <React.Fragment>
       <div style={{ display: "flex" }}>
-      {user.role === "admin" || user.role === "employee" ? <Sidebar /> : <UserSidebar />}
+        {storedUser && storedUser.role && (storedUser.role === "admin" || storedUser.role === "employee") ? (
+          <Sidebar />
+        ) : (
+          <UserSidebar />
+        )}
         <div style={{ marginLeft: "220px", overflowY: "auto", flex: 1, padding: "20px 20px 0px" }}>
           {component}
         </div>

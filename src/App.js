@@ -22,7 +22,12 @@ import Mail from './Login/Mail';
 
 import MyChildPermit from './Pages/User/myChildPermit';
 import AllTemplates from './Pages/User/allTemplates';
+
+import Editprofile from './Pages/Accounts/Editprofile';
+import Changepassword from './Pages/Accounts/Changepassword';
+
 import ViewPermit from './Pages/Permit/ViewPermit';
+
 
 
 
@@ -65,6 +70,8 @@ function App() {
           <Route path="/my-child-permit" element={<AuthGuard component={<MyChildPermit />} />} />
           <Route path="/all-template" element={<AuthGuard component={<AllTemplates />} />} />
           <Route path="/account" element={<AuthGuard component={<Account />} />} />
+          <Route path="/edit-profile" element={<AuthGuard component={<Editprofile />} />} />
+          <Route path="/change-password" element={<AuthGuard component={<Changepassword />} />} />
           <Route path="/forms-download" element={<AuthGuard component={<FormsDownlod />} />} />
           <Route path="/feedback-form" element={<AuthGuard component={<FeedbackForm />} />} />
         </Routes>

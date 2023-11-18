@@ -64,10 +64,14 @@ const Login = () => {
           </div>
           <div>
 
+
+            <Link to='/forget-password' style={{color:'blue'}}>Forget password?</Link>       
+
             <Link to='/forget-password' style={{ color: 'blue' }}>Forget password?</Link>
 
 
             <span color='blue'>Forget password?</span>
+
 
           </div>
           <button className="btn btn-primary btn-lg btn-block width300" onClick={handleLoginClick}>

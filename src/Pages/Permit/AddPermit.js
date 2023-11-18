@@ -102,6 +102,78 @@ const AddPermit = ({ auth }) => {
 
 
     const handleSubmit = async () => {
+        const permitData = {
+            permitType,
+            site,
+            startDate,
+            startTime,
+            endDate,
+            endTime,
+            isGeneralChecked,
+            buildingNotes,
+            levelNotes,
+            selectedLevels,
+            selectedBuildings,
+            site2,
+            selectedFile: selectedFile ? {
+                name: selectedFile.name,
+                type: selectedFile.type,
+              } : null,
+              drawingFile: drawingFile ? {
+                name: drawingFile.name,
+                type: drawingFile.type,
+              } : null,
+        };
+
+        if (
+            permitType !== '' &&
+            site !== '' &&
+            startDate !== '' &&
+            endDate !== '' &&
+            selectedFile !== '' &&
+    drawingFile !== '' &&
+
+            selectedBuildings.length > 0 &&
+            selectedLevels.length > 0
+        ) {
+            try {
+                const storedUser = JSON.parse(localStorage.getItem('user'));
+
+                const userId = storedUser.uid;
+
+                const today = new Date();
+                const day = today.getDate();
+                const month = today.getMonth() + 1;
+                const year = today.getFullYear().toString().slice(-2);
+
+                const totalPermits = await getTotalPermits(userId);
+
+                const counterValue = totalPermits + 1;
+
+                const paddedCounter = counterValue.toString().padStart(3, '0');
+                const permitNumber = `GP${day}${month}${year}${paddedCounter}`;
+
+                const createdAt = format(today, 'dd-MM-yyyy');
+                const status = 'pending';
+
+                const extendedPermitData = {
+                    userId,
+                    permitNumber,
+                    status,
+                    createdAt,
+                    ...permitData,
+                };
+
+                console.log("Submitting permit data:", extendedPermitData);
+                const permitId = await storePermit(userId, extendedPermitData);
+                toast.success(`Permit data submitted successfully with ID: ${permitId}`);
+            } catch (error) {
+                console.error("Error submitting permit data:", error.message);
+                toast.error("Error submitting permit data. Please try again.");
+            }
+        } else {
+            toast.error('Please fill in all required fields.');
+        }
     };
 
     return (

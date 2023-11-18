@@ -1,38 +1,41 @@
-import React, { useState, useEffect } from 'react'
-import { connect } from "react-redux";
-import { getAllPermitsCreatedByAllUsers, getPermitsByUserId } from '../../Auth/auth';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { ThreeDots } from 'react-loader-spinner';
-import Tooltip from 'react-bootstrap/Tooltip';
-import { IoIosSearch } from "react-icons/io";
+
+
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { getAllPermitsCreatedByAllUsers } from '../../Auth/auth';
 import { AiFillFilter } from "react-icons/ai";
-import Dropdown from 'react-bootstrap/Dropdown';
-import Button from 'react-bootstrap/Button';
-import { BsThreeDots } from "react-icons/bs";
+import { BsThreeDots } from 'react-icons/bs';
 import { updatePermitStatus } from '../../Auth/auth';
-import Popup from 'reactjs-popup';
+import { Button, Dropdown } from 'react-bootstrap';
+import { useNavigate } from 'react-router';
+import { IoIosSearch } from "react-icons/io";
+import styled from 'styled-components';
 
-const PermitList = ({ permits, auth }) => {
+const PermitList = ({ auth }) => {
+  const CustomDropdownToggle = styled(Dropdown.Toggle)`
+    &::after {
+      display: none;
+    }
+  `;
   const storedUser = JSON.parse(localStorage.getItem('user'));
-
   const userId = storedUser.uid;
-  console.log("userId", userId);
+
   const [userPermits, setUserPermits] = useState([]);
-  const [showActions, setShowActions] = useState(null);
-  const [isLoader, setLoader] = useState(true)
+  const [isLoader, setLoader] = useState(true);
+  const [selectedPermit, setSelectedPermit] = useState(null);
+  const navigate = useNavigate();
+
+  const handleViewNavigate = (permit) => {
+    setSelectedPermit(permit);
+    navigate('/view-permit', { state: { permit } });
+  };
+
   useEffect(() => {
     const fetchPermits = async () => {
       try {
         const permitsData = await getAllPermitsCreatedByAllUsers();
-
         setUserPermits(permitsData);
-        setLoader(false)
-
-                setUserPermits(permitsData);
-
-        console.log("permitsData", permitsData)
-
+        setLoader(false);
       } catch (error) {
         console.error('Error fetching permits:', error.message);
       }
@@ -44,15 +47,13 @@ const PermitList = ({ permits, auth }) => {
   const handleActionClick = async (action, permitId) => {
     try {
       const permit = userPermits.find((p) => p.id === permitId);
-  
+
       if (!permit) {
         console.error(`Permit with ID ${permitId} not found.`);
         return;
       }
 
-      const { userId, id: permitDocumentId } = permit;
-
-  
+      const { id: permitDocumentId } = permit;
 
       if (action === 'approve') {
         await updatePermitStatus(permitDocumentId, 'active');
@@ -63,20 +64,16 @@ const PermitList = ({ permits, auth }) => {
       console.error('Error handling action:', error.message);
     }
   };
-  
-
 
   return (
     <>
-      {isLoader ? <div className="loader-container">
-        <ThreeDots
-          color="#3876E3"
-          height={50}
-          width={50}
-        />
-      </div> : <div style={{ width: "100%", overflow: "auto" }}>
-        <table className="user-details-table mt-3" style={{ width: "1600px" }}>
-          <thead >
+      {isLoader ? (
+        <div className="loader-container">Loading...</div>
+      ) : (
+        <div style={{ width: '100%', overflow: 'auto' }}>
+          <table className="user-details-table mt-3" style={{ width: '1600px' }}>
+           
+            <thead>
             <tr>
               <th>#</th>
               <th style={{ display: "flex", alignItems: "center" }}>Permit Number <button type='button' className='permit-search-btn'><IoIosSearch /></button></th>
@@ -92,12 +89,11 @@ const PermitList = ({ permits, auth }) => {
               <th> <div style={{ display: "flex", alignItems: "center" }}>Status  <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
               <th>Action </th>
             </tr>
-          </thead>
-          <tbody>
-
-            {userPermits.map((permit, index) => (
-              <tr key={permit.id}>
-                <td>{index + 1}</td>
+            </thead>
+            <tbody>
+              {userPermits.map((permit, index) => (
+                <tr key={permit.id}>
+                 <td>{index + 1}</td>
                 <td>{permit.permitNumber}</td>
                 <td>A</td>
                 <td>General</td>
@@ -113,6 +109,31 @@ const PermitList = ({ permits, auth }) => {
                     {permit.status}
                   </span>
                 </td>
+
+                  <td>
+                    <Dropdown>
+                    <CustomDropdownToggle  variant="seconary" id={`dropdownActions-${index}`}><BsThreeDots /></CustomDropdownToggle>
+                  
+                      <Dropdown.Menu>
+                        <Dropdown.Item as="button" onClick={() => handleActionClick('approve', permit.id)}>
+                          Approve
+                        </Dropdown.Item>
+                        <Dropdown.Item as="button" onClick={() => handleActionClick('cancel', permit.id)}>
+                          Cancel
+                        </Dropdown.Item>
+                        <Dropdown.Item as="button" onClick={() => handleViewNavigate(permit)}>
+                          View
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
 
                 <td style={{display:"flex",justifyContent:"center"}}>
                   <div style={{ position: 'relative' }}>
@@ -168,60 +189,16 @@ const PermitList = ({ permits, auth }) => {
           </tbody>
         </table> </div>}
 
-    </>
-  )
-}
 
+    </>
+  );
+};
 
 const mapStateToProps = (state) => {
-  console.log("state..................", state)
+  console.log('state..................', state);
   return {
     auth: state.auth,
   };
 };
 
-
 export default connect(mapStateToProps)(PermitList);
-
-
-{/* */ }
-
-// <div style={{ position: 'relative' }}>
-// <OverlayTrigger
-//   placement="top"
-//   overlay={<Tooltip id={`ellipsis-tooltip-${index}`}>Show Actions</Tooltip>}
-// >
-//   <div
-//     style={{ cursor: 'pointer', fontSize: '20px' }}
-//     onClick={() => setShowActions(showActions === index ? null : index)}
-//   >
-//     <BsThreeDots />
-//   </div>
-// </OverlayTrigger>
-
-// {showActions === index && (
-//   <div
-//     style={{
-//       position: 'absolute',
-//       top: "0%",
-//       left: '10%',
-//       transform: 'translateX(-110%)',
-//       zIndex: 999,
-//       backgroundColor: 'white',
-//       boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-//       padding: '10px',
-//       display: 'flex',
-//       flexDirection: 'row',
-//       gap: '5px',
-//     }}
-//   >
-//     <Button variant="success" onClick={() => handleActionClick('approve', permit.id)}>
-//       Approve
-//     </Button>
-//     <Button variant="danger" onClick={() => handleActionClick('cancel', permit.id)}>
-//       Cancel
-//     </Button>
-
-//   </div>
-// )}
-// </div>

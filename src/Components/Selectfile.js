@@ -3,6 +3,7 @@ import '../styles/Upload.css'
 import { FaEye } from "react-icons/fa";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { IoCloudUploadOutline } from "react-icons/io5";
+
 const FileUploadComponent = (props) => {
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from "react-redux";
-import { getPermitsByUserId } from '../../Auth/auth';
+import { getAllPermitsCreatedByAllUsers, getPermitsByUserId } from '../../Auth/auth';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -16,15 +16,14 @@ const PermitList = ({ permits, auth }) => {
 
   const userId = storedUser.uid;
   console.log("userId", userId);
-  console.log("permits", storedUser);
   const [userPermits, setUserPermits] = useState([]);
   const [showActions, setShowActions] = useState(null);
   
   useEffect(() => {
     const fetchPermits = async () => {
       try {
-        const permitsData = await getPermitsByUserId(userId);
-        setUserPermits(permitsData);
+        const permitsData = await getAllPermitsCreatedByAllUsers();
+                setUserPermits(permitsData);
         console.log("permitsData", permitsData)
 
       } catch (error) {
@@ -38,22 +37,23 @@ const PermitList = ({ permits, auth }) => {
   const handleActionClick = async (action, permitId) => {
     try {
       const permit = userPermits.find((p) => p.id === permitId);
-
+  
       if (!permit) {
         console.error(`Permit with ID ${permitId} not found.`);
         return;
       }
-
-      const { userId, id: permitDocumentId } = permit;
+  
+      const { id: permitDocumentId } = permit;
       if (action === 'approve') {
-        await updatePermitStatus(userId, permitDocumentId, 'active');
+        await updatePermitStatus(permitDocumentId, 'active');
       } else if (action === 'cancel') {
-        await updatePermitStatus(userId, permitDocumentId, 'canceled');
+        await updatePermitStatus(permitDocumentId, 'canceled');
       }
     } catch (error) {
       console.error('Error handling action:', error.message);
     }
   };
+  
 
 
   return (

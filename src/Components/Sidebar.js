@@ -13,8 +13,10 @@ import logo from "../Asset/JCET-Group-Emblem 1.png"
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { signOutUser } from "../Auth/auth";
+import { useNavigate } from "react-router-dom";
 const Sidebar = () => {
-
+const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [isClick, Setclick] = useState(1)
   const handleClose = () => setShow(false);
@@ -24,6 +26,17 @@ const Sidebar = () => {
   const clickToSet = (index) => {
     Setclick(index)
   }
+  const handleLogout = async () => {
+    try {
+      await signOutUser(); 
+      handleClose();
+      localStorage.removeItem('user');
+      navigate("/")
+
+    } catch (error) {
+      console.error("Error logging out:", error.message);
+    }
+  };
 
   return (
     <div className="sidebar-wrapper">
@@ -50,7 +63,7 @@ const Sidebar = () => {
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="danger" onClick={handleClose}>
+          <Button variant="danger" onClick={handleLogout}>
             Logout
           </Button>
         </Modal.Footer>

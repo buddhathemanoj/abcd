@@ -1,4 +1,4 @@
-import { getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut , sendEmailVerification, updateProfile } from "firebase/auth";
 import { app } from "../firebase";
 import { doc, setDoc ,getDoc,collection ,getDocs,query, where ,addDoc,updateDoc  } from "firebase/firestore";
 import { db } from "../firebase";
@@ -28,7 +28,17 @@ export const login = async ({ email, password }) => {
     }
   };
   
-
+  export const signOutUser = async () => {
+    const auth = getAuth(app);
+  
+    try {
+      await signOut(auth);
+      console.log("User signed out successfully");
+    } catch (error) {
+      console.error("Error signing out:", error.message);
+      throw new Error("Unable to sign out.");
+    }
+  };
 
   export const signup = async ({ email, password, role , fullname, company, sites, mobileno }) => {
     const auth = getAuth(app);
@@ -136,7 +146,21 @@ export const getPermitsByUserId = async (userId) => {
     throw new Error("Unable to retrieve permits.");
   }
 };
+export const getAllPermits = async () => {
+  try {
+    const permitsCollection = collection(db, "permits");
+    const allPermitsSubcollection = collection(permitsCollection, "data");
 
+    const querySnapshot = await getDocs(allPermitsSubcollection);
+
+    const permits = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+    return permits;
+  } catch (error) {
+    console.error("Error retrieving permits:", error.message);
+    throw new Error("Unable to retrieve permits.");
+  }
+};
 export const updatePermitStatus = async (userId, permitId, newStatus) => {
   try {
     const permitsCollection = collection(db, "permits");

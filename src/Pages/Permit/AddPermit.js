@@ -98,7 +98,9 @@ const AddPermit = ({ auth }) => {
             selectedLevels.length > 0
         ) {
             try {
-                const userId = auth.user.uid;
+                const storedUser = JSON.parse(localStorage.getItem('user'));
+
+                const userId = storedUser.uid;
 
                 const today = new Date();
                 const day = today.getDate();

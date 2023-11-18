@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 
-const Userashboard = ({ user, state }) => {
+const Userashboard = () => {
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+
   const [showInfo, setShowInfo] = useState(true);
 
   // Handle the click event to hide the informational note
@@ -23,7 +25,7 @@ const Userashboard = ({ user, state }) => {
     <div>
         {showInfo && informationalNote}
         <br/>
-      <h2>Hi,{user.email}</h2>
+      <h2>Hi,{storedUser.email}</h2>
       
     </div>
   );

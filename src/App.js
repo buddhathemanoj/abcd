@@ -22,6 +22,7 @@ import Mail from './Login/Mail';
 
 import MyChildPermit from './Pages/User/myChildPermit';
 import AllTemplates from './Pages/User/allTemplates';
+import ViewPermit from './Pages/Permit/ViewPermit';
 
 
 
@@ -47,6 +48,7 @@ function App() {
           <Route path="/mail" element={<Mail />} />
           <Route path="/dashboard" element={<AuthGuard component={getComponentForUserRole()} />} />          <Route path="/sites" element={<AuthGuard component={<Sites />} />} />
           <Route path="/user-dashboard" element={<AuthGuard component={getComponentForUserRole()} />} />          <Route path="/sites" element={<AuthGuard component={<Sites />} />} />
+          <Route path="/view-permit" element={<AuthGuard component={<ViewPermit />} />} />
 
           <Route path="/maps" element={<AuthGuard component={<Maps />} />} />
           <Route path="/users" element={<AuthGuard component={<Users />} />} />

@@ -41,7 +41,6 @@ function App() {
           <Route path="/all-permits-create" element={<AuthGuard component={<AddPermit />} />} />
           <Route path="//my-permits" element={<AuthGuard component={<MyPermits />} />} />
           <Route path="/user-dashboard" element={<AuthGuard component={<Userashboard />} />} />
-
           <Route path="/all-templates" element={<AuthGuard component={<Templates />} />} />
           <Route path="/my-child-permit" element={<AuthGuard component={<MyChildPermit />} />} />
           <Route path="/all-template" element={<AuthGuard component={<AllTemplates />} />} />

@@ -13,7 +13,13 @@
 .user-details-table {
     font-size: small;
 }
-
+.loader-container {
+    height: 28vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
 hr {
     color: gray;

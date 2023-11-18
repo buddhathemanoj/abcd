@@ -26,6 +26,18 @@ import AllTemplates from './Pages/User/allTemplates';
 
 
 function App() {
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+
+  const getComponentForUserRole = () => {
+    if (storedUser && storedUser.role) {
+      if (storedUser.role === "admin" || storedUser.role === "employee") {
+        return <Dashboard />;
+      } else if (storedUser.role === "user") {
+        return <Userashboard/>;
+      }
+    }
+    return <Login />;
+  };
   return (
     <div className="App">
       <Router>
@@ -33,14 +45,14 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/forget-password" element={<Forgetpassword />} />
           <Route path="/mail" element={<Mail />} />
-          <Route path="/dashboard" element={<AuthGuard component={<Dashboard />} />} />
-          <Route path="/sites" element={<AuthGuard component={<Sites />} />} />
+          <Route path="/dashboard" element={<AuthGuard component={getComponentForUserRole()} />} />          <Route path="/sites" element={<AuthGuard component={<Sites />} />} />
+          <Route path="/user-dashboard" element={<AuthGuard component={getComponentForUserRole()} />} />          <Route path="/sites" element={<AuthGuard component={<Sites />} />} />
+
           <Route path="/maps" element={<AuthGuard component={<Maps />} />} />
           <Route path="/users" element={<AuthGuard component={<Users />} />} />
           <Route path="/all-permits" element={<AuthGuard component={<Permit />} />} />
           <Route path="/all-permits-create" element={<AuthGuard component={<AddPermit />} />} />
-          <Route path="//my-permits" element={<AuthGuard component={<MyPermits />} />} />
-          <Route path="/user-dashboard" element={<AuthGuard component={<Userashboard />} />} />
+          <Route path="/my-permits" element={<AuthGuard component={<MyPermits />} />} />
 
           <Route path="/all-templates" element={<AuthGuard component={<Templates />} />} />
           <Route path="/my-child-permit" element={<AuthGuard component={<MyChildPermit />} />} />

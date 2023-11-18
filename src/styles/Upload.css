@@ -1,0 +1,19 @@
+.custom-file-btn{
+    width: 100%;
+    height: 40px;
+    border: 1px solid #ccc;
+    background-color: white;
+    border-radius: 5px;
+    margin-bottom: 3px;
+}
+.cstmbtn{
+    border: none;
+   
+}
+.selected-file{
+    padding: 5px;
+    border: 1px solid #ccc;
+    background-color: #ddd8d871;
+    display: flex;
+    justify-content: space-between;
+}

@@ -53,7 +53,6 @@ const PermitList = ({ permits, auth }) => {
       const { userId, id: permitDocumentId } = permit;
 
   
-      const { id: permitDocumentId } = permit;
 
       if (action === 'approve') {
         await updatePermitStatus(permitDocumentId, 'active');

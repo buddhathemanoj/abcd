@@ -16,6 +16,9 @@ import "./Permit.css"
 const AddPermit = ({ auth }) => {
     const [permitType, setPermitType] = useState('');
     const [site, setSite] = useState('');
+    const [supervisor, setSupervisor] = useState("")
+    const [declarationCheck, setDecCheck] = useState(false)
+    const [contractCompany, setContractCompany] = useState("")
     const [site2, setSite2] = useState('');
     const [startDate, setStartDate] = useState('');
     const [startTime, setStartTime] = useState('');
@@ -25,22 +28,28 @@ const AddPermit = ({ auth }) => {
     const [buildingNotes, setBuildingNotes] = useState('');
     const [levelNotes, setLevelNotes] = useState('');
     const buildingOptions = [' ADMIN', ' FAB', ' CUP', ' EXTERNAL', ' CARPARK'];
-    const levelOptions = [' Basement', ' L1', ' L1M', ' L2', ' L3', ' L4','L4m', 'L5','L6','L7',' Roof','East AMHS','West AMHS'];
+    const levelOptions = [' Basement', ' L1', ' L1M', ' L2', ' L3', ' L4', 'L4m', 'L5', 'L6', 'L7', ' Roof', 'East AMHS', 'West AMHS'];
 
-    const emergencyNumber = ['F10A1: Security Control Room: 6637-0111; Facilities Control Room 69038222','F10A2: Security Control Room: 6637-0111; Facilities Control Room 69038222','F10N: Security Control Room: 6637-0111; Facilities Control Room 6637-0222','F10W: Security Control Room: 6360-7111; Facilities Control Room 6360-7222','F10X: Security Control Room: 6637-0111; Facilities Control Room 6637-0222'];
+    const emergencyNumber = ['F10A1: Security Control Room: 6637-0111; Facilities Control Room 69038222', 'F10A2: Security Control Room: 6637-0111; Facilities Control Room 69038222', 'F10N: Security Control Room: 6637-0111; Facilities Control Room 6637-0222', 'F10W: Security Control Room: 6360-7111; Facilities Control Room 6360-7222', 'F10X: Security Control Room: 6637-0111; Facilities Control Room 6637-0222'];
 
     const [selectedEmergencyNumber, setSelectedEmergencyNumber] = useState([]);
+    const [finalCheck, setFinalCheck] = useState(false)
     const [selectedLevels, setSelectedLevels] = useState([]);
     const [selectedBuildings, setSelectedBuildings] = useState([]);
- 
+    const [decDate, setDecDate] = useState("")
     const [selectedFile, setSelectedFile] = useState(null);
+    const [signFile, setSignFile] = useState(null)
     const [drawingFile, setDrawingFile] = useState(null);
-    const [riskfile ,setRiskFile]=useState(null);
+    const [riskfile, setRiskFile] = useState(null);
+
+
     const handleFileUpload = (file, setFileFunction) => {
         console.log("File data:", file);
-    
         setFileFunction(file);
-      };
+    };
+
+    console.log("checkx", finalCheck);
+
     const handleLevelCheckboxChange = (level) => {
         const updatedLevels = [...selectedLevels];
 
@@ -53,7 +62,8 @@ const AddPermit = ({ auth }) => {
         setSelectedLevels(updatedLevels);
     };
 
-    
+
+    console.log("asdf", selectedEmergencyNumber);
     const handleEmergencyNumberCheckboxChange = (emergencynumber) => {
         const updatedEmergencyNumber = [...selectedEmergencyNumber];
 
@@ -65,7 +75,9 @@ const AddPermit = ({ auth }) => {
 
         setSelectedEmergencyNumber(updatedEmergencyNumber);
     };
-    
+
+
+    console.log("suuper", supervisor);
 
 
     const handleDateChange = (e) => {
@@ -104,6 +116,9 @@ const AddPermit = ({ auth }) => {
     const handleSubmit = async () => {
         const permitData = {
             permitType,
+            decDate,
+            contractCompany,
+            supervisor,
             site,
             startDate,
             startTime,
@@ -118,11 +133,20 @@ const AddPermit = ({ auth }) => {
             selectedFile: selectedFile ? {
                 name: selectedFile.name,
                 type: selectedFile.type,
-              } : null,
-              drawingFile: drawingFile ? {
+            } : null,
+            drawingFile: drawingFile ? {
                 name: drawingFile.name,
                 type: drawingFile.type,
-              } : null,
+            } : null,
+            signFile: signFile ? {
+                name: signFile.name,
+                type: signFile.type,
+            } : null,
+            riskfile: riskfile ? {
+                name: riskfile.name,
+                type: riskfile.type,
+            } : null,
+
         };
 
         if (
@@ -131,8 +155,14 @@ const AddPermit = ({ auth }) => {
             startDate !== '' &&
             endDate !== '' &&
             selectedFile !== '' &&
-    drawingFile !== '' &&
-
+            drawingFile !== '' &&
+            signFile !== '' &&
+            riskfile !== '' &&
+            supervisor !== '' &&
+            contractCompany !== '' &&
+            finalCheck &&
+            declarationCheck &&
+            decDate !== '' &&
             selectedBuildings.length > 0 &&
             selectedLevels.length > 0
         ) {
@@ -184,7 +214,7 @@ const AddPermit = ({ auth }) => {
                     <Form.Select
                         aria-label="Default select example"
                         className='mt-0'
-                        style={{width:"500px"}}
+                        style={{ width: "500px" }}
                         name='permitType'
                         value={permitType}
                         onChange={(e) => setPermitType(e.target.value)}
@@ -194,15 +224,15 @@ const AddPermit = ({ auth }) => {
                         <option value="1">Hot Work</option>
                     </Form.Select>
                 </Col>
-               </Row>
-               <br/>
-               <Row>
+            </Row>
+            <br />
+            <Row>
                 <Col>
                     <p className='mb-0'>Site</p>
                     <Form.Select
                         aria-label="Default select example"
                         className='mt-0'
-                        style={{width:"500px", backgroundColor:"#FFFFFF"}}
+                        style={{ width: "500px", backgroundColor: "#FFFFFF" }}
                         value={site}
                         onChange={(e) => setSite(e.target.value)}
                     >
@@ -212,7 +242,7 @@ const AddPermit = ({ auth }) => {
                     </Form.Select>
                 </Col>
             </Row>
-            <p className='mt-3 mb-3'><Link to="/all-permits" style={{ textDecoration: "none" }}><FaArrowLeft /> Back to view all permit</Link><span style={{color:"blue"}}>{permitType}</span></p>
+            <p className='mt-3 mb-3'><Link to="/all-permits" style={{ textDecoration: "none" }}><FaArrowLeft /> Back to view all permit</Link><span style={{ color: "blue" }}>{permitType}</span></p>
 
             {/* Information */}
 
@@ -228,7 +258,7 @@ const AddPermit = ({ auth }) => {
                     </Col>
                     <Col lg={8} className='d-flex justify-content-between'>
                         <input
-                            style={{width: "230.5px",height: "46px"}}
+                            style={{ width: "230.5px", height: "46px" }}
                             type='date'
                             name='startDate'
                             value={startDate}
@@ -237,8 +267,8 @@ const AddPermit = ({ auth }) => {
                             placeholder='Start Date'
                         />
                         <input
-                        
-                            style={{width: "230.5px",height: "46px"}}
+
+                            style={{ width: "230.5px", height: "46px" }}
                             type='time'
                             name='startTime'
                             className='add-permit-input'
@@ -247,7 +277,7 @@ const AddPermit = ({ auth }) => {
                             placeholder='Start Time'
                         />
                         <input
-                            style={{width: "230.5px",height: "46px"}}
+                            style={{ width: "230.5px", height: "46px" }}
                             type='date'
                             name='endDate'
                             value={endDate}
@@ -256,15 +286,15 @@ const AddPermit = ({ auth }) => {
                             placeholder='End Date'
                         />
                         <input
-                         style={{width: "230.5px",height: "46px"}}
+                            style={{ width: "230.5px", height: "46px" }}
                             type='time'
-                            name='startTime'
+                            name='endTime'
                             className='add-permit-input'
                             value={endTime}
                             onChange={handleDateChange}
                             placeholder='End Time'
                         />
-                       
+
                     </Col>
                 </Row>
 
@@ -279,15 +309,15 @@ const AddPermit = ({ auth }) => {
                 {req && <span style={{ color: "red", fontSize: "12px", marginTop: "0" }}>Required</span>}
 
                 <Row className='mt-4'>
-                    
+
 
                     <Col>
                         <div className='building-checkbox mr-3'>
-                            <h6 style={{fontSize:"14px",color:"#1D1A17"}}>Building<br></br>(Admin/Fab/CUP/Others)</h6>
+                            <h6 style={{ fontSize: "14px", color: "#1D1A17" }}>Building<br></br>(Admin/Fab/CUP/Others)</h6>
 
-                            {buildingOptions.map((building)=>(
+                            {buildingOptions.map((building) => (
                                 <div key={building}>
-                            <input
+                                    <input
                                         type='checkbox'
                                         checked={selectedBuildings.includes(building)}
                                         onChange={() => handleBuildingCheckboxChange(building)}
@@ -296,22 +326,22 @@ const AddPermit = ({ auth }) => {
                                 </div>
                             ))}
                             <input
-                                style={{fontSize:"14px"}}
+                                style={{ fontSize: "14px" }}
                                 type='checkbox'
                                 onChange={() => handleBuildingCheckboxChange('Others')}
                             />
-                               {''} Others (Pls Specify)
-                        
+                            {''} Others (Pls Specify)
 
 
-                            </div>
+
+                        </div>
                     </Col>
 
-                   
+
                     <Col>
                         <textarea className="building-textArea" value={buildingNotes} onChange={(e) => setBuildingNotes(e.target.value)}></textarea>
 
-                    
+
                     </Col>
 
                     <Col>
@@ -331,18 +361,18 @@ const AddPermit = ({ auth }) => {
                     </Col>
 
                     <Col>
-                        <textarea 
-                        className="building-textArea" placeholder='Others (Pls Specify)' 
-                        style={{textAlign:"center"}} 
-                        value={levelNotes} 
-                        onChange={(e) => setLevelNotes(e.target.value)} >
+                        <textarea
+                            className="building-textArea" placeholder='Others (Pls Specify)'
+                            style={{ textAlign: "center" }}
+                            value={levelNotes}
+                            onChange={(e) => setLevelNotes(e.target.value)} >
 
                         </textarea>
                     </Col>
-                    
+
                 </Row>
 
-                <Row className='mt-4 flex-row'> 
+                {/* <Row className='mt-4 flex-row'> 
                     <Col>
                         <div className='secTion'>
                         <input 
@@ -392,110 +422,112 @@ const AddPermit = ({ auth }) => {
                         </div>
                     </Col>
 
+                </Row> */}
+
+                <Row className='mt-4'>
+                    <div style={{ fontWeight: 600 }}>Note The Following Emergency Number</div>
+                    <br></br><br></br>
+                    <div className=''>
+                        {emergencyNumber.map((emergencynumber) => (
+                            <div key={emergencynumber}>
+                                <input
+                                    type='radio'
+                                    checked={selectedEmergencyNumber.includes(emergencynumber)}
+                                    onChange={() => handleEmergencyNumberCheckboxChange(emergencynumber)}
+                                />
+                                <span className='m-1'>{emergencynumber}</span>
+                                <br></br><br></br>
+                            </div>
+                        ))}
+                    </div>
                 </Row>
 
                 <Row className='mt-4'>
-                    <div style={{fontWeight:600}}>Note The Following Emergency Number</div>
-                                <br></br><br></br>
-                    <div className=''>
-                            {emergencyNumber.map((emergencynumber) => (
-                                <div key={emergencynumber}>
-                                    <input
-                                        type='radio'
-                                        checked={selectedEmergencyNumber.includes(emergencynumber)}
-                                        onChange={() => handleEmergencyNumberCheckboxChange(emergencynumber)}
-                                    />
-                                    <span className='m-1'>{emergencynumber}</span>
-                                    <br></br><br></br>
-                                </div>
-                            ))}
-                        </div>
-                   </Row>
+                    <div>Revision 1.0 (Last Updated: 28 May 2021)</div>
 
-                   <Row className='mt-4'>
-                        <div>Revision 1.0 (Last Updated: 28 May 2021)</div>
+                </Row>
+                <div className='mt-5'>
 
-                   </Row>
-                   <div className='mt-5'>
-
-                   </div>
-
-
-
-               
+                </div>
             </div>
-
-             
             <div className='p-4 shadow mt-3'>
-                <h6 style={{ color:"#0D3E78"}}>WORK DESCRIPTION (ATTACH DRAWING / SKETCH / DESCRIBE IN DETAILS etc...)</h6><hr></hr>
+                <h6 style={{ color: "#0D3E78" }}>WORK DESCRIPTION (ATTACH DRAWING / SKETCH / DESCRIBE IN DETAILS etc...)</h6><hr></hr>
                 <textarea
                     placeholder='Work Description (Attach Drawing / Sketch / Describe in Details here)'
                     className='w-100 border rounded '
-                    style={{minHeight:"5rem", textIndent:"20px"}} 
+                    style={{ minHeight: "5rem", textIndent: "20px" }}
                 ></textarea>
 
-                <Row className='mt-5' style={{fontSize:"small"}}>
-                <Col>
-                <FileUploadComponent
-  label="MAP"
-  onFileUpload={(file) => handleFileUpload(file, setSelectedFile)}
-/>
+                <Row className='mt-5' style={{ fontSize: "small" }}>
+                    <Col>
+                        <FileUploadComponent
+                            label="MAP"
+                            onFileUpload={(file) => handleFileUpload(file, setSelectedFile)}
+                        />
 
-        </Col>
-        <Col>
-        <FileUploadComponent
-  label="Drawing / Sketches"
-  onFileUpload={(file) => handleFileUpload(file, setDrawingFile)}
-/>
+                    </Col>
+                    <Col>
+                        <FileUploadComponent
+                            label="Drawing / Sketches"
+                            onFileUpload={(file) => handleFileUpload(file, setDrawingFile)}
+                        />
 
-        </Col>
-        <Col>
-        <FileUploadComponent
-  label="Risk Assessment"
-  onFileUpload={(file) => handleFileUpload(file, setRiskFile)}
-/>
+                    </Col>
+                    <Col>
+                        <FileUploadComponent
+                            label="Risk Assessment"
+                            onFileUpload={(file) => handleFileUpload(file, setRiskFile)}
+                        />
 
-        </Col>
+                    </Col>
                 </Row>
 
-               
+
             </div>
 
-                {/* Section 3 */}
+            {/* Section 3 */}
 
             <div className='p-4 shadow mt-3'>
-                <h6 style={{ color:"#0D3E78"}}>SECTION 3 : DECLARATION, CERTIFICATION & AUTHORIZATION</h6><hr></hr>
+                <h6 style={{ color: "#0D3E78" }}>SECTION 3 : DECLARATION, CERTIFICATION & AUTHORIZATION</h6><hr></hr>
 
-                <div style={{fontSize:"14px",fontWeight:"600"}}>
-                    <input className='m-1' type='checkbox'/>The contractor and or its agents, sub-contractors, employee, hereby warrants the Facilities Work Permits and the accompanying Safety Risk Assessments, Safety Permits & Checklists and Procedures and EAI Assessment have been read and understood and shall take all necessary precautions before commencement of work in JCET Fab10N and Fab10W Daily. They shall also be liable to JCET Fab10N and Fab 10W for any damages, including direct or indirect losses incurred due to contractor and or its agent, sub-contractor, employee and servant's negligence.
+                <div style={{ fontSize: "14px", fontWeight: "600" }}>
+                    <input className='m-1' type='checkbox' onChange={(e) => setDecCheck(e.target.checked)} />The contractor and or its agents, sub-contractors, employee, hereby warrants the Facilities Work Permits and the accompanying Safety Risk Assessments, Safety Permits & Checklists and Procedures and EAI Assessment have been read and understood and shall take all necessary precautions before commencement of work in JCET Fab10N and Fab10W Daily. They shall also be liable to JCET Fab10N and Fab 10W for any damages, including direct or indirect losses incurred due to contractor and or its agent, sub-contractor, employee and servant's negligence.
                 </div>
                 <div className='mt-4'>
-                    <input className="w-100 border" style={{height:"46px",borderRadius:"5px", borderColor:"#DADADA"}} type='text' placeholder='NAME OF CONTRACTOR COMPANY'/>
+                    <input className="w-100 border" style={{ height: "46px", borderRadius: "5px", borderColor: "#DADADA" }} type='text' placeholder='NAME OF CONTRACTOR COMPANY' value={contractCompany} onChange={(e) => setContractCompany(e.target.value)} />
                 </div>
 
                 <Row className='mt-5 flex-row'>
                     <Col>
-                        <input className="border" style={{height:"46px",width:"383px",borderRadius:"5px", borderColor:"#DADADA"}} type='text'placeholder='CONTRACTOR SUPERVISOR (REQUESTER)'/>
+                        <input className="border" style={{ height: "46px", width: "383px", borderRadius: "5px", borderColor: "#DADADA" }} type='text' placeholder='CONTRACTOR SUPERVISOR (REQUESTER)' value={supervisor} onChange={(e) => setSupervisor(e.target.value)} />
                     </Col>
 
                     <Col>
-                    <div style={{height:"46px",width:"383px"}} className='file-container'>
-                            <button 
-                            className="file-btn1 border">
-                                <i class="bi bi-upload m-1"></i>Sign</button>
-                            <input 
-                            type="file" 
-                            className="file-input"
-                            style={{borderColor:"#DADADA"}} />
-                        </div>   
+                        <FileUploadComponent
+                            label="Sign"
+                            onFileUpload={(file) => handleFileUpload(file, setSignFile)}
+                        />
+                        {/* <div style={{ height: "46px", width: "383px" }} className='file-container'>
+                            <button
+                                className="file-btn1 border">
+                                <i class="bi bi-upload m-1"></i></button>
+                            <input
+                                type="file"
+                                className="file-input"
+                                style={{ borderColor: "#DADADA" }} 
+                                onFileUpload={(file) => handleFileUpload(file, )}/>
+                                
+                        </div> */}
                     </Col>
 
                     <Col>
-                    <input
-                            style={{height:"46px",width:"383px",borderRadius:"5px", borderColor:"#DADADA"}} 
+                        <input
+                            style={{ height: "46px", width: "383px", borderRadius: "5px", borderColor: "#DADADA" }}
                             type='date'
                             className='add-permit-input border'
                             placeholder='Date'
+                            value={decDate}
+                            onChange={(e) => setDecDate(e.target.value)}
                         />
                     </Col>
 
@@ -537,7 +569,7 @@ const AddPermit = ({ auth }) => {
 
             {/* Approval */}
 
-                {/* <div className='p-4 shadow mt-3'>
+            {/* <div className='p-4 shadow mt-3'>
                 <h6 style={{ color:"#0D3E78"}}>APPROVAL</h6><hr></hr>
 
                 <Row className='flex-row'>
@@ -600,25 +632,25 @@ const AddPermit = ({ auth }) => {
             {/* Decclaration */}
 
             <div className='p-4 shadow mt-3'>
-                <h6 style={{ color:"#0D3E78"}}>DECLARATION</h6><hr></hr>
+                <h6 style={{ color: "#0D3E78" }}>DECLARATION</h6><hr></hr>
 
-                <div style={{fontSize:"14px",fontWeight:"600"}}>
-                    <input type='checkbox' className='m-1' />By checking this checkbox, I solemnly declared that I have checked through the documents. All the documents that are required by the ePermit System are uploaded and correct to the best of my knowledge. I will be liable if the documents are not in order and will be subjected to legal actions by EHS if applicable.
+                <div style={{ fontSize: "14px", fontWeight: "600" }}>
+                    <input type='checkbox' className='m-1' value={finalCheck} onChange={(e) => setFinalCheck(e.target.checked)} />By checking this checkbox, I solemnly declared that I have checked through the documents. All the documents that are required by the ePermit System are uploaded and correct to the best of my knowledge. I will be liable if the documents are not in order and will be subjected to legal actions by EHS if applicable.
                 </div>
                 <div className='mt-3'>
-                    
-                {req && <span style={{ color: "red", fontSize: "12px", }}  >Required</span>}
+
+                    {req && <span style={{ color: "red", fontSize: "12px", }}  >Required</span>}
                 </div>
                 <div className='mt-3'>
 
                 </div>
             </div>
 
-            <div  className='mt-4 text-end'>
-                    <Button variant="primary" onClick={handleSubmit} className='submit-btn'>Submit</Button>
-                </div>
+            <div className='mt-4 text-end'>
+                <Button variant="primary" onClick={handleSubmit} className='submit-btn'>Submit</Button>
+            </div>
 
-<br/>
+            <br />
 
 
             <ToastContainer />

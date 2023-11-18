@@ -38,3 +38,14 @@
   .link-margin {
     margin-right: 5px;
   }
+  .home-icon {
+    background-color: #022088;
+    color: #fff;
+    padding: 7px;
+    border-radius: 8px;
+  }
+  .navlink-container {
+    display: flex;
+    align-items: center;
+
+  }

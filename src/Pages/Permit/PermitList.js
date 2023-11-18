@@ -18,7 +18,6 @@ const PermitList = ({ permits, auth }) => {
 
   const userId = storedUser.uid;
   console.log("userId", userId);
-  console.log("permits", storedUser);
   const [userPermits, setUserPermits] = useState([]);
   const [showActions, setShowActions] = useState(null);
   const [isLoader, setLoader] = useState(true)
@@ -26,8 +25,12 @@ const PermitList = ({ permits, auth }) => {
     const fetchPermits = async () => {
       try {
         const permitsData = await getAllPermitsCreatedByAllUsers();
+
         setUserPermits(permitsData);
         setLoader(false)
+
+                setUserPermits(permitsData);
+
         console.log("permitsData", permitsData)
 
       } catch (error) {
@@ -41,21 +44,27 @@ const PermitList = ({ permits, auth }) => {
   const handleActionClick = async (action, permitId) => {
     try {
       const permit = userPermits.find((p) => p.id === permitId);
-
+  
       if (!permit) {
         console.error(`Permit with ID ${permitId} not found.`);
         return;
       }
+
       const { userId, id: permitDocumentId } = permit;
+
+  
+      const { id: permitDocumentId } = permit;
+
       if (action === 'approve') {
-        await updatePermitStatus(userId, permitDocumentId, 'active');
+        await updatePermitStatus(permitDocumentId, 'active');
       } else if (action === 'cancel') {
-        await updatePermitStatus(userId, permitDocumentId, 'canceled');
+        await updatePermitStatus(permitDocumentId, 'canceled');
       }
     } catch (error) {
       console.error('Error handling action:', error.message);
     }
   };
+  
 
 
   return (

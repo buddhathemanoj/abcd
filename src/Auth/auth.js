@@ -217,4 +217,11 @@ export const updatePermitStatus = async (permitId, newStatus) => {
     console.error("Error updating permit status:", error.message);
     throw new Error("Unable to update permit status.");
   }
+
 };
+
+};
+
+
+
+

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from "react-redux";
-
+import FileUploadComponent from '../../Components/Selectfile';
 import { storePermit } from '../../Auth/auth';
 import { Button, Col, Row } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form';
@@ -28,6 +28,18 @@ const AddPermit = ({ auth }) => {
     const [selectedLevels, setSelectedLevels] = useState([]);
     const [selectedBuildings, setSelectedBuildings] = useState([]);
 
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [drawingFile, setDrawingFile] = useState(null);
+    const handleFileUpload = (file, setFileFunction) => {
+        // Log the file data before updating the state
+        console.log("File data:", file);
+    
+        // You can perform any additional logic here before updating the state
+        setFileFunction(file);
+      };
+    
+ 
+ 
     const handleLevelCheckboxChange = (level) => {
         const updatedLevels = [...selectedLevels];
 
@@ -72,6 +84,7 @@ const AddPermit = ({ auth }) => {
 
     const req = site2.length === 0
 
+    
 
     const handleSubmit = async () => {
         const permitData = {
@@ -87,6 +100,14 @@ const AddPermit = ({ auth }) => {
             selectedLevels,
             selectedBuildings,
             site2,
+            selectedFile: selectedFile ? {
+                name: selectedFile.name,
+                type: selectedFile.type,
+              } : null,
+              drawingFile: drawingFile ? {
+                name: drawingFile.name,
+                type: drawingFile.type,
+              } : null,
         };
 
         if (
@@ -94,6 +115,9 @@ const AddPermit = ({ auth }) => {
             site !== '' &&
             startDate !== '' &&
             endDate !== '' &&
+            selectedFile !== '' &&
+    drawingFile !== '' &&
+
             selectedBuildings.length > 0 &&
             selectedLevels.length > 0
         ) {
@@ -250,9 +274,9 @@ const AddPermit = ({ auth }) => {
 
                     <Col lg={3}>
                         <textarea value={buildingNotes} onChange={(e) => setBuildingNotes(e.target.value)} className='w-100 h-50 border rounded'></textarea>
-</Col>
+                    </Col>
                     <Col lg={4}>
-                        <textarea style={{ marginLeft: "1rem",outline:"none",padding:"6px",backgroundColor:"#ccc5" }} value={buildingNotes} onChange={(e) => setBuildingNotes(e.target.value)} className='w-100 h-50 border rounded'></textarea>
+                        <textarea style={{ marginLeft: "1rem", outline: "none", padding: "6px", backgroundColor: "#ccc5" }} value={buildingNotes} onChange={(e) => setBuildingNotes(e.target.value)} className='w-100 h-50 border rounded'></textarea>
 
                     </Col>
                     <Col lg={2}>
@@ -271,31 +295,33 @@ const AddPermit = ({ auth }) => {
                         </div>
                     </Col>
                     <Col lg={4}>
-                        <textarea placeholder='Others (Pls Specify)' value={levelNotes} onChange={(e) => setLevelNotes(e.target.value)} className='w-100 h-50 border rounded' style={{outline:"none",padding:"6px",backgroundColor:"#ccc5"}} ></textarea>
+                        <textarea placeholder='Others (Pls Specify)' value={levelNotes} onChange={(e) => setLevelNotes(e.target.value)} className='w-100 h-50 border rounded' style={{ outline: "none", padding: "6px", backgroundColor: "#ccc5" }} ></textarea>
                     </Col>
                 </Row>
             </div>
 
             <div className='p-4 shadow mt-3'>
-                <h6 style={{ color:"#0D3E78"}}>WORK DESCRIPTION (ATTACH DRAWING / SKETCH / DESCRIBE IN DETAILS etc...)</h6><hr></hr>
+                <h6 style={{ color: "#0D3E78" }}>WORK DESCRIPTION (ATTACH DRAWING / SKETCH / DESCRIBE IN DETAILS etc...)</h6><hr></hr>
                 <textarea
                     placeholder='Work Description (Attach Drawing / Sketch / Describe in Details here)'
                     className='w-100 border rounded'
-                    style={{minHeight:"5rem"}}
+                    style={{ minHeight: "5rem" }}
                 ></textarea>
-                <Row className='mt-5' style={{fontSize:"small"}}>
-                    <Col>
-                        <div className="file-container">
-                            <button className="file-btn">MAP</button>
-                            <input type="file" className="file-input" />
-                        </div>   
-                    </Col>
-                    <Col>
-                        <div className="file-container">
-                            <button className="file-btn"><i class="bi bi-upload"></i>Upload Drawing / Sketches</button>
-                            <input type="file" className="file-input" />
-                        </div>
-                    </Col>
+                <Row className='mt-5' style={{ fontSize: "small" }}>
+                <Col>
+                <FileUploadComponent
+  label="MAP"
+  onFileUpload={(file) => handleFileUpload(file, setSelectedFile)}
+/>
+
+        </Col>
+        <Col>
+        <FileUploadComponent
+  label="Drawing / Sketches"
+  onFileUpload={(file) => handleFileUpload(file, setDrawingFile)}
+/>
+
+        </Col>
                     <Col>
                         <div className="file-container">
                             <button className="file-btn"><i class="bi bi-upload"></i>Upload Risk Assessment</button>
@@ -328,7 +354,7 @@ const AddPermit = ({ auth }) => {
                         <div className="file-container">
                             <button className="file-btn"><i class="bi bi-upload"></i>Worker Competency Certification (i.e. SMO, SDO, WAH, CS)</button>
                             <input type="file" className="file-input" />
-                        </div>     
+                        </div>
                     </Col>
                 </Row>
                 <div className='mt-4 text-end'>

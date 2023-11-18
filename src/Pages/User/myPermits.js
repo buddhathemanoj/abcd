@@ -17,11 +17,19 @@ import { FaPlusCircle } from "react-icons/fa";
 import "./userstyle.css"
 
 const MyPermits = ({ permits, auth }) => {
+
     const storedUser = JSON.parse(localStorage.getItem('user'));
 
     const navigate = useNavigate()
     const userId = storedUser.uid;
     // console.log("userId", userId);
+
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+
+    const navigate = useNavigate()
+    const userId = storedUser.uid;
+    console.log("userId", userId);
+
     const [userPermits, setUserPermits] = useState([]);
     const [showActions, setShowActions] = useState(null);
     const [isLoader, setLoader] = useState(true)
@@ -42,27 +50,25 @@ const MyPermits = ({ permits, auth }) => {
         fetchPermits();
     }, [userId]);
 
-    const handleActionClick = async (action, permitId) => {
-        try {
-            // Find the permit with the matching ID
-            const permit = userPermits.find((p) => p.id === permitId);
-
-            if (!permit) {
-                console.error(`Permit with ID ${permitId} not found.`);
-                return;
-            }
-
-            // Pass userId, permitId, and new status to updatePermitStatus
-            const { userId, id: permitDocumentId } = permit;
-            if (action === 'approve') {
-                await updatePermitStatus(userId, permitDocumentId, 'active');
-            } else if (action === 'cancel') {
-                await updatePermitStatus(userId, permitDocumentId, 'canceled');
-            }
-        } catch (error) {
-            console.error('Error handling action:', error.message);
-        }
-    };
+    // const handleActionClick = async (action, permitId) => {
+    //     try {
+    //       const permit = userPermits.find((p) => p.id === permitId);
+      
+    //       if (!permit) {
+    //         console.error(`Permit with ID ${permitId} not found.`);
+    //         return;
+    //       }
+      
+    //       const { id: permitDocumentId } = permit;
+    //       if (action === 'approve') {
+    //         await updatePermitStatus(permitDocumentId, 'active');
+    //       } else if (action === 'cancel') {
+    //         await updatePermitStatus(permitDocumentId, 'canceled');
+    //       }
+    //     } catch (error) {
+    //       console.error('Error handling action:', error.message);
+    //     }
+    //   };
 
     const clickToCreatePermit = () => {
         navigate("/all-permits-create")
@@ -80,6 +86,10 @@ const MyPermits = ({ permits, auth }) => {
     //              sty =
     //         }
     //     })
+
+    
+
+
 
     return (
         <div className="mypermits-container">

@@ -47,8 +47,8 @@ const navigate = useNavigate();
     <div className="sidebar-wrapper">
       <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
       <img src={logo} alt="logo" width={100} />
-      </div>
-      <NavLink to="/dashboard" style={isActive('/dashboard')}> <FontAwesomeIcon style={{ marginRight: '5px' }} icon={faHome} />Dashboard</NavLink>
+      </div> 
+      <NavLink to="/dashboard" style={isActive('/dashboard')} className="navlink-container"> <FontAwesomeIcon style={{ marginRight: '5px' }} icon={faHome} className="home-icon" />Dashboard</NavLink>
       <NavLink to="/sites" style={isActive('/sites')}><FontAwesomeIcon style={{ marginRight: '5px' }} icon={faSitemap} />Sites</NavLink>
       <NavLink to="/maps" style={isActive('/maps')}><FontAwesomeIcon style={{ marginRight: '5px' }} icon={faMap} />Maps</NavLink>
       <NavLink to="/users" style={isActive('/users')}><FontAwesomeIcon style={{ marginRight: '5px' }} icon={faUser} />Users</NavLink>

@@ -12,23 +12,38 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
+  
   const handleLoginClick = async () => {
     try {
+      console.log("Attempting login...");
+  
       const user = await login({ email, password });
+      console.log("User data:", user);
+  
       dispatch({ type: 'LOGIN', payload: user });
-      console.log("user", user)
-      const accessToken = user.accessToken
-      Cookies.set("accessToken",accessToken ,{expires:1} )
+  
+      const accessToken = user.accessToken;
+      Cookies.set("accessToken", accessToken, { expires: 1 });
+      localStorage.setItem('user', JSON.stringify(user));
+  
+      console.log("User role:", user.role);
+  
       if (user.role === "admin" || user.role === "employee") {
+        console.log("Navigating to /dashboard");
         navigate('/dashboard');
-      } else {
+      } else if (user.role === "user") {
+        console.log("Navigating to /user-dashboard");
         navigate('/user-dashboard');
+      } else {
+        console.log("Navigating to /");
+        navigate('/');
       }
     } catch (error) {
       setError(error.message);
       console.error('Login error:', error.message);
     }
   }
+  
 
   return (
     <div className="login-container">

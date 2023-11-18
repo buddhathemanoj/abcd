@@ -59,7 +59,7 @@ const MyPermits = ({ permits, auth }) => {
     };
 
     const clickToCreatePermit = () => {
-        navigate("/user-permits-create")
+        navigate("/all-permits-create")
     }
     
 // let sty = ""

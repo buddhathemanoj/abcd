@@ -12,9 +12,11 @@ import { updatePermitStatus } from '../../Auth/auth';
 import Popup from 'reactjs-popup';
 
 const PermitList = ({ permits, auth }) => {
+  const storedUser = JSON.parse(localStorage.getItem('user'));
 
-  const userId = auth.user.uid;
+  const userId = storedUser.uid;
   console.log("userId", userId);
+  console.log("permits", storedUser);
   const [userPermits, setUserPermits] = useState([]);
   const [showActions, setShowActions] = useState(null);
   
@@ -35,7 +37,6 @@ const PermitList = ({ permits, auth }) => {
 
   const handleActionClick = async (action, permitId) => {
     try {
-      // Find the permit with the matching ID
       const permit = userPermits.find((p) => p.id === permitId);
 
       if (!permit) {
@@ -43,7 +44,6 @@ const PermitList = ({ permits, auth }) => {
         return;
       }
 
-      // Pass userId, permitId, and new status to updatePermitStatus
       const { userId, id: permitDocumentId } = permit;
       if (action === 'approve') {
         await updatePermitStatus(userId, permitDocumentId, 'active');

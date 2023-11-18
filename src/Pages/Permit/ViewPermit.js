@@ -1,12 +1,26 @@
-import React from "react";
+import React,{useState} from "react";
 import { useLocation, Link } from "react-router-dom";
-import { Row, Col, Button, Form } from "react-bootstrap";
+import { Row, Col,  Form } from "react-bootstrap";
+import { Button, Modal } from 'react-bootstrap';
 import { FaArrowLeft } from "react-icons/fa";
 
 const ViewPermit = () => {
-  const location = useLocation();
-  const permit = location.state && location.state.permit;
-console.log(permit)
+    const location = useLocation();
+    const permit = location.state && location.state.permit;
+    const [showPreviewModal, setShowPreviewModal] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+  
+    const handleFilePreview = (file) => {
+      setSelectedFile(file);
+      setShowPreviewModal(true);
+    };
+  
+    const handleClosePreviewModal = () => {
+      setShowPreviewModal(false);
+      setSelectedFile(null);
+    };
+  
+    console.log(permit);
   return (
     <div>
       {permit && (
@@ -164,6 +178,42 @@ console.log(permit)
               </Col>
             </Row>
 
+            <div className='p-4 shadow mt-3'>
+        <h6 style={{ color: "#0D3E78" }}>WORK DESCRIPTION (ATTACH DRAWING / SKETCH / DESCRIBE IN DETAILS etc...)</h6>
+        <hr />
+
+        <textarea
+          value={permit.workDescription}
+          className='w-100 border rounded'
+          style={{ minHeight: "5rem", textIndent: "20px" }}
+        ></textarea>
+
+<Row className="mt-5" style={{ fontSize: "small" }}>
+<Col>
+  {console.log("Selected File URL:", permit.selectedFile.url)}
+  <Button variant="link" onClick={() => handleFilePreview(permit.selectedFile)}>
+    {permit.selectedFile.name}
+  </Button>
+</Col>
+
+        <Col>
+          <Button variant="link" onClick={() => window.open(permit.drawingFile.url, '_blank')}>
+            {permit.drawingFile.name}
+          </Button>
+       
+
+        </Col>
+        <Col>
+          <Button variant="link" onClick={() => window.open(permit.riskfile.url, '_blank')}>
+            {permit.riskfile.name}
+          </Button>
+        </Col>
+      </Row>
+
+      </div>
+
+      {/* Preview Modal */}
+
             {/* ... (Remaining code) */}
 
             {/* Declaration */}
@@ -173,7 +223,36 @@ console.log(permit)
               </h6>
               <hr></hr>
 
-              {/* ... (Remaining code) */}
+              <Row className='mt-5 flex-row'>
+        <Col>
+          <input
+            className="border"
+            style={{ height: "46px", padding:"10px",  borderRadius: "5px", borderColor: "#DADADA" }}
+            type='text'
+            placeholder='CONTRACTOR SUPERVISOR (REQUESTER)'
+            value={permit.supervisor}
+            readOnly
+          />
+        </Col>
+
+        <Col>
+        <Button variant="link" onClick={() => window.open(permit.signFile.url, '_blank')}>
+  {permit.signFile.name}
+</Button>
+
+        </Col>
+
+        <Col>
+          <input
+            style={{ height: "46px", borderRadius: "5px", borderColor: "#DADADA" }}
+            type='date'
+            className='add-permit-input border'
+            placeholder='Date'
+            value={permit.decDate}
+            readOnly
+          />
+        </Col>
+      </Row>
 
               <div className="mt-5"></div>
             </div>
@@ -201,6 +280,43 @@ console.log(permit)
           </div>
         </div>
       )}
+    
+        <Modal show={showPreviewModal} onHide={handleClosePreviewModal}>
+  <Modal.Header closeButton>
+    <Modal.Title>File Preview</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+  {selectedFile && (
+    <>
+      {selectedFile.type.startsWith("image/") && (
+        <img
+          src={selectedFile.url}
+          alt={`File Preview: ${selectedFile.name}`}
+          style={{ maxWidth: "100%", maxHeight: "500px" }}
+        />
+      )}
+      {selectedFile.type === "application/pdf" && (
+        <embed
+          src={selectedFile.url}
+          type="application/pdf"
+          width="100%"
+          height="500px"
+        />
+      )}
+      {/* Add more conditions for other file types if needed */}
+    </>
+  )}
+</Modal.Body>
+
+  <Modal.Footer>
+    <Button variant="secondary" onClick={handleClosePreviewModal}>
+      Close
+    </Button>
+  </Modal.Footer>
+</Modal>
+
+    
+     
     </div>
   );
 };

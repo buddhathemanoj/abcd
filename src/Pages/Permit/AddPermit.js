@@ -28,7 +28,7 @@ const AddPermit = ({ auth }) => {
     const [buildingNotes, setBuildingNotes] = useState('');
     const [levelNotes, setLevelNotes] = useState('');
     const buildingOptions = [' ADMIN', ' FAB', ' CUP', ' EXTERNAL', ' CARPARK'];
-    const levelOptions = [' Basement', ' L1', ' L1M', ' L2', ' L3', ' L4', 'L4m', 'L5', 'L6', 'L7', ' Roof', 'East AMHS', 'West AMHS'];
+    const levelOptions = [' Basement', ' L1',  ' Roof', 'East AMHS', 'West AMHS'];
 
     const emergencyNumber = ['F10A1: Security Control Room: 6637-0111; Facilities Control Room 69038222', 'F10A2: Security Control Room: 6637-0111; Facilities Control Room 69038222', 'F10N: Security Control Room: 6637-0111; Facilities Control Room 6637-0222', 'F10W: Security Control Room: 6360-7111; Facilities Control Room 6360-7222', 'F10X: Security Control Room: 6637-0111; Facilities Control Room 6637-0222'];
 
@@ -134,18 +134,22 @@ const AddPermit = ({ auth }) => {
             selectedFile: selectedFile ? {
                 name: selectedFile.name,
                 type: selectedFile.type,
+                url: selectedFile.url,
             } : null,
             drawingFile: drawingFile ? {
                 name: drawingFile.name,
                 type: drawingFile.type,
+                url: drawingFile.url,
             } : null,
             signFile: signFile ? {
                 name: signFile.name,
                 type: signFile.type,
+                url: signFile.url,
             } : null,
             riskfile: riskfile ? {
                 name: riskfile.name,
                 type: riskfile.type,
+                url: riskfile.url,
             } : null,
 
         };
@@ -341,7 +345,7 @@ const AddPermit = ({ auth }) => {
 
 
                     <Col>
-                        <textarea className="building-textArea" value={buildingNotes} onChange={(e) => setBuildingNotes(e.target.value)}></textarea>
+                        <textarea style={{padding:"10px",minWidth:'250px'}} value={buildingNotes} onChange={(e) => setBuildingNotes(e.target.value)}></textarea>
 
 
                     </Col>
@@ -364,8 +368,9 @@ const AddPermit = ({ auth }) => {
 
                     <Col>
                         <textarea
-                            className="building-textArea" placeholder='Others (Pls Specify)'
-                            style={{ textAlign: "center" }}
+                         style={{padding:"10px",minWidth:'250px'}}
+                            placeholder='Others (Pls Specify)'
+                           
                             value={levelNotes}
                             onChange={(e) => setLevelNotes(e.target.value)} >
 

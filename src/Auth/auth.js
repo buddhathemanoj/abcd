@@ -1,9 +1,9 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile } from "firebase/auth";
 import { app } from "../firebase";
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { doc, setDoc, getDoc, collection, getDocs, query, where, addDoc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db ,storage} from "../firebase";
 import { format } from 'date-fns';
-
 export const login = async ({ email, password }) => {
   const auth = getAuth(app);
   try {
@@ -96,15 +96,22 @@ export const getTotalPermits = async (userId) => {
     throw new Error("Unable to get total permits.");
   }
 };
+
 // export const storePermit = async (userId, extendedPermitData) => {
 //   try {
 //     const permitsCollection = collection(db, "permits");
-//     const userDocRef = doc(permitsCollection, userId);
-//     const permitsSubcollection = collection(userDocRef, "data");
 
-//     const newPermitDocRef = await addDoc(permitsSubcollection, {
+//     // Use a random unique ID for each permit document
+//     const newPermitDocRef = doc(permitsCollection);
+
+//     const newPermitData = {
+//       userId,
 //       permitType: extendedPermitData.permitType,
 //       site: extendedPermitData.site,
+//       decDate: extendedPermitData.decDate,
+//       contractCompany: extendedPermitData.contractCompany,
+//       supervisor: extendedPermitData.supervisor,
+//       workdesc: extendedPermitData.workdesc,
 //       startDate: extendedPermitData.startDate,
 //       startTime: extendedPermitData.startTime,
 //       endDate: extendedPermitData.endDate,
@@ -115,11 +122,16 @@ export const getTotalPermits = async (userId) => {
 //       selectedLevels: extendedPermitData.selectedLevels,
 //       selectedBuildings: extendedPermitData.selectedBuildings,
 //       site2: extendedPermitData.site2,
-//       userId: extendedPermitData.userId,
 //       permitNumber: extendedPermitData.permitNumber,
 //       status: extendedPermitData.status,
 //       createdAt: extendedPermitData.createdAt,
-//     });
+//       selectedFile:extendedPermitData.selectedFile,
+//       drawingFile:extendedPermitData.drawingFile,
+//       signFile:extendedPermitData.signFile,
+//       riskfile:extendedPermitData.riskfile,
+//     };
+
+//     await setDoc(newPermitDocRef, newPermitData);
 
 //     console.log("Permit data stored with ID:", newPermitDocRef.id);
 //     return newPermitDocRef.id;
@@ -132,13 +144,49 @@ export const storePermit = async (userId, extendedPermitData) => {
   try {
     const permitsCollection = collection(db, "permits");
 
-    // Use a random unique ID for each permit document
     const newPermitDocRef = doc(permitsCollection);
+
+    const uploadPromises = [];
+    const getFileDownloadUrl = async (file) => {
+      const storageRef = ref(storage, `path/to/upload/${file.name}`);
+    
+      const contentType = file.type;
+    
+      const metadata = {
+        contentType,
+      };
+    
+      await uploadBytes(storageRef, file, metadata);
+      return getDownloadURL(storageRef);
+    };
+    
+
+    if (extendedPermitData.selectedFile) {
+      uploadPromises.push(getFileDownloadUrl(extendedPermitData.selectedFile));
+    }
+
+    if (extendedPermitData.drawingFile) {
+      uploadPromises.push(getFileDownloadUrl(extendedPermitData.drawingFile));
+    }
+
+    if (extendedPermitData.signFile) {
+      uploadPromises.push(getFileDownloadUrl(extendedPermitData.signFile));
+    }
+
+    if (extendedPermitData.riskfile) {
+      uploadPromises.push(getFileDownloadUrl(extendedPermitData.riskfile));
+    }
+
+    const [selectedFileUrl, drawingFileUrl, signFileUrl, riskFileUrl] = await Promise.all(uploadPromises);
 
     const newPermitData = {
       userId,
       permitType: extendedPermitData.permitType,
       site: extendedPermitData.site,
+      decDate: extendedPermitData.decDate,
+      contractCompany: extendedPermitData.contractCompany,
+      supervisor: extendedPermitData.supervisor,
+      workdesc: extendedPermitData.workdesc,
       startDate: extendedPermitData.startDate,
       startTime: extendedPermitData.startTime,
       endDate: extendedPermitData.endDate,
@@ -152,8 +200,10 @@ export const storePermit = async (userId, extendedPermitData) => {
       permitNumber: extendedPermitData.permitNumber,
       status: extendedPermitData.status,
       createdAt: extendedPermitData.createdAt,
-      selectedFile:extendedPermitData.selectedFile,
-      drawingFile:extendedPermitData.drawingFile,
+      selectedFile: selectedFileUrl ? { ...extendedPermitData.selectedFile, url: selectedFileUrl } : null,
+      drawingFile: drawingFileUrl ? { ...extendedPermitData.drawingFile, url: drawingFileUrl } : null,
+      signFile: signFileUrl ? { ...extendedPermitData.signFile, url: signFileUrl } : null,
+      riskfile: riskFileUrl ? { ...extendedPermitData.riskfile, url: riskFileUrl } : null,
     };
 
     await setDoc(newPermitDocRef, newPermitData);
@@ -165,7 +215,6 @@ export const storePermit = async (userId, extendedPermitData) => {
     throw new Error("Unable to store permit data.");
   }
 };
-
 export const getPermitsByUserId = async (userId) => {
   try {
     const permitsCollection = collection(db, "permits");

@@ -16,6 +16,8 @@ import Templates from './Pages/AllTemplates/Templates';
 import FormsDownlod from './Pages/FormsDownload/FormsDownlod';
 import FeedbackForm from './Pages/FeedbackForm/FeedbackForm';
 import MyPermits from './Pages/User/myPermits';
+import Forgetpassword from './Login/Forgetpassword';
+import Mail from './Login/Mail';
 
 
 function App() {
@@ -24,6 +26,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/forget-password" element={<Forgetpassword />} />
+          <Route path="/mail" element={<Mail />} />
           <Route path="/dashboard" element={<AuthGuard component={<Dashboard />} />} />
           <Route path="/sites" element={<AuthGuard component={<Sites />} />} />
           <Route path="/maps" element={<AuthGuard component={<Maps />} />} />

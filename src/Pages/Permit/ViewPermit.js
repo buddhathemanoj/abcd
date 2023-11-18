@@ -132,7 +132,7 @@ console.log(permit)
 
               <Col>
                 <textarea
-                  className="building-textArea"
+                  style={{padding:"10px",maxWidth:"400px"}}
                   value={permit.buildingNotes}
                   disabled
                 ></textarea>
@@ -156,9 +156,8 @@ console.log(permit)
 
               <Col>
                 <textarea
-                  className="building-textArea"
                   placeholder="Others (Pls Specify)"
-                  style={{ textAlign: "center" }}
+                  style={{padding:"10px",maxWidth:"400px"}}
                   value={permit.levelNotes}
                   disabled
                 ></textarea>
@@ -168,7 +167,7 @@ console.log(permit)
             {/* ... (Remaining code) */}
 
             {/* Declaration */}
-            <div className="p-4 shadow mt-3">
+            <div className="p-4  mt-3">
               <h6 style={{ color: "#0D3E78" }}>
                 DECLARATION, CERTIFICATION & AUTHORIZATION
               </h6>
@@ -180,7 +179,7 @@ console.log(permit)
             </div>
 
             {/* Declaration */}
-            <div className="p-4 shadow mt-3">
+            <div className="p-4  mt-3">
               <h6 style={{ color: "#0D3E78" }}>DECLARATION</h6>
               <hr></hr>
 

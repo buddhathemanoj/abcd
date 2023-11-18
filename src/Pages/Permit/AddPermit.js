@@ -41,7 +41,7 @@ const AddPermit = ({ auth }) => {
     const [signFile, setSignFile] = useState(null)
     const [drawingFile, setDrawingFile] = useState(null);
     const [riskfile, setRiskFile] = useState(null);
-
+   const [workdesc ,setWorkDesc]=useState("")
 
     const handleFileUpload = (file, setFileFunction) => {
         console.log("File data:", file);
@@ -123,6 +123,7 @@ const AddPermit = ({ auth }) => {
             startDate,
             startTime,
             endDate,
+            workdesc,
             endTime,
             isGeneralChecked,
             buildingNotes,
@@ -163,6 +164,7 @@ const AddPermit = ({ auth }) => {
             finalCheck &&
             declarationCheck &&
             decDate !== '' &&
+            workdesc !== '' &&
             selectedBuildings.length > 0 &&
             selectedLevels.length > 0
         ) {
@@ -456,6 +458,7 @@ const AddPermit = ({ auth }) => {
                     placeholder='Work Description (Attach Drawing / Sketch / Describe in Details here)'
                     className='w-100 border rounded '
                     style={{ minHeight: "5rem", textIndent: "20px" }}
+                    onChange={(e) => setWorkDesc(e.target.value)}
                 ></textarea>
 
                 <Row className='mt-5' style={{ fontSize: "small" }}>

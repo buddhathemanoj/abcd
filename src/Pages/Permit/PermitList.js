@@ -109,7 +109,6 @@ const PermitList = ({ auth }) => {
                     {permit.status}
                   </span>
                 </td>
-
                   <td>
                     <Dropdown>
                     <CustomDropdownToggle  variant="seconary" id={`dropdownActions-${index}`}><BsThreeDots /></CustomDropdownToggle>
@@ -133,63 +132,6 @@ const PermitList = ({ auth }) => {
           </table>
         </div>
       )}
-
-
-                <td style={{display:"flex",justifyContent:"center"}}>
-                  <div style={{ position: 'relative' }}>
-                    <OverlayTrigger
-                      placement="top"
-                      overlay={<Tooltip id={`ellipsis-tooltip-${index}`}>Show Actions</Tooltip>}
-                    >
-
-                      <Popup
-                        trigger={<div
-                          style={{ cursor: 'pointer', fontSize: '20px' }}
-                          onClick={() => setShowActions(showActions === index ? null : index)}
-                        >
-                          <BsThreeDots />
-                        </div>}
-                        position={"bottom left"}
-                      >
-                        {close => (<div
-                          style={{
-                            position: 'absolute',
-                            top: "0%",
-                            left: '10%',
-                            transform: 'translateX(-110%)',
-                            zIndex: 999,
-                            backgroundColor: 'white',
-                            boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-                            padding: '10px',
-                            display: 'flex',
-                            flexDirection: 'row',
-                            borderRadius:"4px",
-                            gap: '5px',
-                            boxShadow:" 1px 2px 1px 1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)"
-                          }}
-                        >
-                          <Button variant="success" onClick={() => {handleActionClick('approve', permit.id); close()}}>
-                            Approve
-                          </Button>
-                          <Button variant="danger" onClick={() => {handleActionClick('cancel', permit.id); close() }}>
-                            Cancel
-                          </Button>
-
-                        </div>)}
-                        
-
-                      </Popup>
-
-                    </OverlayTrigger>
-
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table> </div>}
-
-
     </>
   );
 };

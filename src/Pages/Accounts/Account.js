@@ -1,10 +1,20 @@
 import React from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
 import { FaArrowLeft } from "react-icons/fa";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Account = () => {
   const storedUser = JSON.parse(localStorage.getItem('user'));
+
+  const navigate = useNavigate();
+
+  const handleChangeProfile =() => {
+    navigate('/edit-profile')
+  }
+
+  const handleChangePassword = () =>{
+    navigate('/change-password')
+  }
 
   return (
     <>
@@ -40,10 +50,10 @@ const Account = () => {
         </Col>
       </Row>
       <div style={{ marginTop: '20px' }}>
-        <Button variant="primary" style={{ marginRight: '10px' }}>
+        <Button variant="primary" style={{ marginRight: '10px' }} onClick={handleChangeProfile}>
           Edit Profile
         </Button>
-        <Button variant="outline-primary">Change Password</Button>
+        <Button variant="outline-primary" onClick={handleChangePassword}>Change Password</Button>
       </div>
     </div>
     </>

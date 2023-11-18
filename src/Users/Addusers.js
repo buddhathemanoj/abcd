@@ -32,13 +32,20 @@ const Addusers = ({ user, state, show, handleClose }) => {
     }));
   };
 
+  const [showSuccessModal, setShow] = useState(false);
+
+  const handleCloseSuccess = () => setShow(false);
+  const handleShowSuccess = () => setShow(true);
+
   const handleSignupClick = async () => {
     try {
       console.log("FormData before signup:", formData);
+      
 
       const newUser = await signup(formData);
-      toast.success('Account created successfully!');
+      // toast.success('Account created successfully!');
       console.log("loggedin user", user);
+      handleShowSuccess();
       handleClose();
     } catch (error) {
       console.error("Signup error:", error.message);
@@ -139,6 +146,42 @@ const Addusers = ({ user, state, show, handleClose }) => {
           </Button>
           <Button variant="primary" onClick={handleSignupClick}>
             Create Account
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={showSuccessModal} onHide={handleCloseSuccess}>
+        <Modal.Header closeButton>
+          <Modal.Title>Account Created Successfully</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder=""
+                autoFocus
+              />
+            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder=""
+                autoFocus
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          {/* <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button> */}
+          <Button variant="primary" >
+            Send credentials to user
           </Button>
         </Modal.Footer>
       </Modal>

@@ -22,6 +22,7 @@ import Mail from './Login/Mail';
 
 import MyChildPermit from './Pages/User/myChildPermit';
 import AllTemplates from './Pages/User/allTemplates';
+import AddSites from './Pages/Sites/AddSites';
 
 import Editprofile from './Pages/Accounts/Editprofile';
 import Changepassword from './Pages/Accounts/Changepassword';
@@ -51,9 +52,15 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/forget-password" element={<Forgetpassword />} />
           <Route path="/mail" element={<Mail />} />
+
+          <Route path="/dashboard" element={<AuthGuard component={<Dashboard />} />} />
+          <Route path="/sites" element={<AuthGuard component={<Sites />} />} />
+          <Route path="/sites-create" element={<AuthGuard component={<AddSites />} />} />
+
           <Route path="/dashboard" element={<AuthGuard component={getComponentForUserRole()} />} />          <Route path="/sites" element={<AuthGuard component={<Sites />} />} />
           <Route path="/user-dashboard" element={<AuthGuard component={getComponentForUserRole()} />} />          <Route path="/sites" element={<AuthGuard component={<Sites />} />} />
           <Route path="/view-permit" element={<AuthGuard component={<ViewPermit />} />} />
+
 
           <Route path="/maps" element={<AuthGuard component={<Maps />} />} />
           <Route path="/users" element={<AuthGuard component={<Users />} />} />

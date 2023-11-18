@@ -24,10 +24,7 @@ const MyPermits = ({ permits, auth }) => {
     const userId = storedUser.uid;
     // console.log("userId", userId);
 
-  const storedUser = JSON.parse(localStorage.getItem('user'));
-
-    const navigate = useNavigate()
-    const userId = storedUser.uid;
+    
     console.log("userId", userId);
 
     const [userPermits, setUserPermits] = useState([]);

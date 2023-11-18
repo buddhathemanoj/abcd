@@ -22,6 +22,7 @@ import Mail from './Login/Mail';
 
 import MyChildPermit from './Pages/User/myChildPermit';
 import AllTemplates from './Pages/User/allTemplates';
+import AddSites from './Pages/Sites/AddSites';
 
 
 
@@ -35,6 +36,7 @@ function App() {
           <Route path="/mail" element={<Mail />} />
           <Route path="/dashboard" element={<AuthGuard component={<Dashboard />} />} />
           <Route path="/sites" element={<AuthGuard component={<Sites />} />} />
+          <Route path="/sites-create" element={<AuthGuard component={<AddSites />} />} />
           <Route path="/maps" element={<AuthGuard component={<Maps />} />} />
           <Route path="/users" element={<AuthGuard component={<Users />} />} />
           <Route path="/all-permits" element={<AuthGuard component={<Permit />} />} />

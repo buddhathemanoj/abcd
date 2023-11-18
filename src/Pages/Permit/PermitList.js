@@ -114,7 +114,7 @@ const PermitList = ({ permits, auth }) => {
                   </span>
                 </td>
 
-                <td>
+                <td style={{display:"flex",justifyContent:"center"}}>
                   <div style={{ position: 'relative' }}>
                     <OverlayTrigger
                       placement="top"

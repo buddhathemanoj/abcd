@@ -12,6 +12,8 @@ const Userashboard = () => {
     setShowInfo(false);
   };
 
+  
+
   // Display informational note
   const informationalNote = (
     <div style={{ background: '#E6F7FF', padding: '10px',border:"1px solid #91D5FF"}}>

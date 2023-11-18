@@ -47,6 +47,7 @@ const Addusers = ({ user, state, show, handleClose }) => {
       console.log("loggedin user", user);
       handleShowSuccess();
       handleClose();
+      
     } catch (error) {
       console.error("Signup error:", error.message);
       toast.error('Error creating account. Please try again.');

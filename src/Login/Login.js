@@ -12,22 +12,26 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
-  
+
   const handleLoginClick = async () => {
     try {
       console.log("Attempting login...");
-  
+
       const user = await login({ email, password });
       console.log("User data:", user);
-  
+
       dispatch({ type: 'LOGIN', payload: user });
-  
-      const accessToken = user.accessToken;
-      Cookies.set("accessToken", accessToken, { expires: 1 });
+
+      // const accessToken = JSON.stringify(user);
+      // Cookies.set("accessToken", accessToken, { expires: 1 });
+      // const storedAccessToken = Cookies.get("accessToken");
+      // const aser = storedAccessToken ? JSON.parse(storedAccessToken) : null;
+      // console.log("cookies",aser);
+
       localStorage.setItem('user', JSON.stringify(user));
-  
+
       console.log("User role:", user.role);
-  
+
       if (user.role === "admin" || user.role === "employee") {
         console.log("Navigating to /dashboard");
         navigate('/dashboard');
@@ -43,7 +47,7 @@ const Login = () => {
       console.error('Login error:', error.message);
     }
   }
-  
+
 
   return (
     <div className="login-container">
@@ -60,7 +64,14 @@ const Login = () => {
           </div>
           <div>
 
+
             <Link to='/forget-password' style={{color:'blue'}}>Forget password?</Link>       
+
+            <Link to='/forget-password' style={{ color: 'blue' }}>Forget password?</Link>
+
+
+            <span color='blue'>Forget password?</span>
+
 
           </div>
           <button className="btn btn-primary btn-lg btn-block width300" onClick={handleLoginClick}>

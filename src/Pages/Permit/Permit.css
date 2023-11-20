@@ -19,7 +19,12 @@
 hr {
     color: gray;
 }
-
+.loader-container {
+    height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .file-container {
     position: relative;
     display: inline-block;

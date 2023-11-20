@@ -24,7 +24,7 @@ const Addusers = ({ user, state, show, handleClose }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
+ console.log(name);
     // Update formData
     setFormData((prevFormData) => ({
       ...prevFormData,

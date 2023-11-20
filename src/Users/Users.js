@@ -11,6 +11,9 @@ const Users = ({ auth }) => {
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const User = JSON.parse(localStorage.getItem('user'));
 
+  const get = users.filter((eachUser) => eachUser.email === "ashokkumar936127@gmail.com")
+  console.log("ashok", get);
+
   useEffect(() => {
     const Userrole = JSON.parse(localStorage.getItem('user'));
   

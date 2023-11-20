@@ -1,9 +1,12 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile ,getUserByEmail, signInWithPhoneNumber} from "firebase/auth";
 import { app } from "../firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { doc, setDoc, getDoc, collection, getDocs, query, where, addDoc, updateDoc } from "firebase/firestore";
+import { doc,Timestamp, setDoc, getDoc, collection, getDocs, query, where, addDoc, updateDoc,getFirestore } from "firebase/firestore";
 import { db ,storage} from "../firebase";
+import emailjs from 'emailjs-com';
+import { useRecaptchaVerifier } from 'react-firebase-hooks/auth';
 import { format } from 'date-fns';
+
 export const login = async ({ email, password }) => {
   const auth = getAuth(app);
   try {
@@ -27,6 +30,199 @@ export const login = async ({ email, password }) => {
     throw new Error("Invalid email or password.");
   }
 };
+
+
+
+
+const generateOTP = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
+const storeOTPInDB = async (userId, otp) => {
+  const otpDocRef = doc(db, 'otps', userId);
+  const timestamp = Timestamp.fromDate(new Date());
+
+  try {
+    await setDoc(otpDocRef, { otp, timestamp });
+  } catch (error) {
+    console.error('Store OTP error:', error.message);
+    throw new Error("Failed to store OTP.");
+  }
+};
+
+
+export const sendOTPEmail = async (email, otp) => {
+  const templateParams = {
+    to_email: email,
+    otp: otp,
+  };
+
+  try {
+    const result = await emailjs.send('service_09oj4um', 'template_fsuitfu', templateParams, '_v00BxitQJfaTPJuQ');
+    console.log('OTP sent successfully:', result.text);
+    return result;
+  } catch (error) {
+    console.error('Error sending OTP:', error.text);
+    throw new Error('Failed to send OTP.');
+  }
+};
+
+
+
+
+export const loginAndSendOTP = async ({ email, password }) => {
+  console.log(email);
+  const auth = getAuth(app);
+
+  try {
+    const res = await signInWithEmailAndPassword(auth, email, password);
+
+    if (res.user) {
+      if (res.user.emailVerified) {
+        const otp = generateOTP();
+        await storeOTPInDB(res.user.uid, otp);
+
+        await sendOTPEmail(email, otp);
+
+
+        const userDocRef = doc(db, 'users', res.user.uid);
+
+
+        const userDocSnapshot = await getDoc(userDocRef);
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+          return { ...res.user, ...userData };
+        } else {
+          throw new Error("User data not found in Firestore.");
+        }
+      } else {
+        throw new Error("Email not verified. Please verify your email before logging in.");
+      }
+    } else {
+      throw new Error("User not found or authentication failed.");
+    }
+  } catch (error) {
+    console.error('Login error:', error.message, error.code);
+    throw new Error("Invalid email or password."); // Adjust the error message based on specific error conditions
+  }
+};
+
+export const verifyOTP = async (userId, enteredOTP) => {
+  try {
+    console.log('verify tp',userId,enteredOTP)
+    const userDocRef = doc(db, 'otps', userId);
+    const userDocSnapshot = await getDoc(userDocRef);
+
+    if (userDocSnapshot.exists()) {
+      const userData = userDocSnapshot.data();
+      const storedOTP = userData.otp;
+console.log('stored otp',storedOTP)
+      if (enteredOTP === storedOTP) {
+        
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      throw new Error('User data not found in Firestore.');
+    }
+  } catch (error) {
+    console.error('OTP verification error:', error);
+    throw new Error('Failed to verify OTP.');
+  }
+};
+
+// export const getUserDetailsByEmail = async (email) => {
+//   const auth = getAuth();
+  
+//   try {
+//     // Get user by email from Firebase Authentication
+//     const userRecord = await getUserByEmail(auth, email);
+
+//     if (userRecord) {
+//       const userUid = userRecord.uid;
+
+//       // Fetch user details from Firestore using the obtained UID
+//       const userDocRef = db.collection('users').doc(userUid);
+//       const userDoc = await userDocRef.get();
+
+//       if (userDoc.exists()) {
+//         const userData = userDoc.data();
+//         return { uid: userUid, ...userData };
+//       } else {
+//         throw new Error('User data not found in Firestore.');
+//       }
+//     } else {
+//       throw new Error('User not found.');
+//     }
+//   } catch (error) {
+//     console.error('Error fetching user details:', error.message);
+//     throw new Error('Unable to fetch user details.');
+//   }
+// };
+export const getUserDetailsByEmail = async (email) => {
+  try {
+    const usersCollection = collection(db, "users");
+    const querySnapshot = await getDocs(usersCollection.where('email', '==', email));
+
+    if (!querySnapshot.empty) {
+      const userData = querySnapshot.docs[0].data();
+      return userData;
+    } else {
+      throw new Error('User not found for email: ' + email);
+    }
+  } catch (error) {
+    console.error('Error fetching user details by email:', error);
+    throw new Error('Unable to fetch user details.');
+  }
+};
+
+
+// ... Firebase initialization and other imports
+
+export const sendEmailVerificationCode = async (email, password) => {
+  try {
+    const auth = getAuth();
+    const db = getFirestore();
+
+    console.log("Signing in user...");
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    console.log("Checking user in the 'users' collection...");
+    const usersCollection = collection(db, "users");
+    const userQuery = query(usersCollection, where("email", "==", email));
+    const userQuerySnapshot = await getDocs(userQuery);
+
+    if (!userQuerySnapshot.empty) {
+      const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+      const expirationTime = new Date();
+      expirationTime.setMinutes(expirationTime.getMinutes() + 10); // 10 minutes expiration time
+
+      const userDocRef = doc(db, "users", user.uid);
+      await updateDoc(userDocRef, {
+        verificationCode,
+        verificationCodeExpiration: expirationTime,
+      });
+
+      // Send email verification to the user
+      await user.sendEmailVerification();
+
+      console.log(`Verification code for ${email} sent.`);
+      return verificationCode;
+    } else {
+      console.error("User not found. Please check your email or register an account.");
+      throw new Error("User not found. Please check your email or register an account.");
+    }
+  } catch (error) {
+    console.error("Error sending email verification code:", error.message);
+    throw new Error("Unable to send verification code.");
+  }
+};
+
+
+
+
+
 
 export const signOutUser = async () => {
   const auth = getAuth(app);
@@ -274,3 +470,78 @@ export const updatePermitStatus = async (permitId, newStatus) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+// export const sendPhoneVerificationCode = async (phoneNumber) => {
+//   try {
+//     const auth = getAuth(); // Ensure getAuth is properly initialized
+//     const db = getFirestore(); // Ensure getFirestore is properly initialized
+
+//     console.log("Sending verification code to the phone number...");
+
+//     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+//     const expirationTime = new Date();
+//     expirationTime.setMinutes(expirationTime.getMinutes() + 10); // 10 minutes expiration time
+
+//     const userDocRef = doc(db, 'users', auth.currentUser.uid);
+//     await updateDoc(userDocRef, {
+//       verificationCode,
+//       verificationCodeExpiration: expirationTime,
+//       phoneNumber,
+//     });
+
+//     // Assume signInWithPhoneNumber is a valid Firebase method for sending the verification code
+//     // Make sure Firebase supports this method and it's correctly configured in your project
+//     await signInWithPhoneNumber(auth, phoneNumber);
+
+//     console.log(`Verification code for ${phoneNumber} sent.`);
+//     return verificationCode;
+//   } catch (error) {
+//     console.error("Error sending phone verification code:", error.message);
+//     throw new Error("Unable to send verification code.");
+//   }
+// };
+
+// export const verifyPhoneVerificationCode = async (verificationCode, phoneNumber) => {
+//   const auth = getAuth(app);
+//   const db = getFirestore(app);
+
+//   try {
+//     console.log("Verifying phone number...");
+
+//     // Verify the provided verification code against the saved code in Firestore
+//     const userDocRef = doc(db, 'users', auth.currentUser.uid);
+//     const userDocSnapshot = await getDoc(userDocRef);
+
+//     if (userDocSnapshot.exists()) {
+//       const userData = userDocSnapshot.data();
+//       const savedVerificationCode = userData.verificationCode;
+//       const savedPhoneNumber = userData.phoneNumber;
+
+//       if (phoneNumber === savedPhoneNumber && verificationCode === savedVerificationCode) {
+//         console.log('Phone number verified successfully!');
+//         // Perform further actions after phone number verification
+//       } else {
+//         console.error('Invalid verification code or phone number.');
+//         throw new Error('Invalid verification code or phone number.');
+//       }
+//     } else {
+//       console.error('User document not found.');
+//       throw new Error('User document not found.');
+//     }
+//   } catch (error) {
+//     console.error('Error verifying phone number:', error.message);
+//     throw new Error('Unable to verify phone number.');
+//   }
+// };

@@ -24,7 +24,7 @@ const MyPermits = ({ permits, auth }) => {
     const userId = storedUser.uid;
     // console.log("userId", userId);
 
-    
+
     console.log("userId", userId);
 
     const [userPermits, setUserPermits] = useState([]);
@@ -50,12 +50,12 @@ const MyPermits = ({ permits, auth }) => {
     // const handleActionClick = async (action, permitId) => {
     //     try {
     //       const permit = userPermits.find((p) => p.id === permitId);
-      
+
     //       if (!permit) {
     //         console.error(`Permit with ID ${permitId} not found.`);
     //         return;
     //       }
-      
+
     //       const { id: permitDocumentId } = permit;
     //       if (action === 'approve') {
     //         await updatePermitStatus(permitDocumentId, 'active');
@@ -84,7 +84,7 @@ const MyPermits = ({ permits, auth }) => {
     //         }
     //     })
 
-    
+
 
 
 

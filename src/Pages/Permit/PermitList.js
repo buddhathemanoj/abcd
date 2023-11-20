@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { getAllPermitsCreatedByAllUsers } from '../../Auth/auth';
 import { AiFillFilter } from "react-icons/ai";
 import { BsThreeDots } from 'react-icons/bs';
+import { ThreeDots } from 'react-loader-spinner';
 import { updatePermitStatus } from '../../Auth/auth';
 import { Button, Dropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
@@ -68,51 +69,56 @@ const PermitList = ({ auth }) => {
   return (
     <>
       {isLoader ? (
-        <div className="loader-container">Loading...</div>
+        <div className="loader-container">
+          <ThreeDots
+          color="#3876E3"
+          height={50}
+          width={50}
+        /></div>
       ) : (
         <div style={{ width: '100%', overflow: 'auto' }}>
           <table className="user-details-table mt-3" style={{ width: '1600px' }}>
-           
+
             <thead>
-            <tr>
-              <th>#</th>
-              <th style={{ display: "flex", alignItems: "center" }}>Permit Number <button type='button' className='permit-search-btn'><IoIosSearch /></button></th>
-              <th> <div style={{ display: "flex", alignItems: "center",gap:"6px" }}> Permit Code  <button type='button' className='permit-search-btn'><IoIosSearch /></button></div></th>
-              <th> <div style={{ display: "flex", alignItems: "center" }}>Permit Type   <button type='button' className='permit-search-btn'><IoIosSearch /></button></div></th>
-              <th> <div style={{ display: "flex", alignItems: "center" }}>Discipline <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
-              <th> <div style={{ display: "flex", alignItems: "center" }}>Host/System Owner  <button type='button' className='permit-search-btn'><IoIosSearch /></button></div></th>
-              <th> <div style={{ display: "flex", alignItems: "center" }}>Work Description  </div></th>
-              <th> <div style={{ display: "flex", alignItems: "center" }}>Applier Site  <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
-              <th> <div style={{ display: "flex", alignItems: "center" }}>Date Applied  <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
-              <th> <div style={{ display: "flex", alignItems: "center" }}>Start Date  <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
-              <th> <div style={{ display: "flex", alignItems: "center" }}>End Date  <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
-              <th> <div style={{ display: "flex", alignItems: "center" }}>Status  <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
-              <th>Action </th>
-            </tr>
+              <tr>
+                <th>#</th>
+                <th style={{ display: "flex", alignItems: "center" }}>Permit Number <button type='button' className='permit-search-btn'><IoIosSearch /></button></th>
+                <th> <div style={{ display: "flex", alignItems: "center", gap: "6px" }}> Permit Code  <button type='button' className='permit-search-btn'><IoIosSearch /></button></div></th>
+                <th> <div style={{ display: "flex", alignItems: "center" }}>Permit Type   <button type='button' className='permit-search-btn'><IoIosSearch /></button></div></th>
+                <th> <div style={{ display: "flex", alignItems: "center" }}>Discipline <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
+                <th> <div style={{ display: "flex", alignItems: "center" }}>Host/System Owner  <button type='button' className='permit-search-btn'><IoIosSearch /></button></div></th>
+                <th> <div style={{ display: "flex", alignItems: "center" }}>Work Description  </div></th>
+                <th> <div style={{ display: "flex", alignItems: "center" }}>Applier Site  <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
+                <th> <div style={{ display: "flex", alignItems: "center" }}>Date Applied  <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
+                <th> <div style={{ display: "flex", alignItems: "center" }}>Start Date  <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
+                <th> <div style={{ display: "flex", alignItems: "center" }}>End Date  <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
+                <th> <div style={{ display: "flex", alignItems: "center" }}>Status  <button type='button' className='permit-search-btn'><AiFillFilter /></button></div></th>
+                <th>Action </th>
+              </tr>
             </thead>
             <tbody>
               {userPermits.map((permit, index) => (
                 <tr key={permit.id}>
-                 <td>{index + 1}</td>
-                <td>{permit.permitNumber}</td>
-                <td>A</td>
-                <td>General</td>
-                <td>Welding</td>
-                <td>John Doe</td>
-                <td>Welding</td>
-                <td>{permit.site}</td>
-                <td>{permit.createdAt}</td>
-                <td>{permit.startDate}</td>
-                <td>{permit.endDate}</td>
-                <td>
-                  <span style={{ padding: '8px', fontSize: '14px' }} className={`badge ${permit.status === 'active' ? 'success' : 'canceled'}`}>
-                    {permit.status}
-                  </span>
-                </td>
+                  <td>{index + 1}</td>
+                  <td>{permit.permitNumber}</td>
+                  <td>A</td>
+                  <td>General</td>
+                  <td>Welding</td>
+                  <td>John Doe</td>
+                  <td>Welding</td>
+                  <td>{permit.site}</td>
+                  <td>{permit.createdAt}</td>
+                  <td>{permit.startDate}</td>
+                  <td>{permit.endDate}</td>
+                  <td>
+                    <span style={{ padding: '8px', fontSize: '14px' }} className={`badge ${permit.status === 'active' ? 'success' : 'canceled'}`}>
+                      {permit.status}
+                    </span>
+                  </td>
                   <td>
                     <Dropdown>
-                    <CustomDropdownToggle  variant="seconary" id={`dropdownActions-${index}`}><BsThreeDots /></CustomDropdownToggle>
-                  
+                      <CustomDropdownToggle variant="seconary" id={`dropdownActions-${index}`}><BsThreeDots /></CustomDropdownToggle>
+
                       <Dropdown.Menu>
                         <Dropdown.Item as="button" onClick={() => handleActionClick('approve', permit.id)}>
                           Approve

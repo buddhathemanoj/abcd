@@ -7,4 +7,8 @@
     color: #DF1509;
     border: 1px solid #ccc;
     border-radius: 25%;
+    padding-left: .3rem;
+    padding-right: .3rem;
+    padding-top: 0;
+    padding-bottom: .1rem;
 }

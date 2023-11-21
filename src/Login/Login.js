@@ -66,6 +66,31 @@ const Login = () => {
              alt="profile"
         />
         <div>
+<<<<<<< HEAD
+          <h2 style={{ float: 'left' }}>Sign In </h2>
+          <div className="mb-3 width300">
+            <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
+          <div className="mb-3 width300">
+            <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
+          </div>
+          <div>
+
+
+            <Link to='/forget-password' style={{color:'blue'}}>Forget password?</Link>       
+
+            {/* <Link to='/forget-password' style={{ color: 'blue' }}>Forget password?</Link>
+
+
+            <span color='blue'>Forget password?</span> */}
+
+
+          </div>
+          <button className="btn btn-primary btn-lg btn-block width300" onClick={handleLoginClick}>
+            Login
+          </button>
+          {error && <p className="text-danger">{error}</p>}
+=======
           {user && showModal ? (
             <div style={{justifyContent:'center',marginTop:'30px'}} className="otp-modal">
               <h4>Enter OTP</h4>
@@ -93,6 +118,7 @@ const Login = () => {
               {error && <p className="text-danger">{error}</p>}
             </div>
           )}
+>>>>>>> e885a60969e91405c63b1f29a569ccc86b51bd9e
         </div>
       </div>
     </div>

@@ -67,10 +67,10 @@ const Login = () => {
 
             <Link to='/forget-password' style={{color:'blue'}}>Forget password?</Link>       
 
-            <Link to='/forget-password' style={{ color: 'blue' }}>Forget password?</Link>
+            {/* <Link to='/forget-password' style={{ color: 'blue' }}>Forget password?</Link>
 
 
-            <span color='blue'>Forget password?</span>
+            <span color='blue'>Forget password?</span> */}
 
 
           </div>

@@ -1,9 +1,10 @@
 import React from 'react'
+import Website from '../../Asset/Website.jpg'
 
 const Maps = () => {
   return (
       <div className='d-flex justify-content-center align-items-center vh-100'>
-          <h2>Processing...</h2>
+          <img src={Website} alt=''></img>
       </div>
   )
 }

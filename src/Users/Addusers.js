@@ -28,7 +28,7 @@ const Addusers = ({ user, state, show, handleClose }) => {
     // Update formData
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value,
+      [name]: name === 'role' ? value : value.trim(), // handle role change separately
     }));
   };
 
@@ -52,6 +52,14 @@ const Addusers = ({ user, state, show, handleClose }) => {
       console.error("Signup error:", error.message);
       toast.error('Error creating account. Please try again.');
     }
+  };
+  const handleCopyCredentials = () => {
+    // Copy email and password to clipboard
+    const credentialsText = `Email: ${formData.email}\nPassword: ${formData.password}`;
+    navigator.clipboard.writeText(credentialsText);
+
+    // Optionally, you can provide a user feedback
+    toast.success("Credentials copied to clipboard!");
   };
   return (
     <div>
@@ -161,6 +169,7 @@ const Addusers = ({ user, state, show, handleClose }) => {
               <Form.Control
                 type="email"
                 placeholder=""
+                value={formData.email}
                 autoFocus
               />
             </Form.Group>
@@ -170,8 +179,9 @@ const Addusers = ({ user, state, show, handleClose }) => {
             >
               <Form.Label>Password</Form.Label>
               <Form.Control
-                type="password"
+                type="text"
                 placeholder=""
+                value={formData.password}
                 autoFocus
               />
             </Form.Group>
@@ -181,7 +191,7 @@ const Addusers = ({ user, state, show, handleClose }) => {
           {/* <Button variant="secondary" onClick={handleClose}>
             Close
           </Button> */}
-          <Button variant="primary" >
+          <Button variant="primary" onClick={handleCopyCredentials} >
             Send credentials to user
           </Button>
         </Modal.Footer>

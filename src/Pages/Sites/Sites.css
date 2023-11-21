@@ -1,3 +1,10 @@
 .user-details-table {
     font-size: smaller;
 }
+
+.delete-btn {
+    background-color: white;
+    color: #DF1509;
+    border: 1px solid #ccc;
+    border-radius: 25%;
+}

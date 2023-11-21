@@ -411,6 +411,9 @@ export const storePermit = async (userId, extendedPermitData) => {
     throw new Error("Unable to store permit data.");
   }
 };
+
+
+
 export const getPermitsByUserId = async (userId) => {
   try {
     const permitsCollection = collection(db, "permits");

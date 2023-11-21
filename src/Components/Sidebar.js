@@ -7,7 +7,8 @@ import { MdOutlineManageAccounts } from "react-icons/md";
 import { CgTemplate } from "react-icons/cg";
 import { MdFeedback } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
-import { faHome, faSitemap, faMap, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faWpforms } from '@fortawesome/free-brands-svg-icons';
+import { faHome, faSitemap, faMap, faUser, } from '@fortawesome/free-solid-svg-icons';
 import '../styles/sidebar.css'
 import logo from "../Asset/JCET-Group-Emblem 1.png"
 import { useState } from 'react';
@@ -38,7 +39,10 @@ const navigate = useNavigate();
     }
   };
 
+
+
   const isActive = (path) => {
+   
     return location.pathname === path ? { backgroundColor: '#FFFFFF', color: '#022088' } : null;
   };
 
@@ -52,7 +56,7 @@ const navigate = useNavigate();
       <NavLink to="/sites" style={isActive('/sites')} ><FontAwesomeIcon style={{ marginRight: '5px' }} icon={faSitemap} />Sites</NavLink>
       <NavLink to="/maps" style={isActive('/maps')}><FontAwesomeIcon style={{ marginRight: '5px' }} icon={faMap} />Maps</NavLink>
       <NavLink to="/users" style={isActive('/users')}><FontAwesomeIcon style={{ marginRight: '5px' }} icon={faUser} />Users</NavLink>
-      <NavLink to="/all-permits" style={isActive('/all-permits')}><FaWpforms style={{ marginRight: '5px' }} />All Permits</NavLink>
+      <NavLink to="/all-permits" style={isActive('/all-permits')}><FontAwesomeIcon icon={faWpforms} />All Permits</NavLink>
       <NavLink to="/all-templates" style={isActive('/all-templates')}><CgTemplate style={{ marginRight: '5px' }} />All Templates</NavLink>
       <NavLink to="/account" style={isActive('/account')}><MdOutlineManageAccounts style={{ marginRight: '5px' }} />Account</NavLink>
       <NavLink to="/forms-download" style={isActive('/forms-download')}><CiSaveDown2 style={{ marginRight: '5px' }} />Forms Download</NavLink>

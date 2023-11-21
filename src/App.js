@@ -39,8 +39,8 @@ function App() {
     if (storedUser && storedUser.role) {
       if (storedUser.role === "admin" || storedUser.role === "employee") {
         return <Dashboard />;
-      } else if (storedUser.role === "user") {
-        return <Userashboard/>;
+      } else {
+        return <Userashboard />;
       }
     }
     return <Login />;

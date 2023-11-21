@@ -67,15 +67,15 @@ const Account = () => {
       </Row>
       <div style={{ marginTop: '20px' }}>
 
-        <Button variant="primary" style={{ marginRight: '10px' }} onClick={handleChangeProfile}>
+        {/* <Button variant="primary" style={{ marginRight: '10px' }} onClick={handleChangeProfile}>
           Edit Profile
         </Button>
-        <Button variant="outline-primary" onClick={handleChangePassword}>Change Password</Button>
+        <Button variant="outline-primary" onClick={handleChangePassword}>Change Password</Button> */}
 
-        {/* <Button variant="primary" style={{ marginRight: '10px' }} className='edit-profile-btn'>
+        <Button variant="primary" style={{ marginRight: '10px' }} onClick={handleChangeProfile} className='edit-profile-btn'>
           Edit Profile
-        </Button> */}
-        {/* <Button variant="outline-primary" className='change-password-btn'>Change Password</Button> */}
+        </Button> 
+         <Button variant="outline-primary" onClick={handleChangePassword} className='change-password-btn'>Change Password</Button>
 
       </div>
     </div>

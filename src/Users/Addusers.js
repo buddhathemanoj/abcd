@@ -131,7 +131,7 @@ const Addusers = ({ user, state, show, handleClose }) => {
                 onChange={handleInputChange}
               >
                 <option value="user">User</option>
-                <option value="employee">Employee   </option>
+                <option value="employee">Supervisor   </option>
                 <option value="manager">Manager </option>
               </Form.Select>
             </Col>

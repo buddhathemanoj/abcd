@@ -292,7 +292,19 @@ export const getTotalPermits = async (userId) => {
     throw new Error("Unable to get total permits.");
   }
 };
+export const getTotalllPermits = async () => {
+  try {
+    const permitsCollection = collection(db, "permits");
+    const querySnapshot = await getDocs(permitsCollection);
 
+    const permits = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+    return permits;
+  } catch (error) {
+    console.error("Error retrieving permits:", error.message);
+    throw new Error("Unable to retrieve permits.");
+  }
+};
 // export const storePermit = async (userId, extendedPermitData) => {
 //   try {
 //     const permitsCollection = collection(db, "permits");

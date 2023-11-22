@@ -467,6 +467,24 @@ export const updatePermitStatus = async (permitId, newStatus) => {
   }
 
 };
+export const updateProfileData = async (userId, editProfileData) => {
+  try {
+    const userDocRef = doc(db, 'users', userId);
+
+    await updateDoc(userDocRef, {
+      fullname: editProfileData.fullname || null,
+      email: editProfileData.email || null,
+      phonenumber: editProfileData.phonenumber || null,
+      
+    });
+
+    console.log('Profile data updated successfully for user:', userId);
+  } catch (error) {
+    console.error('Error updating profile data:', error.message);
+    throw new Error('Unable to update profile data.');
+  }
+};
+
 
 
 

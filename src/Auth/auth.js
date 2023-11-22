@@ -292,7 +292,19 @@ export const getTotalPermits = async (userId) => {
     throw new Error("Unable to get total permits.");
   }
 };
+export const getTotalllPermits = async () => {
+  try {
+    const permitsCollection = collection(db, "permits");
+    const querySnapshot = await getDocs(permitsCollection);
 
+    const permits = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+    return permits;
+  } catch (error) {
+    console.error("Error retrieving permits:", error.message);
+    throw new Error("Unable to retrieve permits.");
+  }
+};
 // export const storePermit = async (userId, extendedPermitData) => {
 //   try {
 //     const permitsCollection = collection(db, "permits");
@@ -467,6 +479,24 @@ export const updatePermitStatus = async (permitId, newStatus) => {
   }
 
 };
+export const updateProfileData = async (userId, editProfileData) => {
+  try {
+    const userDocRef = doc(db, 'users', userId);
+
+    await updateDoc(userDocRef, {
+      fullname: editProfileData.fullname || null,
+      email: editProfileData.email || null,
+      phonenumber: editProfileData.phonenumber || null,
+      
+    });
+
+    console.log('Profile data updated successfully for user:', userId);
+  } catch (error) {
+    console.error('Error updating profile data:', error.message);
+    throw new Error('Unable to update profile data.');
+  }
+};
+
 
 export const storeSiteData = async (siteData) => {
   try {

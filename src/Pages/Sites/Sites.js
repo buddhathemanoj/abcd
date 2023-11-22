@@ -10,6 +10,8 @@ import './Sites.css'
 const Sites = () => {
 
     const [sites, setSites] = useState([])
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const handleCreateClick = () => {
@@ -26,27 +28,30 @@ const Sites = () => {
                 const siteData = [];
 
                 querySnapshot.forEach((doc) => {
-                    siteData.push(doc.data());
+                    siteData.push({ id: doc.id, ...doc.data() }); // Include id property
                 });
 
                 setSites(siteData);
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching sites:', error.message);
+                setError('Error fetching sites. Please try again later.');
+                setLoading(false);
             }
         };
 
         fetchSites();
-    }, []); // Empty dependency array ensures this effect runs only once on mount
+    }, []);
+
 
     const handleDelete = async (siteId) => {
         try {
             const siteRef = doc(db, 'sites', siteId);
             await deleteDoc(siteRef);
-
-            // Update the state to reflect the deletion
             setSites((prevSites) => prevSites.filter((site) => site.id !== siteId));
         } catch (error) {
             console.error('Error deleting site:', error.message);
+            setError('Error deleting site. Please try again later.');
         }
     };
 

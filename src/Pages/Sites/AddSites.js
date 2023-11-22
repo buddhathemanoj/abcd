@@ -1,73 +1,39 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, FloatingLabel, Form, Row, Col } from 'react-bootstrap';
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
+import { storeSiteData } from '../../Auth/auth';
 
 const AddSites = () => {
 
-    const [siteName, setSiteName] = useState("")
-    const [siteAddress, setSiteAddress] = useState("")
-    const [siteCode, setSiteCode] = useState("")
-    const [siteLocation, setSiteLocation] = useState("")
+    const initialSiteData = {
+        siteName: '',
+        siteAddress: '',
+        siteCode: '',
+    };
 
-    //Store submitted data in local storage
-    useEffect(() => {
-        // Check for submitted data in local storage and prepopulate the form fields
-        const submittedData = JSON.parse(localStorage.getItem('submittedData')) || {};
-        setSiteName(submittedData.siteName || '');
-        setSiteAddress(submittedData.siteAddress || '');
-        setSiteCode(submittedData.siteCode || '');
-        setSiteLocation(submittedData.siteLocation || '');
-    }, []); // Empty dependency array ensures this effect runs only once on mount
+    const [siteData, setSiteData] = useState(initialSiteData);
 
-    const handleSubmit = () => {
-        const newSite = {
-            siteName,
-            siteAddress,
-            siteCode,
-            siteLocation
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setSiteData({
+            ...siteData,
+            [name]: value,
+        });
+    };
+
+    const handleSubmit = async () => {
+        try {
+            // Call the function to store site data in Firestore
+            const siteId = await storeSiteData(siteData);
+
+            // Perform any additional actions after storing data if needed
+
+            console.log('Site data submitted successfully. Site ID:', siteId);
+        } catch (error) {
+            console.error('Error submitting site data:', error.message);
+            // Handle the error as needed
         }
-
-        localStorage.setItem('submittedData', JSON.stringify(newSite));
-
-        localStorage.removeItem('draftData');
-
-        setSiteName('')
-        setSiteAddress('')
-        setSiteCode('')
-        setSiteLocation('')
-    }
-    //Store draftData in local storage
-    useEffect(() => {
-        // Check for draft data in local storage and prepopulate the form fields
-        const draftData = JSON.parse(localStorage.getItem('draftData')) || [];
-        if (draftData.length > 0) {
-            const lastDraft = draftData[draftData.length - 1];
-            setSiteName(lastDraft.siteName || "");
-            setSiteAddress(lastDraft.siteAddress || "");
-            setSiteCode(lastDraft.siteCode || "");
-            setSiteLocation(lastDraft.siteLocation || "");
-        }
-        else {
-            setSiteName('')
-            setSiteAddress('')
-            setSiteCode('')
-            setSiteLocation('')
-        }
-    }, []); // Empty dependency array ensures this effect runs only once on mount
-
-    const saveAsDraft = () => {
-        const newSite = {
-            siteName,
-            siteAddress,
-            siteCode,
-            siteLocation
-        };
-
-        // Save as draft in local storage
-        const draftData = JSON.parse(localStorage.getItem('draftData')) || [];
-        const updatedDraftData = [...draftData, newSite];
-        localStorage.setItem('draftData', JSON.stringify(updatedDraftData));
     };
 
     return (
@@ -87,9 +53,10 @@ const AddSites = () => {
                         >
                             <Form.Control
                                 type="text"
+                                name="siteName"
                                 placeholder='_GENERAL PERMIT TO WORK'
-                                value={siteName}
-                                onChange={(e) => setSiteName(e.target.value)}
+                                value={siteData.siteName}
+                                onChange={handleInputChange}
                             />
                         </FloatingLabel>
                     </Col>
@@ -100,9 +67,10 @@ const AddSites = () => {
                         >
                             <Form.Control
                                 type="text"
+                                name="siteAddress"
                                 placeholder='floor1, JCET'
-                                value={siteAddress}
-                                onChange={(e) => setSiteAddress(e.target.value)}
+                                value={siteData.siteAddress}
+                                onChange={handleInputChange}
                             />
                         </FloatingLabel>
                     </Col>
@@ -116,8 +84,9 @@ const AddSites = () => {
                             <Form.Select
                                 aria-label="Default select example"
                                 className='mt-0'
-                                value={siteCode}
-                                onChange={(e) => setSiteCode(e.target.value)}
+                                name="siteCode"
+                                value={siteData.siteCode}
+                                onChange={handleInputChange}
                             >
                                 <option value="" disabled>Select Site</option>
                                 <option value="CSE">CSE</option>
@@ -145,7 +114,7 @@ const AddSites = () => {
             </div>
             <div>
                 <Button onClick={handleSubmit}>Submit</Button>
-                <Button style={{ marginLeft: "1rem", border: "1px solid #ccc" }} variant='light' onClick={saveAsDraft}>Save as Draft</Button>
+                <Button style={{ marginLeft: "1rem", border: "1px solid #ccc" }} variant='light'>Save as Draft</Button>
             </div>
         </>
     )

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { RiAddCircleFill } from "react-icons/ri";
 import { HiOutlineTrash } from "react-icons/hi2";
+import { collection, doc, getDocs, query, deleteDoc, where } from 'firebase/firestore';
+import { db, } from '../../firebase';
 import './Sites.css'
 
 const Sites = () => {
@@ -15,14 +17,38 @@ const Sites = () => {
     };
 
     useEffect(() => {
-        // Retrieve submitted data from local storage
-        const submittedData = JSON.parse(localStorage.getItem('submittedData')) || {};
+        const fetchSites = async () => {
+            try {
+                const sitesCollection = collection(db, 'sites');
+                const q = query(sitesCollection);
 
-        // Check if there is submitted data
-        if (Object.keys(submittedData).length > 0) {
-            setSites([submittedData]);
-        }
+                const querySnapshot = await getDocs(q);
+                const siteData = [];
+
+                querySnapshot.forEach((doc) => {
+                    siteData.push(doc.data());
+                });
+
+                setSites(siteData);
+            } catch (error) {
+                console.error('Error fetching sites:', error.message);
+            }
+        };
+
+        fetchSites();
     }, []); // Empty dependency array ensures this effect runs only once on mount
+
+    const handleDelete = async (siteId) => {
+        try {
+            const siteRef = doc(db, 'sites', siteId);
+            await deleteDoc(siteRef);
+
+            // Update the state to reflect the deletion
+            setSites((prevSites) => prevSites.filter((site) => site.id !== siteId));
+        } catch (error) {
+            console.error('Error deleting site:', error.message);
+        }
+    };
 
     return (
         <>
@@ -53,7 +79,7 @@ const Sites = () => {
                             <td>{site.siteName}</td>
                             <td className='text-center'>{site.siteAddress}</td>
                             <td className='text-center'>{site.siteCode}</td>
-                            <td className='text-center'><Button variant="danger" className='delete-btn'><HiOutlineTrash style={{fontSize:"x-large"}} /></Button></td>
+                            <td className='text-center'><Button variant="danger" className='delete-btn' onClick={() => handleDelete(site.id)}><HiOutlineTrash style={{fontSize:"medium", marginBottom:".1rem"}} /></Button></td>
                         </tr>
                     ))}
                 </tbody>

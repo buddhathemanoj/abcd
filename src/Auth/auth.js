@@ -470,15 +470,9 @@ export const updatePermitStatus = async (permitId, newStatus) => {
 
 export const storeSiteData = async (siteData) => {
   try {
-    // Assuming 'sites' is the collection in Firestore where you want to store site data
     const sitesCollection = collection(db, 'sites');
-
-    // Add the new site data to the 'sites' collection
     const newSiteDocRef = await addDoc(sitesCollection, siteData);
-
-    // Log the submitted data before returning the document ID
     console.log('Submitted Site Data:', siteData);
-
     console.log('Site data stored with ID:', newSiteDocRef.id);
     return newSiteDocRef.id;
   } catch (error) {

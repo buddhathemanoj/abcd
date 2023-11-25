@@ -30,7 +30,7 @@ const AddPermit = ({ auth }) => {
     const [buildingNotes, setBuildingNotes] = useState('');
     const [levelNotes, setLevelNotes] = useState('');
     const buildingOptions = [' ADMIN', ' FAB', ' CUP', ' EXTERNAL', ' CARPARK'];
-    const levelOptions = [' Basement', ' L1',  ' Roof', 'East AMHS', 'West AMHS'];
+    const levelOptions = [' Basement', ' L1', ' Roof', 'East AMHS', 'West AMHS'];
 
     const emergencyNumber = ['F10A1: Security Control Room: 6637-0111; Facilities Control Room 69038222', 'F10A2: Security Control Room: 6637-0111; Facilities Control Room 69038222', 'F10N: Security Control Room: 6637-0111; Facilities Control Room 6637-0222', 'F10W: Security Control Room: 6360-7111; Facilities Control Room 6360-7222', 'F10X: Security Control Room: 6637-0111; Facilities Control Room 6637-0222'];
 
@@ -43,6 +43,7 @@ const AddPermit = ({ auth }) => {
     const [signFile, setSignFile] = useState(null)
     const [drawingFile, setDrawingFile] = useState(null);
     const [riskfile, setRiskFile] = useState(null);
+
     const [workdesc ,setWorkDesc]=useState("")
 
     const [permitTypeError, setPermitTypeError] = useState('');
@@ -83,6 +84,13 @@ const AddPermit = ({ auth }) => {
             console.error("Error uploading file:", error.message);
             throw new Error("Unable to upload file.");
         }
+
+    const [workdesc, setWorkDesc] = useState("")
+
+    const handleFileUpload = (file, setFileFunction) => {
+        console.log("File data:", file);
+        setFileFunction(file);
+
     };
     console.log("checkx", finalCheck);
 
@@ -147,7 +155,13 @@ const AddPermit = ({ auth }) => {
     };
 
 
+
     // const req = site2.length === 0
+
+    const req = site2.length === 0
+    const finalCheckReq = !finalCheck;
+    const certficaionReq = !declarationCheck
+
 
 
     const handleSubmit = async () => {
@@ -340,9 +354,7 @@ const AddPermit = ({ auth }) => {
                 </Col>
             </Row>
             <p className='mt-3 mb-3'><Link to="/all-permits" style={{ textDecoration: "none" }}><FaArrowLeft /> Back to view all permit</Link><span style={{ color: "blue" }}>{permitType}</span></p>
-
             {/* Information */}
-
             <div className='p-4 shadow'>
                 <h6 style={{ color: "#0D3E78" }}>INFORMATION</h6><hr></hr>
                 <Row>
@@ -430,8 +442,12 @@ const AddPermit = ({ auth }) => {
                     </Form.Select>
                     <h6 style={{ marginLeft: "10px", fontSize: "12px" }}>Note that Start Date and End Date Max 14 Days</h6>
                 </div>
+
                 {site2 === '' && <span style={{ color: "red", fontSize: "12px" }}>{site2Error}</span>}
                 {/* {req && <span style={{ color: "red", fontSize: "12px", marginTop: "0" }}>Required</span>} */}
+
+                {req && <span style={{ color: "red", fontSize: "12px", marginTop: "0", fontWeight: "bold" }}>*Required</span>}
+
 
                 <Row className='mt-4'>
 
@@ -464,7 +480,7 @@ const AddPermit = ({ auth }) => {
 
 
                     <Col>
-                        <textarea style={{padding:"10px",minWidth:'250px'}} value={buildingNotes} onChange={(e) => setBuildingNotes(e.target.value)}></textarea>
+                        <textarea style={{ padding: "10px", minWidth: '250px' }} value={buildingNotes} onChange={(e) => setBuildingNotes(e.target.value)}></textarea>
 
 
                     </Col>
@@ -487,9 +503,9 @@ const AddPermit = ({ auth }) => {
 
                     <Col>
                         <textarea
-                         style={{padding:"10px",minWidth:'250px'}}
+                            style={{ padding: "10px", minWidth: '250px' }}
                             placeholder='Others (Pls Specify)'
-                           
+
                             value={levelNotes}
                             onChange={(e) => setLevelNotes(e.target.value)} >
 
@@ -630,6 +646,9 @@ const AddPermit = ({ auth }) => {
                         }}
                     />The contractor and or its agents, sub-contractors, employee, hereby warrants the Facilities Work Permits and the accompanying Safety Risk Assessments, Safety Permits & Checklists and Procedures and EAI Assessment have been read and understood and shall take all necessary precautions before commencement of work in JCET Fab10N and Fab10W Daily. They shall also be liable to JCET Fab10N and Fab 10W for any damages, including direct or indirect losses incurred due to contractor and or its agent, sub-contractor, employee and servant's negligence.
                 </div>
+                <div className='mt-0'>
+                    {certficaionReq && <span style={{ color: "red", fontSize: "12px", fontWeight: "bold" }}  >*Required</span>}
+                </div>
                 <div className='mt-4'>
                     <input
                         className="w-100 border"
@@ -647,6 +666,7 @@ const AddPermit = ({ auth }) => {
 
                 <Row className='mt-5 flex-row'>
                     <Col>
+
                         <input
                             className="border"
                             style={{ height: "46px", width: "383px", borderRadius: "5px", borderColor: "#DADADA" }}
@@ -659,10 +679,13 @@ const AddPermit = ({ auth }) => {
                             }}
                         />
                         {supervisor === '' && <span style={{ color: "red", fontSize: "12px" }}>{supervisorError}</span>}
+
+                        <input className="border" style={{ height: "40px", width: "303px", borderRadius: "5px", borderColor: "#DADADA" }} type='text' placeholder='CONTRACTOR SUPERVISOR (REQUESTER)' value={supervisor} onChange={(e) => setSupervisor(e.target.value)} />
+
                     </Col>
 
                     <Col>
-                        <FileUploadComponent
+                        <FileUploadComponent 
                             label="Sign"
                             onFileUpload={(file) => handleFileUpload(file, setSignFile)}
                         />
@@ -681,7 +704,7 @@ const AddPermit = ({ auth }) => {
 
                     <Col>
                         <input
-                            style={{ height: "46px", width: "383px", borderRadius: "5px", borderColor: "#DADADA" }}
+                            style={{ height: "40px", width: "303px", borderRadius: "5px", borderColor: "#DADADA" }}
                             type='date'
                             className='add-permit-input border'
                             placeholder='Date'
@@ -798,6 +821,7 @@ const AddPermit = ({ auth }) => {
                 <h6 style={{ color: "#0D3E78" }}>DECLARATION</h6><hr></hr>
 
                 <div style={{ fontSize: "14px", fontWeight: "600" }}>
+
                     <input
                         type='checkbox'
                         className='m-1'
@@ -807,6 +831,13 @@ const AddPermit = ({ auth }) => {
                             setFinalCheckError(e.target.value === '' ? 'Final check must be checked' : '');
                         }}
                     />By checking this checkbox, I solemnly declared that I have checked through the documents. All the documents that are required by the ePermit System are uploaded and correct to the best of my knowledge. I will be liable if the documents are not in order and will be subjected to legal actions by EHS if applicable.
+
+                    <input type='checkbox' className='m-1' value={finalCheck} onChange={(e) => setFinalCheck(e.target.checked)} />By checking this checkbox, I solemnly declared that I have checked through the documents. All the documents that are required by the ePermit System are uploaded and correct to the best of my knowledge. I will be liable if the documents are not in order and will be subjected to legal actions by EHS if applicable.
+                </div>
+                <div className='mt-0'>
+
+                    {finalCheckReq && <span style={{ color: "red", fontSize: "12px", fontWeight: "bold" }}  >*Required</span>}
+
                 </div>
                 {finalCheck === '' && <span style={{ color: "red", fontSize: "12px" }}>{finalCheckError}</span>}
                 <div className='mt-3'>

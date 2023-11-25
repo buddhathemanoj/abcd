@@ -7,6 +7,25 @@
     padding-right: 30px;
 
 }
+.modal-backdrop {
+  filter: blur(5px); /* Adjust the blur value as needed */
+} 
+.resumit-btn {
+  border: none;
+  outline: none;
+  background-color: #508aef;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  color: #fff;
+  font-size: 12px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.resumit-btn:hover {
+  background-color: #3876E3;
+}
 .permits-btn-search-container {
     display: flex;
     align-items: center;

@@ -1,6 +1,6 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, updateProfile ,getUserByEmail, signInWithPhoneNumber} from "firebase/auth";
 import { app } from "../firebase";
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { doc,Timestamp, setDoc, getDoc, collection, getDocs, query, where, addDoc, updateDoc,getFirestore } from "firebase/firestore";
 import { db ,storage} from "../firebase";
 import emailjs from 'emailjs-com';
@@ -511,6 +511,25 @@ export const storeSiteData = async (siteData) => {
   }
 };
 
+const deletePermitFromStorage = async (permitId) => {
+  try {
+    const storage = getStorage();
+    const permitRef = ref(storage, `path/to/upload/${permitId}`);
+
+    // Delete the file
+    await deleteObject(permitRef);
+
+    console.log('Permit deleted from storage');
+  } catch (error) {
+    if (error.code === 'storage/object-not-found') {
+      console.error('Error deleting permit: The file does not exist.');
+    } else {
+      console.error('Error deleting permit from storage:', error.message);
+    }
+  }
+};
+
+export { deletePermitFromStorage };
 
 
 

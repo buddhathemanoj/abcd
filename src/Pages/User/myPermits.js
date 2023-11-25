@@ -47,25 +47,25 @@ const MyPermits = ({ permits, auth }) => {
         fetchPermits();
     }, [userId]);
 
-    // const handleActionClick = async (action, permitId) => {
-    //     try {
-    //       const permit = userPermits.find((p) => p.id === permitId);
+    console.log(userPermits);
 
-    //       if (!permit) {
-    //         console.error(`Permit with ID ${permitId} not found.`);
-    //         return;
-    //       }
+    const handleActionClick = async (action, permitId) => {
+        try {
+          const permit = userPermits.find((p) => p.id === permitId);
 
-    //       const { id: permitDocumentId } = permit;
-    //       if (action === 'approve') {
-    //         await updatePermitStatus(permitDocumentId, 'active');
-    //       } else if (action === 'cancel') {
-    //         await updatePermitStatus(permitDocumentId, 'canceled');
-    //       }
-    //     } catch (error) {
-    //       console.error('Error handling action:', error.message);
-    //     }
-    //   };
+          if (!permit) {
+            console.error(`Permit with ID ${permitId} not found.`);
+            return;
+          }
+
+          const { id: permitDocumentId } = permit;
+          if (action === 'resubmit') {
+            await updatePermitStatus(permitDocumentId, 'pending');
+          }
+        } catch (error) {
+          console.error('Error handling action:', error.message);
+        }
+      };
 
     const clickToCreatePermit = () => {
         navigate("/all-permits-create")
@@ -139,11 +139,12 @@ const MyPermits = ({ permits, auth }) => {
                                 <td>{permit.endDate}</td>
                                 <td style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                                     <span style={{ padding: '8px', fontSize: '14px' }} className={`badge ${permit.status === 'active' ? 'success' : 'canceled'}`}>
-                                        {permit.status}
+                                        {permit.status === "canceled" ? "Rejected" : permit.status}
                                     </span>
                                 </td>
 
                                 <td style={{ textAlign: "center" }}>
+                                    {permit.status === "canceled" ? <button className='resumit-btn' onClick={() => handleActionClick('resubmit',permit.id)} type='button' >ReSubmit</button> : <BsThreeDots /> }
                                     {/* <div style={{ position: 'relative' }}>
                                             <OverlayTrigger
                                                 placement="top"
@@ -183,7 +184,6 @@ const MyPermits = ({ permits, auth }) => {
                                                 </div>
                                             )}
                                       </div> */}
-                                    <BsThreeDots />
                                 </td>
                             </tr>
                         ))}

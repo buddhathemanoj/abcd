@@ -171,6 +171,7 @@ const Addusers = ({ user, state, show, handleClose }) => {
                 placeholder=""
                 value={formData.email}
                 autoFocus
+                disabled
               />
             </Form.Group>
             <Form.Group
@@ -183,6 +184,7 @@ const Addusers = ({ user, state, show, handleClose }) => {
                 placeholder=""
                 value={formData.password}
                 autoFocus
+                disabled
               />
             </Form.Group>
           </Form>

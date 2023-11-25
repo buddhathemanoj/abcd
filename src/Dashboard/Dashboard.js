@@ -1,8 +1,4 @@
-
 import React, { useEffect, useState } from "react";
-
-import React ,{useEffect,useState} from "react";
-
 import { connect } from "react-redux";
 import Cookies from "js-cookie";
 import "./Dashboard.css"
@@ -10,9 +6,6 @@ import vector from "../Asset/noto_hourglass-with-flowing-sand.png"
 import { RiArrowDropDownLine } from "react-icons/ri";
 
 import { getAllPermitsCreatedByAllUsers } from "../Auth/auth";
-
-
-import { getTotalllPermits } from "../Auth/auth";
 
 const workArr = [
     "General Permit To Work",
@@ -22,30 +15,8 @@ const workArr = [
     "A4 - Work at Height"
 ]
 
-
 const Dashboard = ({ state, index, user }) => {
 
-
-const Dashboard = (state) => {
-
-
-    const [permits, setPermits] = useState([]);
-    const User = JSON.parse(localStorage.getItem('user'));
-    const userId = User.uid
-
-    useEffect(() => {
-        const fetchPermits = async () => {
-          try {
-            const permitsData = await getTotalllPermits();
-            setPermits(permitsData);
-            console.log('Permits:', permitsData);
-          } catch (error) {
-            console.error('Error fetching permits:', error);
-          }
-        };
-    
-        fetchPermits();
-      }, [userId]); 
     const token = Cookies.get("accessToken")
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const userId = storedUser ? storedUser.uid : null;
@@ -94,10 +65,7 @@ const Dashboard = (state) => {
                             <p className="total-desc">Total Active Permits</p>
                             <p className="general-desc">General Permit To Work</p>
 
-                            <h1 style={{ textAlign: "center", marginTop: "5px", fontSize: "55px", color: "#022088", marginBottom: "0px" }}>{userPermits.length}</h1>
-
-                            <h1 style={{ textAlign: "center", marginTop: "5px", fontSize: "55px", color: "#022088", marginBottom: "0px" }}>{permits.length}</h1>
-
+                            <h1 style={{ textAlign: "center", marginTop: "5px", fontSize: "55px", color: "#022088", marginBottom: "0px" }}>{userPermits.length}</h1>                         
                         </div>
                     </div>
                     <div className="view-btn-container">

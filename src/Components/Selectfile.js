@@ -3,6 +3,7 @@ import '../styles/Upload.css'
 import { FaEye } from "react-icons/fa";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { IoCloudUploadOutline } from "react-icons/io5";
+
 const FileUploadComponent = (props) => {
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
@@ -10,20 +11,20 @@ const FileUploadComponent = (props) => {
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
-  
+
     if (selectedFile) {
       console.log("Selected file data:", selectedFile);
       setFile(selectedFile);
       const previewUrl = URL.createObjectURL(selectedFile);
       setFilePreview(previewUrl);
-  
+
       // Call the onFileUpload callback with the selected file data
       if (props.onFileUpload) {
         props.onFileUpload(selectedFile);
       }
     }
   };
-  
+
 
   const handleFilePreview = () => {
     if (filePreview) {
@@ -53,17 +54,17 @@ const FileUploadComponent = (props) => {
 
     return (
       <div className="selected-file">
-     
+
         <span>{file.name}</span>
         <div>
-             <button  onClick={handleFilePreview} className="preview-button cstmbtn">
-        <FaEye />
-        </button>
-        <button  onClick={handleFileDelete} className="delete-button cstmbtn">
-        <MdOutlineDeleteOutline  />
-        </button>
+          <button onClick={handleFilePreview} className="preview-button cstmbtn">
+            <FaEye />
+          </button>
+          <button onClick={handleFileDelete} className="delete-button cstmbtn">
+            <MdOutlineDeleteOutline />
+          </button>
         </div>
-       
+
       </div>
     );
   };
@@ -80,7 +81,7 @@ const FileUploadComponent = (props) => {
 
       {/* Custom styled button to trigger file input */}
       <button onClick={openFileInput} className="custom-file-btn">
-      <IoCloudUploadOutline /> {props.label}
+        <IoCloudUploadOutline /> {props.label}
       </button>
 
       {renderSelectedFile()}

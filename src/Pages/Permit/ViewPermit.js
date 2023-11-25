@@ -1,32 +1,32 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { Row, Col,  Form } from "react-bootstrap";
+import { Row, Col, Form } from "react-bootstrap";
 import { Button, Modal } from 'react-bootstrap';
 import { FaArrowLeft } from "react-icons/fa";
 
 const ViewPermit = () => {
-    const location = useLocation();
-    const permit = location.state && location.state.permit;
-    const [showPreviewModal, setShowPreviewModal] = useState(false);
-    const [selectedFile, setSelectedFile] = useState(null);
-  
-    const handleFilePreview = (file) => {
-      setSelectedFile(file);
-      setShowPreviewModal(true);
-    };
-  
-    const handleClosePreviewModal = () => {
-      setShowPreviewModal(false);
-      setSelectedFile(null);
-    };
-  
-    console.log(permit);
+  const location = useLocation();
+  const permit = location.state && location.state.permit;
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFilePreview = (file) => {
+    setSelectedFile(file);
+    setShowPreviewModal(true);
+  };
+
+  const handleClosePreviewModal = () => {
+    setShowPreviewModal(false);
+    setSelectedFile(null);
+  };
+
+  console.log(permit);
   return (
     <div>
       {permit && (
         <div>
-      <Form>
-      <Row className="mb-3">
+          <Form>
+            <Row className="mb-3">
               <Col>
                 <Form.Group controlId="permitType">
                   <Form.Label>Permit Type</Form.Label>
@@ -44,9 +44,9 @@ const ViewPermit = () => {
                 </Form.Group>
               </Col>
             </Row>
-      </Form>
-   
-      
+          </Form>
+
+
           <p className="mt-3 mb-3">
             <Link to="/all-permits" style={{ textDecoration: "none" }}>
               <FaArrowLeft /> Back to view all permit
@@ -104,17 +104,17 @@ const ViewPermit = () => {
             </Row>
 
             <div className=" mt-5 mb-0">
-                <Row>
-                    <Col>
-                    <Form.Label className="mt-0 mb-0 mr-2">Site2:</Form.Label>
+              <Row>
+                <Col>
+                  <Form.Label className="mt-0 mb-0 mr-2">Site2:</Form.Label>
 
-                    </Col>
-                    <Col>
-                    <Form.Control style={{width:"400px"}} type="text" value={permit.site2} readOnly />
+                </Col>
+                <Col>
+                  <Form.Control style={{ width: "400px" }} type="text" value={permit.site2} readOnly />
 
-                    </Col>
-                </Row>
-</div>
+                </Col>
+              </Row>
+            </div>
 
 
 
@@ -146,7 +146,7 @@ const ViewPermit = () => {
 
               <Col>
                 <textarea
-                  style={{padding:"10px",maxWidth:"400px"}}
+                  style={{ padding: "10px", maxWidth: "400px" }}
                   value={permit.buildingNotes}
                   disabled
                 ></textarea>
@@ -171,7 +171,7 @@ const ViewPermit = () => {
               <Col>
                 <textarea
                   placeholder="Others (Pls Specify)"
-                  style={{padding:"10px",maxWidth:"400px"}}
+                  style={{ padding: "10px", maxWidth: "400px" }}
                   value={permit.levelNotes}
                   disabled
                 ></textarea>
@@ -179,40 +179,40 @@ const ViewPermit = () => {
             </Row>
 
             <div className='p-4 shadow mt-3'>
-        <h6 style={{ color: "#0D3E78" }}>WORK DESCRIPTION (ATTACH DRAWING / SKETCH / DESCRIBE IN DETAILS etc...)</h6>
-        <hr />
+              <h6 style={{ color: "#0D3E78" }}>WORK DESCRIPTION (ATTACH DRAWING / SKETCH / DESCRIBE IN DETAILS etc...)</h6>
+              <hr />
 
-        <textarea
-          value={permit.workDescription}
-          className='w-100 border rounded'
-          style={{ minHeight: "5rem", textIndent: "20px" }}
-        ></textarea>
+              <textarea
+                value={permit.workDescription}
+                className='w-100 border rounded'
+                style={{ minHeight: "5rem", textIndent: "20px" }}
+              ></textarea>
 
-<Row className="mt-5" style={{ fontSize: "small" }}>
-<Col>
-  {console.log("Selected File URL:", permit.selectedFile.url)}
-  <Button variant="link" onClick={() => handleFilePreview(permit.selectedFile)}>
-    {permit.selectedFile.name}
-  </Button>
-</Col>
+              <Row className="mt-5" style={{ fontSize: "small" }}>
+                <Col>
+                  {console.log("Selected File URL:", permit.selectedFile.url)}
+                  <Button variant="link" onClick={() => handleFilePreview(permit.selectedFile)}>
+                    {permit.selectedFile.name}
+                  </Button>
+                </Col>
 
-        <Col>
-          <Button variant="link" onClick={() => window.open(permit.drawingFile.url, '_blank')}>
-            {permit.drawingFile.name}
-          </Button>
-       
+                <Col>
+                  <Button variant="link" onClick={() => window.open(permit.drawingFile.url, '_blank')}>
+                    {permit.drawingFile.name}
+                  </Button>
 
-        </Col>
-        <Col>
-          <Button variant="link" onClick={() => window.open(permit.riskfile.url, '_blank')}>
-            {permit.riskfile.name}
-          </Button>
-        </Col>
-      </Row>
 
-      </div>
+                </Col>
+                <Col>
+                  <Button variant="link" onClick={() => window.open(permit.riskfile.url, '_blank')}>
+                    {permit.riskfile.name}
+                  </Button>
+                </Col>
+              </Row>
 
-      {/* Preview Modal */}
+            </div>
+
+            {/* Preview Modal */}
 
             {/* ... (Remaining code) */}
 
@@ -224,35 +224,35 @@ const ViewPermit = () => {
               <hr></hr>
 
               <Row className='mt-5 flex-row'>
-        <Col>
-          <input
-            className="border"
-            style={{ height: "46px", padding:"10px",  borderRadius: "5px", borderColor: "#DADADA" }}
-            type='text'
-            placeholder='CONTRACTOR SUPERVISOR (REQUESTER)'
-            value={permit.supervisor}
-            readOnly
-          />
-        </Col>
+                <Col>
+                  <input
+                    className="border"
+                    style={{ height: "46px", padding: "10px", borderRadius: "5px", borderColor: "#DADADA" }}
+                    type='text'
+                    placeholder='CONTRACTOR SUPERVISOR (REQUESTER)'
+                    value={permit.supervisor}
+                    readOnly
+                  />
+                </Col>
 
-        <Col>
-        <Button variant="link" onClick={() => window.open(permit.signFile.url, '_blank')}>
-  {permit.signFile.name}
-</Button>
+                <Col>
+                  <Button variant="link" onClick={() => window.open(permit.signFile.url, '_blank')}>
+                    {permit.signFile.name}
+                  </Button>
 
-        </Col>
+                </Col>
 
-        <Col>
-          <input
-            style={{ height: "46px", borderRadius: "5px", borderColor: "#DADADA" }}
-            type='date'
-            className='add-permit-input border'
-            placeholder='Date'
-            value={permit.decDate}
-            readOnly
-          />
-        </Col>
-      </Row>
+                <Col>
+                  <input
+                    style={{ height: "46px", borderRadius: "5px", borderColor: "#DADADA" }}
+                    type='date'
+                    className='add-permit-input border'
+                    placeholder='Date'
+                    value={permit.decDate}
+                    readOnly
+                  />
+                </Col>
+              </Row>
 
               <div className="mt-5"></div>
             </div>
@@ -280,43 +280,43 @@ const ViewPermit = () => {
           </div>
         </div>
       )}
-    
-        <Modal show={showPreviewModal} onHide={handleClosePreviewModal}>
-  <Modal.Header closeButton>
-    <Modal.Title>File Preview</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-  {selectedFile && (
-    <>
-      {selectedFile.type.startsWith("image/") && (
-        <img
-          src={selectedFile.url}
-          alt={`File Preview: ${selectedFile.name}`}
-          style={{ maxWidth: "100%", maxHeight: "500px" }}
-        />
-      )}
-      {selectedFile.type === "application/pdf" && (
-        <embed
-          src={selectedFile.url}
-          type="application/pdf"
-          width="100%"
-          height="500px"
-        />
-      )}
-      {/* Add more conditions for other file types if needed */}
-    </>
-  )}
-</Modal.Body>
 
-  <Modal.Footer>
-    <Button variant="secondary" onClick={handleClosePreviewModal}>
-      Close
-    </Button>
-  </Modal.Footer>
-</Modal>
+      <Modal show={showPreviewModal} onHide={handleClosePreviewModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>File Preview</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedFile && (
+            <>
+              {selectedFile.type.startsWith("image/") && (
+                <img
+                  src={selectedFile.url}
+                  alt={`File Preview: ${selectedFile.name}`}
+                  style={{ maxWidth: "100%", maxHeight: "500px" }}
+                />
+              )}
+              {selectedFile.type === "application/pdf" && (
+                <embed
+                  src={selectedFile.url}
+                  type="application/pdf"
+                  width="100%"
+                  height="500px"
+                />
+              )}
+              {/* Add more conditions for other file types if needed */}
+            </>
+          )}
+        </Modal.Body>
 
-    
-     
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClosePreviewModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
+
     </div>
   );
 };

@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 
-import React ,{useEffect,useState} from "react";
+// import React ,{useEffect,useState} from "react";
 
 import { connect } from "react-redux";
 import Cookies from "js-cookie";
@@ -26,7 +26,7 @@ const workArr = [
 const Dashboard = ({ state, index, user }) => {
 
 
-const Dashboard = (state) => {
+   
 
 
     const [permits, setPermits] = useState([]);
@@ -48,7 +48,7 @@ const Dashboard = (state) => {
       }, [userId]); 
     const token = Cookies.get("accessToken")
     const storedUser = JSON.parse(localStorage.getItem("user"));
-    const userId = storedUser ? storedUser.uid : null;
+    // const userId = storedUser ? storedUser.uid : null;
     const [userPermits, setUserPermits] = useState([]);  
     const [workArrCounts, setWorkArrCounts] = useState(Array(workArr.length).fill(0));
 
@@ -96,7 +96,7 @@ const Dashboard = (state) => {
 
                             <h1 style={{ textAlign: "center", marginTop: "5px", fontSize: "55px", color: "#022088", marginBottom: "0px" }}>{userPermits.length}</h1>
 
-                            <h1 style={{ textAlign: "center", marginTop: "5px", fontSize: "55px", color: "#022088", marginBottom: "0px" }}>{permits.length}</h1>
+                            {/* <h1 style={{ textAlign: "center", marginTop: "5px", fontSize: "55px", color: "#022088", marginBottom: "0px" }}>{permits.length}</h1> */}
 
                         </div>
                     </div>
@@ -163,4 +163,5 @@ const Dashboard = (state) => {
 const mapStateToProps = (state) => ({
     user: state.auth.user,
 })
+
 export default connect(mapStateToProps)(Dashboard);

@@ -10,8 +10,6 @@ import { FaArrowLeft } from "react-icons/fa";
 import { toast, ToastContainer } from 'react-toastify';
 import { format } from 'date-fns';
 import { getTotalPermits } from '../../Auth/auth';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '../../firebase';
 import "./Permit.css"
 
 
@@ -43,55 +41,13 @@ const AddPermit = ({ auth }) => {
     const [signFile, setSignFile] = useState(null)
     const [drawingFile, setDrawingFile] = useState(null);
     const [riskfile, setRiskFile] = useState(null);
-
-    const [workdesc ,setWorkDesc]=useState("")
-
-    const [permitTypeError, setPermitTypeError] = useState('');
-    const [siteError, setSiteError] = useState('');
-    const [supervisorError, setSupervisorError] = useState('');
-    const [declarationCheckError, setDeclarationCheckError] = useState('');
-    const [contractCompanyError, setContractCompanyError] = useState('');
-    const [site2Error, setSite2Error] = useState('');
-    const [startDateError, setStartDateError] = useState('');
-    const [startTimeError, setStartTimeError] = useState('');
-    const [endDateError, setEndDateError] = useState('');
-    const [endTimeError, setEndTimeError] = useState('');
-    const [selectedEmergencyNumberError, setSelectedEmergencyNumberError] = useState('');
-    const [finalCheckError, setFinalCheckError] = useState('');
-    const [selectedLevelsError, setSelectedLevelsError] = useState('');
-    const [selectedBuildingsError, setSelectedBuildingsError] = useState('');
-    const [decDateError, setDecDateError] = useState('');
-    const [workdescError, setWorkDescError] = useState('');
-    const [selectedFileError, setSelectedFileError] = useState('');
-    const [signFileError, setSignFileError] = useState('');
-    const [drawingFileError, setDrawingFileError] = useState('');
-    const [riskfileError, setRiskFileError] = useState('');
-
-    const handleFileUpload = async (file, fileType) => {
-        try {
-            const storageRef = ref(storage, 'path/to/upload/' + file.name);
-            const metadata = { contentType: file.type };
-
-            // Upload the file
-            await uploadBytes(storageRef, file, metadata);
-
-            // Get the download URL and wait for it to complete
-            const downloadURL = await getDownloadURL(storageRef);
-
-            // Return the result
-            return { name: file.name, url: downloadURL, type: fileType };
-        } catch (error) {
-            console.error("Error uploading file:", error.message);
-            throw new Error("Unable to upload file.");
-        }
-
     const [workdesc, setWorkDesc] = useState("")
 
     const handleFileUpload = (file, setFileFunction) => {
         console.log("File data:", file);
         setFileFunction(file);
-
     };
+
     console.log("checkx", finalCheck);
 
     const handleLevelCheckboxChange = (level) => {
@@ -151,17 +107,12 @@ const AddPermit = ({ auth }) => {
 
     const handleGeneralCheckboxChange = (e) => {
         setIsGeneralChecked(e.target.checked);
-        setIsGeneralChecked(e.target.value === '' ? 'End Date is required' : '');
     };
 
-
-
-    // const req = site2.length === 0
 
     const req = site2.length === 0
     const finalCheckReq = !finalCheck;
     const certficaionReq = !declarationCheck
-
 
 
     const handleSubmit = async () => {
@@ -208,46 +159,21 @@ const AddPermit = ({ auth }) => {
         if (
             permitType !== '' &&
             site !== '' &&
-            supervisor !== '' &&
-            declarationCheck &&
-            contractCompany !== '' &&
-            site2 !== '' &&
             startDate !== '' &&
-            startTime !== '' &&
             endDate !== '' &&
-            endTime !== '' &&
-            selectedEmergencyNumber.length > 0 &&
+            selectedFile !== '' &&
+            drawingFile !== '' &&
+            signFile !== '' &&
+            riskfile !== '' &&
+            supervisor !== '' &&
+            contractCompany !== '' &&
             finalCheck &&
-            selectedBuildings.length > 0 &&
-            selectedLevels.length > 0 &&
+            declarationCheck &&
             decDate !== '' &&
             workdesc !== '' &&
-            selectedFile !== null &&
-            signFile !== null &&
-            drawingFile !== null &&
-            riskfile !== null
+            selectedBuildings.length > 0 &&
+            selectedLevels.length > 0
         ) {
-            setPermitTypeError('');
-            setSiteError('');
-            setSupervisorError('');
-            setDeclarationCheckError('');
-            setContractCompanyError('');
-            setSite2Error('');
-            setStartDateError('');
-            setStartTimeError('');
-            setEndDateError('');
-            setEndTimeError('');
-            setSelectedEmergencyNumberError('');
-            setFinalCheckError('');
-            setSelectedLevelsError('');
-            setSelectedBuildingsError('');
-            setDecDateError('');
-            setWorkDescError('');
-            setSelectedFileError('');
-            setSignFileError('');
-            setDrawingFileError('');
-            setRiskFileError('');
-
             try {
                 const storedUser = JSON.parse(localStorage.getItem('user'));
 
@@ -284,27 +210,6 @@ const AddPermit = ({ auth }) => {
                 toast.error("Error submitting permit data. Please try again.");
             }
         } else {
-            setPermitTypeError(permitType === '' ? 'Permit Type is required' : '');
-            setSiteError(site === '' ? 'Site is required' : '');
-            setSupervisorError(supervisor === '' ? 'Supervisor is required' : '');
-            setDeclarationCheckError(!declarationCheck ? 'Declaration must be checked' : '');
-            setContractCompanyError(contractCompany === '' ? 'Contract Company is required' : '');
-            setSite2Error(site2 === '' ? 'Required' : '');
-            setStartDateError(startDate === '' ? 'Start Date is required' : '');
-            setStartTimeError(startTime === '' ? 'Start Time is required' : '');
-            setEndDateError(endDate === '' ? 'End Date is required' : '');
-            setEndTimeError(endTime === '' ? 'End Time is required' : '');
-            setSelectedEmergencyNumberError(selectedEmergencyNumber.length === 0 ? 'Emergency Number is required' : '');
-            setFinalCheckError(!finalCheck ? 'Final check must be checked' : '');
-            setSelectedLevelsError(selectedLevels.length === 0 ? 'At least one Level must be selected' : '');
-            setSelectedBuildingsError(selectedBuildings.length === 0 ? 'At least one Building must be selected' : '');
-            setDecDateError(decDate === '' ? 'Declaration Date is required' : '');
-            setWorkDescError(workdesc === '' ? 'Work Description is required' : '');
-            setSelectedFileError(selectedFile === null ? 'MAP file is required' : '');
-            setSignFileError(signFile === null ? 'Sign file is required' : '');
-            setDrawingFileError(drawingFile === null ? 'Drawing file is required' : '');
-            setRiskFileError(riskfile === null ? 'Risk Assessment file is required' : '');
-
             toast.error('Please fill in all required fields.');
         }
     };
@@ -320,16 +225,12 @@ const AddPermit = ({ auth }) => {
                         style={{ width: "500px" }}
                         name='permitType'
                         value={permitType}
-                        onChange={(e) => {
-                            setPermitType(e.target.value);
-                            setPermitTypeError(e.target.value === '' ? 'Permit Type is required' : '');
-                        }}
+                        onChange={(e) => setPermitType(e.target.value)}
                     >
                         <option value="">Select Permit Type</option>
                         <option value="_GENERAL PERMIT TO WORK">_GENERAL PERMIT TO WORK</option>
                         <option value="1">Hot Work</option>
                     </Form.Select>
-                    {permitType === '' && <span style={{ color: "red", fontSize: "12px" }}>{permitTypeError}</span>}
                 </Col>
             </Row>
             <br />
@@ -341,16 +242,12 @@ const AddPermit = ({ auth }) => {
                         className='mt-0'
                         style={{ width: "500px", backgroundColor: "#FFFFFF" }}
                         value={site}
-                        onChange={(e) => {
-                            setSite(e.target.value);
-                            setSiteError(e.target.value === '' ? 'Site is required' : '');
-                        }}
+                        onChange={(e) => setSite(e.target.value)}
                     >
                         <option value="" >Select Site</option>
                         <option value="CSE">CSE</option>
                         <option value="Tk 123">Tk 123</option>
                     </Form.Select>
-                    {site === '' && <span style={{ color: "red", fontSize: "12px" }}>{siteError}</span>}
                 </Col>
             </Row>
             <p className='mt-3 mb-3'><Link to="/all-permits" style={{ textDecoration: "none" }}><FaArrowLeft /> Back to view all permit</Link><span style={{ color: "blue" }}>{permitType}</span></p>
@@ -371,15 +268,10 @@ const AddPermit = ({ auth }) => {
                             type='date'
                             name='startDate'
                             value={startDate}
-                            // onChange={handleDateChange}
-                            onChange={(e) => {
-                                setStartDate(e.target.value);
-                                setStartDateError(e.target.value === '' ? 'Start Date is required' : '');
-                            }}
+                            onChange={handleDateChange}
                             className='add-permit-input'
                             placeholder='Start Date'
                         />
-                        {startDate === '' && <span style={{ color: "red", fontSize: "12px" }}>{startDateError}</span>}
                         <input
 
                             style={{ width: "230.5px", height: "46px" }}
@@ -387,67 +279,40 @@ const AddPermit = ({ auth }) => {
                             name='startTime'
                             className='add-permit-input'
                             value={startTime}
-                            // onChange={handleDateChange}
-                            onChange={(e) => {
-                                setStartTime(e.target.value);
-                                setStartTimeError(e.target.value === '' ? 'Start Time is required' : '');
-                            }}
+                            onChange={handleDateChange}
                             placeholder='Start Time'
                         />
-                        {startTime === '' && <span style={{ color: "red", fontSize: "12px" }}>{startTimeError}</span>}
                         <input
                             style={{ width: "230.5px", height: "46px" }}
                             type='date'
                             name='endDate'
                             value={endDate}
-                            // onChange={handleDateChange}
-                            onChange={(e) => {
-                                setEndDate(e.target.value);
-                                setEndDateError(e.target.value === '' ? 'End Date is required' : '');
-                            }}
+                            onChange={handleDateChange}
                             className='add-permit-input'
                             placeholder='End Date'
                         />
-                        {endDate === '' && <span style={{ color: "red", fontSize: "12px" }}>{endDateError}</span>}
                         <input
                             style={{ width: "230.5px", height: "46px" }}
                             type='time'
                             name='endTime'
                             className='add-permit-input'
                             value={endTime}
-                            // onChange={handleDateChange}
-                            onChange={(e) => {
-                                setEndTime(e.target.value);
-                                setEndTimeError(e.target.value === '' ? 'End Time is required' : '');
-                            }}
+                            onChange={handleDateChange}
                             placeholder='End Time'
                         />
-                        {endTime === '' && <span style={{ color: "red", fontSize: "12px" }}>{endTimeError}</span>}
+
                     </Col>
                 </Row>
 
                 <div className='d-flex mt-5 mb-0'>
-                    <Form.Select
-                        aria-label="Default select example"
-                        value={site2}
-                        onChange={(e) => {
-                            setSite2(e.target.value);
-                            setSite2Error(e.target.value === '' ? 'Site 2 is required' : '');
-                        }}
-                        className='site'>
-                        
+                    <Form.Select aria-label="Default select example" value={site2} onChange={(e) => setSite2(e.target.value)} className='site'>
                         <option value="">Site</option>
                         <option value="Yard">Yard</option>
                         <option value="Fab floor 3">Fab floor 3</option>
                     </Form.Select>
                     <h6 style={{ marginLeft: "10px", fontSize: "12px" }}>Note that Start Date and End Date Max 14 Days</h6>
                 </div>
-
-                {site2 === '' && <span style={{ color: "red", fontSize: "12px" }}>{site2Error}</span>}
-                {/* {req && <span style={{ color: "red", fontSize: "12px", marginTop: "0" }}>Required</span>} */}
-
                 {req && <span style={{ color: "red", fontSize: "12px", marginTop: "0", fontWeight: "bold" }}>*Required</span>}
-
 
                 <Row className='mt-4'>
 
@@ -598,10 +463,7 @@ const AddPermit = ({ auth }) => {
                     placeholder='Work Description (Attach Drawing / Sketch / Describe in Details here)'
                     className='w-100 border rounded '
                     style={{ minHeight: "5rem", textIndent: "20px" }}
-                    onChange={(e) => {
-                        setWorkDesc(e.target.value);
-                        setWorkDescError(e.target.value === '' ? 'Work Description is required' : '');
-                    }}
+                    onChange={(e) => setWorkDesc(e.target.value)}
                 ></textarea>
 
                 <Row className='mt-5' style={{ fontSize: "small" }}>
@@ -637,51 +499,18 @@ const AddPermit = ({ auth }) => {
                 <h6 style={{ color: "#0D3E78" }}>SECTION 3 : DECLARATION, CERTIFICATION & AUTHORIZATION</h6><hr></hr>
 
                 <div style={{ fontSize: "14px", fontWeight: "600" }}>
-                    <input
-                        className='m-1'
-                        type='checkbox'
-                        onChange={(e) => {
-                            setDecCheck(e.target.checked);
-                            setDeclarationCheckError(e.target.checked === '' ? 'Declaration must be checked' : '');
-                        }}
-                    />The contractor and or its agents, sub-contractors, employee, hereby warrants the Facilities Work Permits and the accompanying Safety Risk Assessments, Safety Permits & Checklists and Procedures and EAI Assessment have been read and understood and shall take all necessary precautions before commencement of work in JCET Fab10N and Fab10W Daily. They shall also be liable to JCET Fab10N and Fab 10W for any damages, including direct or indirect losses incurred due to contractor and or its agent, sub-contractor, employee and servant's negligence.
+                    <input className='m-1' type='checkbox' onChange={(e) => setDecCheck(e.target.checked)} />The contractor and or its agents, sub-contractors, employee, hereby warrants the Facilities Work Permits and the accompanying Safety Risk Assessments, Safety Permits & Checklists and Procedures and EAI Assessment have been read and understood and shall take all necessary precautions before commencement of work in JCET Fab10N and Fab10W Daily. They shall also be liable to JCET Fab10N and Fab 10W for any damages, including direct or indirect losses incurred due to contractor and or its agent, sub-contractor, employee and servant's negligence.
                 </div>
                 <div className='mt-0'>
                     {certficaionReq && <span style={{ color: "red", fontSize: "12px", fontWeight: "bold" }}  >*Required</span>}
                 </div>
                 <div className='mt-4'>
-                    <input
-                        className="w-100 border"
-                        style={{ height: "46px", borderRadius: "5px", borderColor: "#DADADA" }}
-                        type='text'
-                        placeholder='NAME OF CONTRACTOR COMPANY'
-                        value={contractCompany}
-                        onChange={(e) => {
-                            setContractCompany(e.target.value);
-                            setContractCompanyError(e.target.value === '' ? 'Contract Company is required' : '');
-                        }}
-                    />
-                    {contractCompany === '' && <span style={{ color: "red", fontSize: "12px" }}>{contractCompanyError}</span>}
+                    <input className="w-100 border" style={{ height: "46px", borderRadius: "5px", borderColor: "#DADADA" }} type='text' placeholder='NAME OF CONTRACTOR COMPANY' value={contractCompany} onChange={(e) => setContractCompany(e.target.value)} />
                 </div>
 
                 <Row className='mt-5 flex-row'>
                     <Col>
-
-                        <input
-                            className="border"
-                            style={{ height: "46px", width: "383px", borderRadius: "5px", borderColor: "#DADADA" }}
-                            type='text'
-                            placeholder='CONTRACTOR SUPERVISOR (REQUESTER)'
-                            value={supervisor}
-                            onChange={(e) => {
-                                setSupervisor(e.target.value);
-                                setSupervisorError(e.target.value === '' ? 'Supervisor is required' : '');
-                            }}
-                        />
-                        {supervisor === '' && <span style={{ color: "red", fontSize: "12px" }}>{supervisorError}</span>}
-
                         <input className="border" style={{ height: "40px", width: "303px", borderRadius: "5px", borderColor: "#DADADA" }} type='text' placeholder='CONTRACTOR SUPERVISOR (REQUESTER)' value={supervisor} onChange={(e) => setSupervisor(e.target.value)} />
-
                     </Col>
 
                     <Col>
@@ -709,12 +538,8 @@ const AddPermit = ({ auth }) => {
                             className='add-permit-input border'
                             placeholder='Date'
                             value={decDate}
-                            onChange={(e) => {
-                                setDecDate(e.target.value);
-                                setDecDateError(e.target.value === '' ? 'Declaration Date is required' : '');
-                            }}
+                            onChange={(e) => setDecDate(e.target.value)}
                         />
-                        {decDate === '' && <span style={{ color: "red", fontSize: "12px" }}>{decDateError}</span>}
                     </Col>
 
                 </Row>
@@ -821,27 +646,14 @@ const AddPermit = ({ auth }) => {
                 <h6 style={{ color: "#0D3E78" }}>DECLARATION</h6><hr></hr>
 
                 <div style={{ fontSize: "14px", fontWeight: "600" }}>
-
-                    <input
-                        type='checkbox'
-                        className='m-1'
-                        value={finalCheck}
-                        onChange={(e) => {
-                            setFinalCheck(e.target.value);
-                            setFinalCheckError(e.target.value === '' ? 'Final check must be checked' : '');
-                        }}
-                    />By checking this checkbox, I solemnly declared that I have checked through the documents. All the documents that are required by the ePermit System are uploaded and correct to the best of my knowledge. I will be liable if the documents are not in order and will be subjected to legal actions by EHS if applicable.
-
                     <input type='checkbox' className='m-1' value={finalCheck} onChange={(e) => setFinalCheck(e.target.checked)} />By checking this checkbox, I solemnly declared that I have checked through the documents. All the documents that are required by the ePermit System are uploaded and correct to the best of my knowledge. I will be liable if the documents are not in order and will be subjected to legal actions by EHS if applicable.
                 </div>
                 <div className='mt-0'>
 
                     {finalCheckReq && <span style={{ color: "red", fontSize: "12px", fontWeight: "bold" }}  >*Required</span>}
-
                 </div>
-                {finalCheck === '' && <span style={{ color: "red", fontSize: "12px" }}>{finalCheckError}</span>}
                 <div className='mt-3'>
-                    {/* {req && <span style={{ color: "red", fontSize: "12px", }}  >Required</span>} */}
+
                 </div>
             </div>
 

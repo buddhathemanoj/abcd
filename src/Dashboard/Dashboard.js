@@ -1,30 +1,13 @@
-
-import React, { useEffect, useState } from "react";
-
-
-// import React ,{useEffect,useState} from "react";
-
-
-
+import React ,{useEffect,useState} from "react";
 import { connect } from "react-redux";
 import Cookies from "js-cookie";
 import "./Dashboard.css"
 import vector from "../Asset/noto_hourglass-with-flowing-sand.png"
 import { RiArrowDropDownLine } from "react-icons/ri";
-
-
-
-
 import { getTotalllPermits } from "../Auth/auth";
-
 const workArr = [
     "General Permit To Work(3)", "A1 - Hot Works(5)", "A2 - Confied Space(7)", "A3 - Lifting Space(0)", "A4 - Work at Height(3)", "Admin login successful"
 ]
-
-
-const Dashboard = ({ state, index, user }) => {
-
-
 
 
 
@@ -47,43 +30,6 @@ const Dashboard = (state) => {
     
         fetchPermits();
       }, [userId]); 
-
-    const token = Cookies.get("accessToken")
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    // const userId = storedUser ? storedUser.uid : null;
-    const [userPermits, setUserPermits] = useState([]);  
-    const [workArrCounts, setWorkArrCounts] = useState(Array(workArr.length).fill(0));
-
-    useEffect(() => {
-        const fetchPermits = async () => {
-            try {
-                if (userId) {
-                    const permitsData = await getAllPermitsCreatedByAllUsers(userId);
-                    setUserPermits(permitsData);
-
-                    // Update counts based on permits
-                    const newCounts = Array(workArr.length).fill(0);
-
-                    permitsData.forEach((permit) => {
-                        workArr.forEach((work, index) => {
-                            if (permit.permitNumber.includes(`${index + 1}`)) {
-                                newCounts[index]++;
-                            }
-                        });
-                    });
-
-                    setWorkArrCounts(newCounts);
-                }
-            } catch (error) {
-                console.error("Error fetching permits:", error.message);
-            }
-        };
-
-        fetchPermits();
-    }, [userId]);
-
-
-
     const token = Cookies.get("accessToken")
     return (
         <div className="dashboard-main-container">
@@ -97,12 +43,7 @@ const Dashboard = (state) => {
                         <div>
                             <p className="total-desc">Total Active Permits</p>
                             <p className="general-desc">General Permit To Work</p>
-
-
-                       
-
-                            {/* <h1 style={{ textAlign: "center", marginTop: "5px", fontSize: "55px", color: "#022088", marginBottom: "0px" }}>{permits.length}</h1> */}
-
+                            <h1 style={{ textAlign: "center", marginTop: "5px", fontSize: "55px", color: "#022088", marginBottom: "0px" }}>{permits.length}</h1>
                         </div>
                     </div>
                     <div className="view-btn-container">
@@ -168,5 +109,4 @@ const Dashboard = (state) => {
 const mapStateToProps = (state) => ({
     user: state.auth.user,
 })
-
 export default connect(mapStateToProps)(Dashboard);

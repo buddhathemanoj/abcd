@@ -137,6 +137,7 @@ const Sites = () => {
           <Modal.Title>Edit Site</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <label>Name:</label>
           <Form.Control
           
             type="text"
@@ -145,14 +146,20 @@ const Sites = () => {
             value={editingSite?.siteName || ''}
             onChange={handleInputChange}
           />
-          <Form.Control
+          <label>Code:</label>
+          <Form.Select
             
             type="text"
             placeholder="Site Code"
             name="siteCode"
             value={editingSite?.siteCode || ''}
             onChange={handleInputChange}
-          />
+            
+          >
+                <option value="CSE">CSE</option>
+                <option value="Tk 123">Tk 123</option>
+          </Form.Select>
+          <label>Address:</label>
           <Form.Control
             type="text"
             placeholder="Site Address"
@@ -160,6 +167,7 @@ const Sites = () => {
             value={editingSite?.siteAddress || ''}
             onChange={handleInputChange}
           />
+          
          
         </Modal.Body>
         <Modal.Footer>

@@ -6,6 +6,8 @@ import { Modal, Button, Row, Col } from "react-bootstrap";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Form from 'react-bootstrap/Form';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const Addusers = ({ user, state, show, handleClose }) => {
   const initialFormData = {
@@ -24,11 +26,10 @@ const Addusers = ({ user, state, show, handleClose }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
- console.log(name);
-    // Update formData
+
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: name === 'role' ? value : value.trim(), // handle role change separately
+      [name]: name === 'role' ? value : value.trim(),
     }));
   };
 
@@ -40,10 +41,8 @@ const Addusers = ({ user, state, show, handleClose }) => {
   const handleSignupClick = async () => {
     try {
       console.log("FormData before signup:", formData);
-      
 
       const newUser = await signup(formData);
-      // toast.success('Account created successfully!');
       console.log("loggedin user", user);
       handleShowSuccess();
       handleClose();
@@ -53,14 +52,14 @@ const Addusers = ({ user, state, show, handleClose }) => {
       toast.error('Error creating account. Please try again.');
     }
   };
+
   const handleCopyCredentials = () => {
-    // Copy email and password to clipboard
     const credentialsText = `Email: ${formData.email}\nPassword: ${formData.password}`;
     navigator.clipboard.writeText(credentialsText);
 
-    // Optionally, you can provide a user feedback
     toast.success("Credentials copied to clipboard!");
   };
+
   return (
     <div>
       <Modal show={show} onHide={handleClose} size="xl">
@@ -123,7 +122,6 @@ const Addusers = ({ user, state, show, handleClose }) => {
             </Col>
             <Col>
               <label>Role:</label>
-
               <Form.Select
                 aria-label="Default select example"
                 name='role'
@@ -131,20 +129,16 @@ const Addusers = ({ user, state, show, handleClose }) => {
                 onChange={handleInputChange}
               >
                 <option value="user">User</option>
-                <option value="employee">Supervisor   </option>
-                <option value="manager">Manager </option>
+                <option value="employee">Supervisor</option>
+                <option value="manager">Manager</option>
               </Form.Select>
             </Col>
-
-
             <Col>
               <label>Mobile Number:</label>
-              <input
-                type="text"
-                name="mobileno"
+              <PhoneInput
+                country={'us'} 
                 value={formData.mobileno}
-                onChange={handleInputChange}
-                className="form-control"
+                onChange={(value, country) => setFormData(prevFormData => ({ ...prevFormData, mobileno: value }))}
               />
             </Col>
           </Row>
@@ -190,9 +184,6 @@ const Addusers = ({ user, state, show, handleClose }) => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          {/* <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button> */}
           <Button variant="primary" onClick={handleCopyCredentials} >
             Send credentials to user
           </Button>

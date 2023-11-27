@@ -3,13 +3,15 @@ import React, { useState } from 'react'
 import { connect } from "react-redux";
 import FileUploadComponent from '../../Components/Selectfile';
 import { storePermit } from '../../Auth/auth';
-import { Button, Col, Row } from 'react-bootstrap'
+import { Button, Col, FormLabel, Row } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa";
 import { toast, ToastContainer } from 'react-toastify';
 import { format } from 'date-fns';
 import { getTotalPermits } from '../../Auth/auth';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '../../firebase';
 import "./Permit.css"
 
 
@@ -17,7 +19,7 @@ const AddPermit = ({ auth }) => {
     const [permitType, setPermitType] = useState('');
     const [site, setSite] = useState('');
     const [supervisor, setSupervisor] = useState("")
-    const [declarationCheck, setDecCheck] = useState(false)
+    const [declarationCheck, setDeclarationCheck] = useState(false)
     const [contractCompany, setContractCompany] = useState("")
     const [site2, setSite2] = useState('');
     const [startDate, setStartDate] = useState('');
@@ -43,11 +45,85 @@ const AddPermit = ({ auth }) => {
     const [riskfile, setRiskFile] = useState(null);
     const [workdesc, setWorkDesc] = useState("")
 
-    const handleFileUpload = (file, setFileFunction) => {
-        console.log("File data:", file);
-        setFileFunction(file);
-    };
+    const [permitTypeError, setPermitTypeError] = useState('');
+    const [siteError, setSiteError] = useState('');
+    const [supervisorError, setSupervisorError] = useState('');
+    const [declarationCheckError, setDeclarationCheckError] = useState('');
+    const [contractCompanyError, setContractCompanyError] = useState('');
+    const [site2Error, setSite2Error] = useState('');
+    const [startDateError, setStartDateError] = useState('');
+    const [startTimeError, setStartTimeError] = useState('');
+    const [endDateError, setEndDateError] = useState('');
+    const [endTimeError, setEndTimeError] = useState('');
+    const [selectedEmergencyNumberError, setSelectedEmergencyNumberError] = useState('');
+    const [finalCheckError, setFinalCheckError] = useState('');
+    const [selectedLevelsError, setSelectedLevelsError] = useState('');
+    const [selectedBuildingsError, setSelectedBuildingsError] = useState('');
+    const [decDateError, setDecDateError] = useState('');
+    const [workdescError, setWorkDescError] = useState('');
+    const [selectedFileError, setSelectedFileError] = useState('');
+    const [signFileError, setSignFileError] = useState('');
+    const [drawingFileError, setDrawingFileError] = useState('');
+    const [riskfileError, setRiskFileError] = useState('');
+    const [generalCheckError, setGeneralCheckError] = useState('');
 
+
+    const handleMapFileUpload = async (file, fileType) => {
+        try {
+            const storageRef = ref(storage, 'path/to/upload/' + file.name);
+            const metadata = { contentType: file.type };
+            await uploadBytes(storageRef, file, metadata);
+            const downloadURL = await getDownloadURL(storageRef);
+            setSelectedFileError('')
+            setSelectedFile(file)
+            return { name: file.name, url: downloadURL, type: fileType };
+        } catch (error) {
+            console.error("Error uploading file:", error.message);
+            throw new Error("Unable to upload file.");
+        }
+    };
+    const handleDrawingFileUpload = async (file, fileType) => {
+        try {
+            const storageRef = ref(storage, 'path/to/upload/' + file.name);
+            const metadata = { contentType: file.type };
+            await uploadBytes(storageRef, file, metadata);
+            const downloadURL = await getDownloadURL(storageRef);
+            setDrawingFileError('')
+            setDrawingFile(file)
+            return { name: file.name, url: downloadURL, type: fileType };
+        } catch (error) {
+            console.error("Error uploading file:", error.message);
+            throw new Error("Unable to upload file.");
+        }
+    };
+    const handleRiskFileUpload = async (file, fileType) => {
+        try {
+            const storageRef = ref(storage, 'path/to/upload/' + file.name);
+            const metadata = { contentType: file.type };
+            await uploadBytes(storageRef, file, metadata);
+            const downloadURL = await getDownloadURL(storageRef);
+            setRiskFileError('')
+            setRiskFile(file)
+            return { name: file.name, url: downloadURL, type: fileType };
+        } catch (error) {
+            console.error("Error uploading file:", error.message);
+            throw new Error("Unable to upload file.");
+        }
+    };
+    const handleSignFileUpload = async (file, fileType) => {
+        try {
+            const storageRef = ref(storage, 'path/to/upload/' + file.name);
+            const metadata = { contentType: file.type };
+            await uploadBytes(storageRef, file, metadata);
+            const downloadURL = await getDownloadURL(storageRef);
+            setSignFileError('')
+            setSignFile(file)
+            return { name: file.name, url: downloadURL, type: fileType };
+        } catch (error) {
+            console.error("Error uploading file:", error.message);
+            throw new Error("Unable to upload file.");
+        }
+    };
     console.log("checkx", finalCheck);
 
     const handleLevelCheckboxChange = (level) => {
@@ -58,10 +134,9 @@ const AddPermit = ({ auth }) => {
         } else {
             updatedLevels.push(level);
         }
-
         setSelectedLevels(updatedLevels);
+        setSelectedLevelsError(updatedLevels.length === 0 ? 'At least one Level must be selected' : '');
     };
-
 
     console.log("asdf", selectedEmergencyNumber);
     const handleEmergencyNumberCheckboxChange = (emergencynumber) => {
@@ -74,6 +149,7 @@ const AddPermit = ({ auth }) => {
         }
 
         setSelectedEmergencyNumber(updatedEmergencyNumber);
+        setSelectedEmergencyNumberError(updatedEmergencyNumber.length === 0 ? 'Emergency Number is required' : '');
     };
 
 
@@ -84,12 +160,16 @@ const AddPermit = ({ auth }) => {
         const { name, value } = e.target;
         if (name === 'startDate') {
             setStartDate(value);
+            setStartDateError(value === '' ? 'Start Date is required' : '');
         } else if (name === 'startTime') {
             setStartTime(value);
+            setStartTimeError(value === '' ? 'Start Time is required' : '');
         } else if (name === 'endDate') {
             setEndDate(value);
+            setEndDateError(value === '' ? 'End Date is required' : '');
         } else if (name === 'endTime') {
             setEndTime(value);
+            setEndTimeError(value === '' ? 'End Time is required' : '');
         }
     };
 
@@ -103,17 +183,13 @@ const AddPermit = ({ auth }) => {
         }
 
         setSelectedBuildings(updatedBuildings);
+        setSelectedBuildingsError(updatedBuildings.length === 0 ? 'At least one building must be selected' : '');
     };
 
     const handleGeneralCheckboxChange = (e) => {
         setIsGeneralChecked(e.target.checked);
+        setGeneralCheckError('');
     };
-
-
-    const req = site2.length === 0
-    const finalCheckReq = !finalCheck;
-    const certficaionReq = !declarationCheck
-
 
     const handleSubmit = async () => {
         const permitData = {
@@ -159,21 +235,48 @@ const AddPermit = ({ auth }) => {
         if (
             permitType !== '' &&
             site !== '' &&
-            startDate !== '' &&
-            endDate !== '' &&
-            selectedFile !== '' &&
-            drawingFile !== '' &&
-            signFile !== '' &&
-            riskfile !== '' &&
             supervisor !== '' &&
-            contractCompany !== '' &&
-            finalCheck &&
+            isGeneralChecked &&
             declarationCheck &&
+            contractCompany !== '' &&
+            site2 !== '' &&
+            startDate !== '' &&
+            startTime !== '' &&
+            endDate !== '' &&
+            endTime !== '' &&
+            selectedEmergencyNumber.length > 0 &&
+            finalCheck &&
+            selectedBuildings.length > 0 &&
+            selectedLevels.length > 0 &&
             decDate !== '' &&
             workdesc !== '' &&
-            selectedBuildings.length > 0 &&
-            selectedLevels.length > 0
+            selectedFile !== null &&
+            signFile !== null &&
+            drawingFile !== null &&
+            riskfile !== null
         ) {
+            setPermitTypeError('');
+            setSiteError('');
+            setSupervisorError('');
+            setDeclarationCheckError('');
+            setContractCompanyError('');
+            setSite2Error('');
+            setStartDateError('');
+            setStartTimeError('');
+            setEndDateError('');
+            setEndTimeError('');
+            setSelectedEmergencyNumberError('');
+            setFinalCheckError('');
+            setSelectedLevelsError('');
+            setSelectedBuildingsError('');
+            setDecDateError('');
+            setWorkDescError('');
+            setSelectedFileError('');
+            setSignFileError('');
+            setDrawingFileError('');
+            setRiskFileError('');
+            setGeneralCheckError('');
+
             try {
                 const storedUser = JSON.parse(localStorage.getItem('user'));
 
@@ -193,11 +296,13 @@ const AddPermit = ({ auth }) => {
 
                 const createdAt = format(today, 'dd-MM-yyyy');
                 const status = 'pending';
+                const reason = ""
 
                 const extendedPermitData = {
                     userId,
                     permitNumber,
                     status,
+                    reason,
                     createdAt,
                     ...permitData,
                 };
@@ -210,6 +315,28 @@ const AddPermit = ({ auth }) => {
                 toast.error("Error submitting permit data. Please try again.");
             }
         } else {
+            setPermitTypeError(permitType === '' ? 'Permit Type is required' : '');
+            setSiteError(site === '' ? 'Site is required' : '');
+            setSupervisorError(supervisor === '' ? 'Supervisor is required' : '');
+            setDeclarationCheckError(!declarationCheck ? 'Declaration must be checked' : '');
+            setContractCompanyError(contractCompany === '' ? 'Contract Company is required' : '');
+            setSite2Error(site2 === '' ? 'Required' : '');
+            setStartDateError(startDate === '' ? 'Start Date is required' : '');
+            setStartTimeError(startTime === '' ? 'Start Time is required' : '');
+            setEndDateError(endDate === '' ? 'End Date is required' : '');
+            setEndTimeError(endTime === '' ? 'End Time is required' : '');
+            setSelectedEmergencyNumberError(selectedEmergencyNumber.length === 0 ? 'Emergency Number is required' : '');
+            setFinalCheckError(!finalCheck ? 'Final check must be checked' : '');
+            setSelectedLevelsError(selectedLevels.length === 0 ? 'At least one Level must be selected' : '');
+            setSelectedBuildingsError(selectedBuildings.length === 0 ? 'At least one Building must be selected' : '');
+            setDecDateError(decDate === '' ? 'Declaration Date is required' : '');
+            setWorkDescError(workdesc === '' ? 'Work Description is required' : '');
+            setSelectedFileError(selectedFile === null ? 'MAP file is required' : '');
+            setSignFileError(signFile === null ? 'Sign file is required' : '');
+            setDrawingFileError(drawingFile === null ? 'Drawing file is required' : '');
+            setRiskFileError(riskfile === null ? 'Risk Assessment file is required' : '');
+            setGeneralCheckError(!isGeneralChecked ? 'Required' : '');
+
             toast.error('Please fill in all required fields.');
         }
     };
@@ -225,12 +352,16 @@ const AddPermit = ({ auth }) => {
                         style={{ width: "500px" }}
                         name='permitType'
                         value={permitType}
-                        onChange={(e) => setPermitType(e.target.value)}
+                        onChange={(e) => {
+                            setPermitType(e.target.value);
+                            setPermitTypeError(e.target.value === '' ? 'Permit Type is required' : '');
+                        }}
                     >
                         <option value="">Select Permit Type</option>
                         <option value="_GENERAL PERMIT TO WORK">_GENERAL PERMIT TO WORK</option>
                         <option value="1">Hot Work</option>
                     </Form.Select>
+                    {permitType === '' && <span style={{ color: "red", fontSize: "12px" }}>{permitTypeError}</span>}
                 </Col>
             </Row>
             <br />
@@ -242,77 +373,103 @@ const AddPermit = ({ auth }) => {
                         className='mt-0'
                         style={{ width: "500px", backgroundColor: "#FFFFFF" }}
                         value={site}
-                        onChange={(e) => setSite(e.target.value)}
+                        onChange={(e) => {
+                            setSite(e.target.value);
+                            setSiteError(e.target.value === '' ? 'Site is required' : '');
+                        }}
                     >
                         <option value="" >Select Site</option>
                         <option value="CSE">CSE</option>
                         <option value="Tk 123">Tk 123</option>
                     </Form.Select>
+                    {site === '' && <span style={{ color: "red", fontSize: "12px" }}>{siteError}</span>}
                 </Col>
             </Row>
             <p className='mt-3 mb-3'><Link to="/all-permits" style={{ textDecoration: "none" }}><FaArrowLeft /> Back to view all permit</Link><span style={{ color: "blue" }}>{permitType}</span></p>
+
             {/* Information */}
+
             <div className='p-4 shadow'>
                 <h6 style={{ color: "#0D3E78" }}>INFORMATION</h6><hr></hr>
                 <Row>
-                    <Col lg={4}>
+                    <Col lg={3}>
                         <input
                             type='checkbox'
                             checked={isGeneralChecked}
                             onChange={handleGeneralCheckboxChange}
-                        /> <strong>GENERAL</strong>
+                        /> <strong>GENERAL</strong><br></br>
+                        {isGeneralChecked === isGeneralChecked && <span style={{ color: "red", fontSize: "12px" }}>{generalCheckError}</span>}
                     </Col>
-                    <Col lg={8} className='d-flex justify-content-between'>
-                        <input
-                            style={{ width: "230.5px", height: "46px" }}
-                            type='date'
-                            name='startDate'
-                            value={startDate}
-                            onChange={handleDateChange}
-                            className='add-permit-input'
-                            placeholder='Start Date'
-                        />
-                        <input
+                    <Col lg={9} className='d-flex justify-content-between'>
+                        <div>
+                            <input
+                                style={{ width: "180px", height: "46px" }}
+                                type='date'
+                                name='startDate'
+                                value={startDate}
+                                onChange={handleDateChange}
+                                className='add-permit-input'
+                                placeholder='Start Date'
+                            /><br></br>
+                            {startDate === '' && <span style={{ color: "red", fontSize: "12px" }}>{startDateError}</span>}
+                        </div>
+                        <div>
+                            <input
 
-                            style={{ width: "230.5px", height: "46px" }}
-                            type='time'
-                            name='startTime'
-                            className='add-permit-input'
-                            value={startTime}
-                            onChange={handleDateChange}
-                            placeholder='Start Time'
-                        />
-                        <input
-                            style={{ width: "230.5px", height: "46px" }}
-                            type='date'
-                            name='endDate'
-                            value={endDate}
-                            onChange={handleDateChange}
-                            className='add-permit-input'
-                            placeholder='End Date'
-                        />
-                        <input
-                            style={{ width: "230.5px", height: "46px" }}
-                            type='time'
-                            name='endTime'
-                            className='add-permit-input'
-                            value={endTime}
-                            onChange={handleDateChange}
-                            placeholder='End Time'
-                        />
-
+                                style={{ width: "180px", height: "46px" }}
+                                type='time'
+                                name='startTime'
+                                className='add-permit-input'
+                                value={startTime}
+                                onChange={handleDateChange}
+                                placeholder='Start Time'
+                            /><br></br>
+                            {startTime === '' && <span style={{ color: "red", fontSize: "12px" }}>{startTimeError}</span>}
+                        </div>
+                        <div>
+                            <input
+                                style={{ width: "180px", height: "46px" }}
+                                type='date'
+                                name='endDate'
+                                value={endDate}
+                                onChange={handleDateChange}
+                                className='add-permit-input'
+                                placeholder='End Date'
+                            /><br></br>
+                            {endDate === '' && <span style={{ color: "red", fontSize: "12px" }}>{endDateError}</span>}
+                        </div>
+                        <div>
+                            <input
+                                style={{ width: "180px", height: "46px" }}
+                                type='time'
+                                name='endTime'
+                                className='add-permit-input'
+                                value={endTime}
+                                onChange={handleDateChange}
+                                placeholder='End Time'
+                            /><br></br>
+                            {endTime === '' && <span style={{ color: "red", fontSize: "12px" }}>{endTimeError}</span>}
+                        </div>
                     </Col>
                 </Row>
 
                 <div className='d-flex mt-5 mb-0'>
-                    <Form.Select aria-label="Default select example" value={site2} onChange={(e) => setSite2(e.target.value)} className='site'>
+                    <Form.Select
+                        aria-label="Default select example"
+                        value={site2}
+                        onChange={(e) => {
+                            setSite2(e.target.value);
+                            setSite2Error(e.target.value === '' ? 'Required' : '');
+                        }}
+                        className='site'>
+
                         <option value="">Site</option>
                         <option value="Yard">Yard</option>
                         <option value="Fab floor 3">Fab floor 3</option>
                     </Form.Select>
                     <h6 style={{ marginLeft: "10px", fontSize: "12px" }}>Note that Start Date and End Date Max 14 Days</h6>
                 </div>
-                {req && <span style={{ color: "red", fontSize: "12px", marginTop: "0", fontWeight: "bold" }}>*Required</span>}
+                {site2 === '' && <span style={{ color: "red", fontSize: "12px" }}>{site2Error}</span>}
 
                 <Row className='mt-4'>
 
@@ -337,17 +494,12 @@ const AddPermit = ({ auth }) => {
                                 onChange={() => handleBuildingCheckboxChange('Others')}
                             />
                             {''} Others (Pls Specify)
-
-
-
                         </div>
+                        {selectedBuildings.length === 0 && <span style={{ color: "red", fontSize: "12px" }}>{selectedBuildingsError}</span>}
                     </Col>
-
 
                     <Col>
                         <textarea style={{ padding: "10px", minWidth: '250px' }} value={buildingNotes} onChange={(e) => setBuildingNotes(e.target.value)}></textarea>
-
-
                     </Col>
 
                     <Col>
@@ -364,19 +516,17 @@ const AddPermit = ({ auth }) => {
                                 </div>
                             ))}
                         </div>
+                        {selectedLevels.length === 0 && <span style={{ color: "red", fontSize: "12px" }}>{selectedLevelsError}</span>}
                     </Col>
 
                     <Col>
                         <textarea
                             style={{ padding: "10px", minWidth: '250px' }}
                             placeholder='Others (Pls Specify)'
-
                             value={levelNotes}
                             onChange={(e) => setLevelNotes(e.target.value)} >
-
                         </textarea>
                     </Col>
-
                 </Row>
 
                 {/* <Row className='mt-4 flex-row'> 
@@ -438,7 +588,7 @@ const AddPermit = ({ auth }) => {
                         {emergencyNumber.map((emergencynumber) => (
                             <div key={emergencynumber}>
                                 <input
-                                    type='radio'
+                                    type='checkbox'
                                     checked={selectedEmergencyNumber.includes(emergencynumber)}
                                     onChange={() => handleEmergencyNumberCheckboxChange(emergencynumber)}
                                 />
@@ -447,11 +597,10 @@ const AddPermit = ({ auth }) => {
                             </div>
                         ))}
                     </div>
+                    {selectedEmergencyNumber.length === 0 && <span style={{ color: "red", fontSize: "12px" }}>{selectedEmergencyNumberError}</span>}
                 </Row>
-
                 <Row className='mt-4'>
                     <div>Revision 1.0 (Last Updated: 28 May 2021)</div>
-
                 </Row>
                 <div className='mt-5'>
 
@@ -463,34 +612,35 @@ const AddPermit = ({ auth }) => {
                     placeholder='Work Description (Attach Drawing / Sketch / Describe in Details here)'
                     className='w-100 border rounded '
                     style={{ minHeight: "5rem", textIndent: "20px" }}
-                    onChange={(e) => setWorkDesc(e.target.value)}
+                    onChange={(e) => {
+                        setWorkDesc(e.target.value);
+                        setWorkDescError(e.target.value === '' ? 'Work Description is required' : '');
+                    }}
                 ></textarea>
-
+                {workdesc === '' && <span style={{ color: "red", fontSize: "12px" }}>{workdescError}</span>}
                 <Row className='mt-5' style={{ fontSize: "small" }}>
                     <Col>
                         <FileUploadComponent
                             label="MAP"
-                            onFileUpload={(file) => handleFileUpload(file, setSelectedFile)}
+                            onFileUpload={(file) => handleMapFileUpload(file, setSelectedFile, setSelectedFileError)}
                         />
-
+                        {selectedFile === null && <span style={{ color: "red", fontSize: "12px" }}>{selectedFileError}</span>}
                     </Col>
                     <Col>
                         <FileUploadComponent
                             label="Drawing / Sketches"
-                            onFileUpload={(file) => handleFileUpload(file, setDrawingFile)}
+                            onFileUpload={(file) => handleDrawingFileUpload(file, setDrawingFile, setDrawingFileError)}
                         />
-
+                        {drawingFile === null && <span style={{ color: "red", fontSize: "12px" }}>{drawingFileError}</span>}
                     </Col>
                     <Col>
                         <FileUploadComponent
                             label="Risk Assessment"
-                            onFileUpload={(file) => handleFileUpload(file, setRiskFile)}
+                            onFileUpload={(file) => handleRiskFileUpload(file, setRiskFile, setRiskFileError)}
                         />
-
+                        {riskfile === null && <span style={{ color: "red", fontSize: "12px" }}>{riskfileError}</span>}
                     </Col>
                 </Row>
-
-
             </div>
 
             {/* Section 3 */}
@@ -499,24 +649,51 @@ const AddPermit = ({ auth }) => {
                 <h6 style={{ color: "#0D3E78" }}>SECTION 3 : DECLARATION, CERTIFICATION & AUTHORIZATION</h6><hr></hr>
 
                 <div style={{ fontSize: "14px", fontWeight: "600" }}>
-                    <input className='m-1' type='checkbox' onChange={(e) => setDecCheck(e.target.checked)} />The contractor and or its agents, sub-contractors, employee, hereby warrants the Facilities Work Permits and the accompanying Safety Risk Assessments, Safety Permits & Checklists and Procedures and EAI Assessment have been read and understood and shall take all necessary precautions before commencement of work in JCET Fab10N and Fab10W Daily. They shall also be liable to JCET Fab10N and Fab 10W for any damages, including direct or indirect losses incurred due to contractor and or its agent, sub-contractor, employee and servant's negligence.
+                    <input
+                        className='m-1'
+                        type='checkbox'
+                        onChange={(e) => {
+                            setDeclarationCheck(!declarationCheck);
+                            setDeclarationCheckError('');
+                        }}
+                    />The contractor and or its agents, sub-contractors, employee, hereby warrants the Facilities Work Permits and the accompanying Safety Risk Assessments, Safety Permits & Checklists and Procedures and EAI Assessment have been read and understood and shall take all necessary precautions before commencement of work in JCET Fab10N and Fab10W Daily. They shall also be liable to JCET Fab10N and Fab 10W for any damages, including direct or indirect losses incurred due to contractor and or its agent, sub-contractor, employee and servant's negligence.
                 </div>
-                <div className='mt-0'>
-                    {certficaionReq && <span style={{ color: "red", fontSize: "12px", fontWeight: "bold" }}  >*Required</span>}
-                </div>
+                {declarationCheck === declarationCheck && <span style={{ color: "red", fontSize: "12px" }}>{declarationCheckError}</span>}
                 <div className='mt-4'>
-                    <input className="w-100 border" style={{ height: "46px", borderRadius: "5px", borderColor: "#DADADA" }} type='text' placeholder='NAME OF CONTRACTOR COMPANY' value={contractCompany} onChange={(e) => setContractCompany(e.target.value)} />
+                    <input
+                        className="w-100 border"
+                        style={{ height: "46px", borderRadius: "5px", borderColor: "#DADADA" }}
+                        type='text'
+                        placeholder='NAME OF CONTRACTOR COMPANY'
+                        value={contractCompany}
+                        onChange={(e) => {
+                            setContractCompany(e.target.value);
+                            setContractCompanyError(e.target.value === '' ? 'Contract Company is required' : '');
+                        }}
+                    />
+                    {contractCompany === '' && <span style={{ color: "red", fontSize: "12px" }}>{contractCompanyError}</span>}
                 </div>
 
                 <Row className='mt-5 flex-row'>
                     <Col>
-                        <input className="border" style={{ height: "40px", width: "303px", borderRadius: "5px", borderColor: "#DADADA" }} type='text' placeholder='CONTRACTOR SUPERVISOR (REQUESTER)' value={supervisor} onChange={(e) => setSupervisor(e.target.value)} />
+                        <input
+                            className="border"
+                            style={{ height: "46px", width: "383px", borderRadius: "5px", borderColor: "#DADADA" }}
+                            type='text'
+                            placeholder='CONTRACTOR SUPERVISOR (REQUESTER)'
+                            value={supervisor}
+                            onChange={(e) => {
+                                setSupervisor(e.target.value);
+                                setSupervisorError(e.target.value === '' ? 'Supervisor is required' : '');
+                            }}
+                        />
+                        {supervisor === '' && <span style={{ color: "red", fontSize: "12px" }}>{supervisorError}</span>}
                     </Col>
 
                     <Col>
-                        <FileUploadComponent 
+                        <FileUploadComponent
                             label="Sign"
-                            onFileUpload={(file) => handleFileUpload(file, setSignFile)}
+                            onFileUpload={(file) => handleSignFileUpload(file, setSignFile, setSignFileError)}
                         />
                         {/* <div style={{ height: "46px", width: "383px" }} className='file-container'>
                             <button
@@ -529,17 +706,22 @@ const AddPermit = ({ auth }) => {
                                 onFileUpload={(file) => handleFileUpload(file, )}/>
                                 
                         </div> */}
+                        {signFile === null && <span style={{ color: "red", fontSize: "12px" }}>{signFileError}</span>}
                     </Col>
 
                     <Col>
                         <input
-                            style={{ height: "40px", width: "303px", borderRadius: "5px", borderColor: "#DADADA" }}
+                            style={{ height: "46px", width: "383px", borderRadius: "5px", borderColor: "#DADADA" }}
                             type='date'
                             className='add-permit-input border'
                             placeholder='Date'
                             value={decDate}
-                            onChange={(e) => setDecDate(e.target.value)}
+                            onChange={(e) => {
+                                setDecDate(e.target.value);
+                                setDecDateError(e.target.value === '' ? 'Declaration Date is required' : '');
+                            }}
                         />
+                        {decDate === '' && <span style={{ color: "red", fontSize: "12px" }}>{decDateError}</span>}
                     </Col>
 
                 </Row>
@@ -646,24 +828,26 @@ const AddPermit = ({ auth }) => {
                 <h6 style={{ color: "#0D3E78" }}>DECLARATION</h6><hr></hr>
 
                 <div style={{ fontSize: "14px", fontWeight: "600" }}>
-                    <input type='checkbox' className='m-1' value={finalCheck} onChange={(e) => setFinalCheck(e.target.checked)} />By checking this checkbox, I solemnly declared that I have checked through the documents. All the documents that are required by the ePermit System are uploaded and correct to the best of my knowledge. I will be liable if the documents are not in order and will be subjected to legal actions by EHS if applicable.
+                    <input
+                        type='checkbox'
+                        className='m-1'
+                        value={finalCheck}
+                        onChange={(e) => {
+                            setFinalCheck(!finalCheck);
+                            setFinalCheckError('');
+                        }}
+                    />By checking this checkbox, I solemnly declared that I have checked through the documents. All the documents that are required by the ePermit System are uploaded and correct to the best of my knowledge. I will be liable if the documents are not in order and will be subjected to legal actions by EHS if applicable.
                 </div>
-                <div className='mt-0'>
-
-                    {finalCheckReq && <span style={{ color: "red", fontSize: "12px", fontWeight: "bold" }}  >*Required</span>}
-                </div>
+                {finalCheck === finalCheck && <span style={{ color: "red", fontSize: "12px" }}>{finalCheckError}</span>}
                 <div className='mt-3'>
-
+                    {/* {req && <span style={{ color: "red", fontSize: "12px", }}  >Required</span>} */}
                 </div>
             </div>
 
             <div className='mt-4 text-end'>
                 <Button variant="primary" onClick={handleSubmit} className='submit-btn'>Submit</Button>
             </div>
-
             <br />
-
-
             <ToastContainer />
         </>
     )

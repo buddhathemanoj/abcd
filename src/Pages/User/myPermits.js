@@ -7,6 +7,7 @@ import { IoIosSearch } from "react-icons/io";
 import { AiFillFilter } from "react-icons/ai";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
+// import { Dropdown } from 'antd';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { ThreeDots } from 'react-loader-spinner';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -51,25 +52,38 @@ const MyPermits = ({ permits, auth }) => {
 
     const handleActionClick = async (action, permitId) => {
         try {
-          const permit = userPermits.find((p) => p.id === permitId);
+            const permit = userPermits.find((p) => p.id === permitId);
 
-          if (!permit) {
-            console.error(`Permit with ID ${permitId} not found.`);
-            return;
-          }
+            if (!permit) {
+                console.error(`Permit with ID ${permitId} not found.`);
+                return;
+            }
 
-          const { id: permitDocumentId } = permit;
-          if (action === 'resubmit') {
-            await updatePermitStatus(permitDocumentId, 'pending');
-          }
+            const { id: permitDocumentId } = permit;
+            if (action === 'resubmit') {
+                await updatePermitStatus(permitDocumentId, 'pending');
+            }
         } catch (error) {
-          console.error('Error handling action:', error.message);
+            console.error('Error handling action:', error.message);
         }
-      };
+    };
 
     const clickToCreatePermit = () => {
         navigate("/all-permits-create")
     }
+    const renderPopover = (reason) => (
+        <Tooltip id="popover-reason">
+          <p>{reason}</p>
+        </Tooltip>
+      );
+    const items = [
+        {
+            key: '1',
+            label: (
+                <p>{userPermits.map((eachPer) => eachPer.reason)}</p>
+            ),
+        },
+    ];
 
     // let sty = ""
     //     userPermits.map(permit => {
@@ -140,11 +154,16 @@ const MyPermits = ({ permits, auth }) => {
                                 <td style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                                     <span style={{ padding: '8px', fontSize: '14px' }} className={`badge ${permit.status === 'active' ? 'success' : 'canceled'}`}>
                                         {permit.status === "canceled" ? "Rejected" : permit.status}
-                                    </span>
+                                    </span><br/>
+                                    <OverlayTrigger placement="top" overlay={renderPopover(permit.reason)}>
+                <button  variant="info" style={{ marginLeft: '5px',border:'0px',backgroundColor:'orange',color:'red',borderRadius:'5px' }}>
+                 i
+                </button>
+              </OverlayTrigger>
                                 </td>
 
                                 <td style={{ textAlign: "center" }}>
-                                    {permit.status === "canceled" ? <button className='resumit-btn' onClick={() => handleActionClick('resubmit',permit.id)} type='button' >ReSubmit</button> : <BsThreeDots /> }
+                                    {permit.status === "canceled" ? <> <button className='resumit-btn' onClick={() => handleActionClick('resubmit', permit.id)} type='button' >ReSubmit</button> <br />  </> : <BsThreeDots />}
                                     {/* <div style={{ position: 'relative' }}>
                                             <OverlayTrigger
                                                 placement="top"

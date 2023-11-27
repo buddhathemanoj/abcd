@@ -41,17 +41,22 @@ const Addusers = ({ user, state, show, handleClose }) => {
   const handleSignupClick = async () => {
     try {
       console.log("FormData before signup:", formData);
-
+  
       const newUser = await signup(formData);
       console.log("loggedin user", user);
       handleShowSuccess();
       handleClose();
-      
     } catch (error) {
       console.error("Signup error:", error.message);
-      toast.error('Error creating account. Please try again.');
+  
+      if (error.code === 'auth/email-already-in-use') {
+        toast.error('Email is already in use. Please use a different email.');
+      } else {
+        toast.error('Error creating account. Please try again.');
+      }
     }
   };
+  
 
   const handleCopyCredentials = () => {
     const credentialsText = `Email: ${formData.email}\nPassword: ${formData.password}`;

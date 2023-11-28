@@ -57,7 +57,7 @@ export const sendOTPEmail = async (email, otp) => {
   };
 
   try {
-    const result = await emailjs.send('service_eitoh98', 'template_vwxlhna', templateParams, 'dMfp3gBSQqXUgERRs');
+    const result = await emailjs.send('service_i8js4q6', 'template_468vuto', templateParams, 'YsyUd8DAIyoqia3yO');
     console.log('OTP sent successfully:', result.text);
     return result;
   } catch (error) {
@@ -405,6 +405,7 @@ export const storePermit = async (userId, extendedPermitData) => {
       selectedLevels: extendedPermitData.selectedLevels,
       selectedBuildings: extendedPermitData.selectedBuildings,
       site2: extendedPermitData.site2,
+      reason: extendedPermitData.reason,
       permitNumber: extendedPermitData.permitNumber,
       status: extendedPermitData.status,
       createdAt: extendedPermitData.createdAt,
@@ -479,6 +480,27 @@ export const updatePermitStatus = async (permitId, newStatus) => {
   }
 
 };
+
+
+export const updateReason = async (permitId, reason) => {
+  try {
+    const permitsCollection = collection(db, 'permits');
+    const permitDocRef = doc(permitsCollection, permitId);
+
+    const permitDoc = await getDoc(permitDocRef);
+    if (!permitDoc.exists()) {
+      throw new Error(`Document with ID ${permitId} does not exist.`);
+    }
+
+    await updateDoc(permitDocRef, { reason: reason });
+
+    console.log(`Permit cancel reason updated successfully: ${permitId} is now ${reason}`);
+  } catch (error) {
+    console.error('Error updating permit status:', error.message);
+    throw new Error('Unable to Add the Reason.');
+  }
+};
+
 export const updateProfileData = async (userId, editProfileData) => {
   try {
     const userDocRef = doc(db, 'users', userId);

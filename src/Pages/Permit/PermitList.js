@@ -5,7 +5,7 @@ import { AiFillFilter, AiFillSave } from "react-icons/ai";
 import { BsThreeDots } from 'react-icons/bs';
 import { ThreeDots } from 'react-loader-spinner';
 import { Modal, Col, Row, In } from "react-bootstrap";
-import { updatePermitStatus } from '../../Auth/auth';
+import { updatePermitStatus,updateReason } from '../../Auth/auth';
 import { Button, Dropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 import CustomButton from '../../Components/Button';
@@ -107,9 +107,11 @@ const PermitList = ({ auth }) => {
         if (action === 'approve') {
           await updatePermitStatus(permitDocumentId, 'active');
         } else if (action === 'cancel') {
+          await updateReason(permitDocumentId,cancelReason)
           await updatePermitStatus(permitDocumentId, 'canceled');
+          handleReasonClose()
         }
-        setShowReasonModal(true)
+        // setShowReasonModal(true)
       } catch (error) {
         console.error('Error handling action:', error.message);
       }
@@ -177,9 +179,9 @@ const PermitList = ({ auth }) => {
                         <Dropdown.Item as="button" onClick={() => handleShowReasonModal(permit.id)}>
                           Cancel
                         </Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => handleViewNavigate(permit)}>
+                        {/* <Dropdown.Item as="button" onClick={() => handleViewNavigate(permit)}>
                           View
-                        </Dropdown.Item>
+                        </Dropdown.Item> */}
                       </Dropdown.Menu>
                     </Dropdown>
                     {/* onClick={() => handleActionClick('cancel', permit.id)} */}

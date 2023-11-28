@@ -57,7 +57,7 @@ export const sendOTPEmail = async (email, otp) => {
   };
 
   try {
-    const result = await emailjs.send('service_09oj4um', 'template_fsuitfu', templateParams, '_v00BxitQJfaTPJuQ');
+    const result = await emailjs.send('service_eitoh98', 'template_vwxlhna', templateParams, 'dMfp3gBSQqXUgERRs');
     console.log('OTP sent successfully:', result.text);
     return result;
   } catch (error) {

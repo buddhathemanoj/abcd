@@ -133,6 +133,7 @@ const Addusers = ({ user, state, show, handleClose }) => {
                 value={formData.role}
                 onChange={handleInputChange}
               >
+                 <option ></option>
                 <option value="user">User</option>
                 <option value="employee">Supervisor</option>
                 <option value="manager">Manager</option>

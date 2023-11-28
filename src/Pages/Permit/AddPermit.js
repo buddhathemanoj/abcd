@@ -403,7 +403,7 @@ const AddPermit = ({ auth }) => {
                     <Col lg={9} className='d-flex justify-content-between'>
                         <div>
                             <input
-                                style={{ width: "180px", height: "46px" }}
+                                style={{ width: "160px", height: "46px" }}
                                 type='date'
                                 name='startDate'
                                 value={startDate}
@@ -416,7 +416,7 @@ const AddPermit = ({ auth }) => {
                         <div>
                             <input
 
-                                style={{ width: "180px", height: "46px" }}
+                                style={{ width: "160px", height: "46px" }}
                                 type='time'
                                 name='startTime'
                                 className='add-permit-input'
@@ -428,7 +428,7 @@ const AddPermit = ({ auth }) => {
                         </div>
                         <div>
                             <input
-                                style={{ width: "180px", height: "46px" }}
+                                style={{ width: "160px", height: "46px" }}
                                 type='date'
                                 name='endDate'
                                 value={endDate}
@@ -440,7 +440,7 @@ const AddPermit = ({ auth }) => {
                         </div>
                         <div>
                             <input
-                                style={{ width: "180px", height: "46px" }}
+                                style={{ width: "160px", height: "46px" }}
                                 type='time'
                                 name='endTime'
                                 className='add-permit-input'

@@ -179,9 +179,9 @@ const PermitList = ({ auth }) => {
                         <Dropdown.Item as="button" onClick={() => handleShowReasonModal(permit.id)}>
                           Cancel
                         </Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => handleViewNavigate(permit)}>
+                        {/* <Dropdown.Item as="button" onClick={() => handleViewNavigate(permit)}>
                           View
-                        </Dropdown.Item>
+                        </Dropdown.Item> */}
                       </Dropdown.Menu>
                     </Dropdown>
                     {/* onClick={() => handleActionClick('cancel', permit.id)} */}

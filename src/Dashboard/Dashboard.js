@@ -33,7 +33,7 @@ const Dashboard = (state) => {
     const token = Cookies.get("accessToken")
     return (
         <div className="dashboard-main-container">
-            <h1 className="welcome-heading">Welcome To ABCD,</h1>
+            <h1 className="welcome-heading">Welcome To JCET,</h1>
             <ul className="dashboard-list-container">
                 <li className="dashboard-list-item-container">
                     <div className="image-active-container">

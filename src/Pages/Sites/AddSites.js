@@ -83,7 +83,7 @@ const AddSites = () => {
                                 <Form.Control
                                     type="text"
                                     name="siteAddress"
-                                    placeholder='floor1, JCET'
+                                    placeholder='floor1, ABCD'
                                     value={siteData.siteAddress}
                                     onChange={handleInputChange}
                                     required

@@ -558,7 +558,7 @@ const AddPermit = ({ auth }) => {
                         <div className='secTion'>
                         <input 
                         type='text'
-                        placeholder='JCET Department/Section'
+                        placeholder='ABCD Department/Section'
                         />
                         </div>
                     </Col>
@@ -566,7 +566,7 @@ const AddPermit = ({ auth }) => {
                         <div className='secTion'>
                         <input 
                         type='text'
-                        placeholder='JCET Supervisor Name'
+                        placeholder='ABCD Supervisor Name'
                         />
                         </div>
                     </Col>
@@ -574,7 +574,7 @@ const AddPermit = ({ auth }) => {
                         <div className='secTion'>
                         <input 
                         type='text'
-                        placeholder='JCET Supervisor Contact'
+                        placeholder='ABCD Supervisor Contact'
                         />
                         </div>
                     </Col>
@@ -656,7 +656,7 @@ const AddPermit = ({ auth }) => {
                             setDeclarationCheck(!declarationCheck);
                             setDeclarationCheckError('');
                         }}
-                    />The contractor and or its agents, sub-contractors, employee, hereby warrants the Facilities Work Permits and the accompanying Safety Risk Assessments, Safety Permits & Checklists and Procedures and EAI Assessment have been read and understood and shall take all necessary precautions before commencement of work in JCET Fab10N and Fab10W Daily. They shall also be liable to JCET Fab10N and Fab 10W for any damages, including direct or indirect losses incurred due to contractor and or its agent, sub-contractor, employee and servant's negligence.
+                    />The contractor and or its agents, sub-contractors, employee, hereby warrants the Facilities Work Permits and the accompanying Safety Risk Assessments, Safety Permits & Checklists and Procedures and EAI Assessment have been read and understood and shall take all necessary precautions before commencement of work in ABCD Fab10N and Fab10W Daily. They shall also be liable to ABCD Fab10N and Fab 10W for any damages, including direct or indirect losses incurred due to contractor and or its agent, sub-contractor, employee and servant's negligence.
                 </div>
                 {declarationCheck === declarationCheck && <span style={{ color: "red", fontSize: "12px" }}>{declarationCheckError}</span>}
                 <div className='mt-4'>
@@ -767,7 +767,7 @@ const AddPermit = ({ auth }) => {
 
                 <Row className='flex-row'>
                     <Col>
-                    <input className='border' style={{height:"46px",width:"500px"}} type='text' placeholder='JCET SUPERVISOR'/>
+                    <input className='border' style={{height:"46px",width:"500px"}} type='text' placeholder='ABCD SUPERVISOR'/>
                     </Col>
 
                     <Col>
@@ -794,7 +794,7 @@ const AddPermit = ({ auth }) => {
 
                 <Row className='mt-5 flex-row'>
                     <Col>
-                    <input className='border' style={{height:"46px",width:"500px"}} type='text' placeholder='JCET MANAGER'/>
+                    <input className='border' style={{height:"46px",width:"500px"}} type='text' placeholder='ABCD MANAGER'/>
                     </Col>
 
                     <Col>

@@ -10,7 +10,6 @@ import { CiLogout } from "react-icons/ci";
 import { faWpforms } from '@fortawesome/free-brands-svg-icons';
 import { faHome, faSitemap, faMap, faUser, } from '@fortawesome/free-solid-svg-icons';
 import '../styles/sidebar.css'
-import logo from "../Asset/JCET-Group-Emblem 1.png"
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -50,8 +49,7 @@ const navigate = useNavigate();
   return (
     <div className="sidebar-wrapper">
       <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-      <img src={logo} alt="logo" width={100} />
-      </div> 
+<h1>ABCD</h1>      </div> 
       <NavLink to="/dashboard" style={isActive('/dashboard')}> <FontAwesomeIcon style={{ marginRight: '5px' }} icon={faHome} />Dashboard</NavLink>
       <NavLink to="/sites" style={isActive('/sites')} ><FontAwesomeIcon style={{ marginRight: '5px' }} icon={faSitemap} />Sites</NavLink>
       <NavLink to="/maps" style={isActive('/maps')}><FontAwesomeIcon style={{ marginRight: '5px' }} icon={faMap} />Maps</NavLink>

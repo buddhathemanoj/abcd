@@ -8,7 +8,6 @@ import { MdOutlineManageAccounts } from "react-icons/md";
 import { CgTemplate } from "react-icons/cg";
 import { MdFeedback } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
-import logo from "../Asset/JCET-Group-Emblem 1.png"
 import { faHome,faSitemap,faMap ,faUser} from '@fortawesome/free-solid-svg-icons';
 import'../styles/sidebar.css'
 import { useState } from 'react';
@@ -51,7 +50,7 @@ const UserSidebar = () => {
   return (
     <div className="sidebar-wrapper">
       <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-      <img src={logo} alt="logo" width={100} />
+<h1>ABCD</h1>
       </div>
       <NavLink to="/user-dashboard"  style={isActive('/user-dashboard')}> <FontAwesomeIcon style={{marginRight:'5px'}} icon={faHome} />Dashboard</NavLink>
       <NavLink to="/my-permits"  style={isActive('/my-permits')}><FaWpforms style={{}} />My Permits</NavLink>
